@@ -103,7 +103,11 @@
                 (blur)="commitEditItem(item._id)"
                 #editItemInput />
             } @else {
-              <span class="todo-text" (dblclick)="startEditItem(item, $event)">{{ item.texto }}</span>
+              <span class="todo-text"
+                (dblclick)="startEditItem(item, $event)"
+                (touchstart)="onTextTouchStart(item, $event)"
+                (touchend)="cancelLongPress()"
+                (touchmove)="cancelLongPress()">{{ item.texto }}</span>
               @if (item.fechaLimite) {
                 <span class="todo-when">{{ formatDate(item.fechaLimite) }}</span>
               }
@@ -147,7 +151,11 @@
                     (keydown)="onEditKeydown($event, () => commitEditSubItem(item._id, sub._id))"
                     (blur)="commitEditSubItem(item._id, sub._id)" />
                 } @else {
-                  <span class="todo-text" (dblclick)="startEditSubItem(item._id, sub, $event)">{{ sub.texto }}</span>
+                  <span class="todo-text"
+                    (dblclick)="startEditSubItem(item._id, sub, $event)"
+                    (touchstart)="onSubTextTouchStart(item._id, sub, $event)"
+                    (touchend)="cancelLongPress()"
+                    (touchmove)="cancelLongPress()">{{ sub.texto }}</span>
                 }
                 <button
                   class="delete-btn"

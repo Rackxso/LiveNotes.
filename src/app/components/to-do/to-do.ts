@@ -31,6 +31,7 @@ export class ToDo implements OnInit {
   readonly editingItemId = signal<string | null>(null);
   readonly editingSubKey = signal<{ todoId: string; subId: string } | null>(null);
   readonly editingText = signal<string>('');
+  private longPressTimer: ReturnType<typeof setTimeout> | null = null;
 
   readonly todos = this.todoService.todos;
 
@@ -398,6 +399,27 @@ export class ToDo implements OnInit {
   cancelEdit(): void {
     this.editingItemId.set(null);
     this.editingSubKey.set(null);
+  }
+
+  onTextTouchStart(item: TodoItem, event: TouchEvent): void {
+    event.stopPropagation();
+    this.longPressTimer = setTimeout(() => {
+      this.startEditItem(item, event);
+    }, 500);
+  }
+
+  onSubTextTouchStart(todoId: string, sub: SubItem, event: TouchEvent): void {
+    event.stopPropagation();
+    this.longPressTimer = setTimeout(() => {
+      this.startEditSubItem(todoId, sub, event);
+    }, 500);
+  }
+
+  cancelLongPress(): void {
+    if (this.longPressTimer !== null) {
+      clearTimeout(this.longPressTimer);
+      this.longPressTimer = null;
+    }
   }
 
   onEditKeydown(event: KeyboardEvent, commitFn: () => void): void {
