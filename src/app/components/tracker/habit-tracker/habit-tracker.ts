@@ -19,6 +19,35 @@ export class HabitTracker {
   readonly habits = this.habitsService.habits;
   readonly showModal = signal(false);
 
+  readonly selectMode = signal(false);
+  readonly selectedIds = signal<Set<string>>(new Set());
+  readonly showDeleteModal = signal(false);
+
+  toggleSelectMode(): void {
+    this.selectMode.update(v => !v);
+    this.selectedIds.set(new Set());
+  }
+
+  toggleSelect(id: string): void {
+    this.selectedIds.update(set => {
+      const next = new Set(set);
+      next.has(id) ? next.delete(id) : next.add(id);
+      return next;
+    });
+  }
+
+  isSelected(id: string): boolean {
+    return this.selectedIds().has(id);
+  }
+
+  confirmDelete(): void {
+    const ids = [...this.selectedIds()];
+    ids.forEach(id => this.habitsService.deleteHabit(id).subscribe());
+    this.selectedIds.set(new Set());
+    this.selectMode.set(false);
+    this.showDeleteModal.set(false);
+  }
+
   private readonly today = new Date();
 
   readonly WEEK_DAYS = ['Mo', 'Tu', 'We', 'Th', 'Fr', 'Sa', 'Su'];

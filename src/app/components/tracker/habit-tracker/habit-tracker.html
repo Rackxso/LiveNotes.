@@ -1,9 +1,23 @@
 <div class="ht-header">
   <p class="ht-title">{{ t()('tracker.habits') }}</p>
-  <app-primary-button
-    class="small"
-    [config]="{ texto: t()('tracker.addHabit'), icon: 'fa-solid fa-plus' }"
-    (clicked)="showModal.set(true)" />
+  <div class="ht-header-actions">
+    @if (selectMode() && selectedIds().size > 0) {
+      <button class="ht-icon-btn ht-delete-btn" (click)="showDeleteModal.set(true)" aria-label="Eliminar seleccionados">
+        <i class="fa-solid fa-trash"></i>
+      </button>
+    }
+    <button
+      class="ht-icon-btn"
+      [class.active]="selectMode()"
+      (click)="toggleSelectMode()"
+      [attr.aria-label]="selectMode() ? 'Cancelar selección' : 'Seleccionar hábitos'">
+      <i class="fa-solid fa-check-square"></i>
+    </button>
+    <app-primary-button
+      class="small"
+      [config]="{ texto: t()('tracker.addHabit'), icon: 'fa-solid fa-plus' }"
+      (clicked)="showModal.set(true)" />
+  </div>
 </div>
 
 <!-- Today's habits card -->
@@ -17,22 +31,27 @@
         <button
           class="ht-today-item"
           role="listitem"
-          [class.done]="isDoneToday(h)"
-          (click)="mark(h._id)"
-          [disabled]="isDoneToday(h)"
-          [attr.aria-label]="h.name + ' – ' + (isDoneToday(h) ? t()('tracker.done') : t()('tracker.markDone'))">
+          [class.done]="!selectMode() && isDoneToday(h)"
+          [class.selected]="selectMode() && isSelected(h._id)"
+          (click)="selectMode() ? toggleSelect(h._id) : mark(h._id)"
+          [disabled]="!selectMode() && isDoneToday(h)"
+          [attr.aria-label]="h.name">
           <i [class]="(h.icon || 'fa-solid fa-dumbbell') + ' ht-today-icon'" aria-hidden="true"></i>
           <span class="ht-today-name">{{ h.name }}</span>
-          <div class="ht-week-row">
-            @for (d of currentWeekDays(); track $index; let i = $index) {
-              <div class="ht-week-cell">
-                <span class="ht-week-label" [class.today]="isToday(d)">{{ WEEK_DAYS[i] }}</span>
-                <span class="ht-week-dot" [class.filled]="dotForDate(h, d)"></span>
-              </div>
+          @if (!selectMode()) {
+            <div class="ht-week-row">
+              @for (d of currentWeekDays(); track $index; let i = $index) {
+                <div class="ht-week-cell">
+                  <span class="ht-week-label" [class.today]="isToday(d)">{{ WEEK_DAYS[i] }}</span>
+                  <span class="ht-week-dot" [class.filled]="dotForDate(h, d)"></span>
+                </div>
+              }
+            </div>
+            @if (isDoneToday(h)) {
+              <i class="fa-solid fa-check ht-done-icon" aria-hidden="true"></i>
             }
-          </div>
-          @if (isDoneToday(h)) {
-            <i class="fa-solid fa-check ht-done-icon" aria-hidden="true"></i>
+          } @else {
+            <i class="ht-select-check fa-solid" [class.fa-circle-check]="isSelected(h._id)" [class.fa-circle]="!isSelected(h._id)" aria-hidden="true"></i>
           }
         </button>
       }
@@ -51,7 +70,7 @@
         }
       </div>
       @for (h of habits(); track h._id) {
-        <div class="ht-row" role="row">
+        <div class="ht-row" role="row" [class.row-selected]="selectMode() && isSelected(h._id)">
           <span class="ht-row-name" role="rowheader">{{ h.name }}</span>
           <div class="ht-dots" role="cell">
             @for (d of currentMonthDays(); track d) {
@@ -69,4 +88,27 @@
 
 @if (showModal()) {
   <app-add-habit-modal (cerrar)="showModal.set(false)" (guardado)="showModal.set(false)" />
+}
+
+<!-- Delete confirmation modal -->
+@if (showDeleteModal()) {
+  <div class="ht-modal-overlay" (click)="showDeleteModal.set(false)">
+    <div class="ht-modal" (click)="$event.stopPropagation()">
+      <div class="ht-modal-icon">
+        <i class="fa-solid fa-triangle-exclamation"></i>
+      </div>
+      <p class="ht-modal-title">Eliminar hábitos</p>
+      <p class="ht-modal-body">
+        ¿Seguro que quieres eliminar
+        <strong>{{ selectedIds().size }} {{ selectedIds().size === 1 ? 'hábito' : 'hábitos' }}</strong>?
+        Esta acción no se puede deshacer.
+      </p>
+      <div class="ht-modal-actions">
+        <button class="ht-modal-cancel" (click)="showDeleteModal.set(false)">Cancelar</button>
+        <button class="ht-modal-confirm" (click)="confirmDelete()">
+          <i class="fa-solid fa-trash"></i> Eliminar
+        </button>
+      </div>
+    </div>
+  </div>
 }

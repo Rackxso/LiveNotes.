@@ -203,6 +203,171 @@
   }
 }
 
+/* ── Header actions ──────────────────────────── */
+
+.ht-header-actions {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.ht-icon-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 34px;
+  height: 34px;
+  border-radius: 8px;
+  border: 1px solid var(--primary-subcolor);
+  background: transparent;
+  color: var(--text-subcolor);
+  cursor: pointer;
+  transition: color 0.15s, border-color 0.15s, background 0.15s;
+  font-size: 15px;
+  flex-shrink: 0;
+
+  &:hover {
+    border-color: var(--accent-color);
+    color: var(--text-color);
+  }
+
+  &.active {
+    border-color: var(--primary-color);
+    background: color-mix(in srgb, var(--primary-color) 12%, transparent);
+    color: var(--primary-color);
+  }
+}
+
+.ht-delete-btn {
+  color: #e55;
+  border-color: #e55;
+
+  &:hover {
+    background: color-mix(in srgb, #e55 12%, transparent);
+    color: #e55;
+    border-color: #e55;
+  }
+}
+
+/* ── Selection state ─────────────────────────── */
+
+.ht-today-item.selected {
+  border-color: var(--primary-color);
+  background: color-mix(in srgb, var(--primary-color) 10%, var(--background-subcolor));
+}
+
+.ht-select-check {
+  position: absolute;
+  top: 10px;
+  right: 12px;
+  font-size: 16px;
+  color: var(--text-subcolor);
+  transition: color 0.15s;
+
+  &.fa-circle-check {
+    color: var(--primary-color);
+  }
+}
+
+.ht-row.row-selected .ht-row-name {
+  color: var(--primary-color);
+}
+
+/* ── Delete modal ────────────────────────────── */
+
+.ht-modal-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.45);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 200;
+  padding: 16px;
+}
+
+.ht-modal {
+  background: var(--secondary-background-color);
+  border-radius: 16px;
+  padding: 28px 24px 24px;
+  max-width: 360px;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.25);
+}
+
+.ht-modal-icon {
+  font-size: 32px;
+  color: #e55;
+}
+
+.ht-modal-title {
+  font-family: var(--fuente-titulo);
+  font-size: 17px;
+  font-weight: 600;
+  color: var(--text-color);
+  margin: 0;
+}
+
+.ht-modal-body {
+  font-family: var(--fuente-texto);
+  font-size: 14px;
+  color: var(--text-subcolor);
+  text-align: center;
+  margin: 0;
+  line-height: 1.5;
+
+  strong {
+    color: var(--text-color);
+  }
+}
+
+.ht-modal-actions {
+  display: flex;
+  gap: 10px;
+  width: 100%;
+  margin-top: 4px;
+}
+
+.ht-modal-cancel,
+.ht-modal-confirm {
+  flex: 1;
+  padding: 10px 0;
+  border-radius: 10px;
+  font-family: var(--fuente-texto);
+  font-size: 14px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: opacity 0.15s, background 0.15s;
+}
+
+.ht-modal-cancel {
+  background: transparent;
+  border: 1px solid var(--primary-subcolor);
+  color: var(--text-color);
+
+  &:hover {
+    background: var(--background-subcolor);
+  }
+}
+
+.ht-modal-confirm {
+  background: #e55;
+  border: 1px solid #e55;
+  color: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+
+  &:hover {
+    opacity: 0.85;
+  }
+}
+
 /* ── Responsive ──────────────────────────────── */
 
 @media (max-width: 600px) {
