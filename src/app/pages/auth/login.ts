@@ -42,7 +42,7 @@ export class Login {
     this.auth.login(email!, password!).subscribe({
       next: () => {
         this.posthog.capture('user_logged_in');
-        this.router.navigate(['/home']);
+        this.router.navigate(['/']);
       },
       error: (err: { error?: { message?: string } }) => {
         this.error.set(err.error?.message ?? 'Error al iniciar sesión. Inténtalo de nuevo.');

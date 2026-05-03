@@ -29,10 +29,6 @@ export const routes: Routes = [
     },
     {
         path: '',
-        loadComponent: () => import('./pages/landing/landing').then(m => m.Landing)
-    },
-    {
-        path: 'home',
         canActivate: [authGuard],
         loadComponent: () => import('./pages/home/home').then(m => m.Home)
     },

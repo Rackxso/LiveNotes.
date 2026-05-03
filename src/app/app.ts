@@ -16,7 +16,7 @@ export class App {
   private readonly posthog = inject(PosthogService);
 
   private isAuthUrl(url: string): boolean {
-    return url === '/' || url.startsWith('/login') || url.startsWith('/register');
+    return url.startsWith('/login') || url.startsWith('/register');
   }
 
   protected readonly isAuthPage = toSignal(

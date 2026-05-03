@@ -1,0 +1,446 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <title>LiveNotes — Tu app de notas, calendario y finanzas</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="LiveNotes es tu espacio personal todo en uno. Gestiona tu agenda, finanzas, notas y hábitos desde una única aplicación.">
+
+  <!-- Open Graph -->
+  <meta property="og:title" content="LiveNotes — Tu app de notas, calendario y finanzas">
+  <meta property="og:description" content="Gestiona tu agenda, finanzas, notas y hábitos desde una única aplicación diseñada para tu día a día.">
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://livenotes.app">
+
+  <!-- Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,100..900&family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+  <!-- JSON-LD -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "WebApplication",
+    "name": "LiveNotes",
+    "description": "Aplicación web personal para gestionar agenda, finanzas, notas y hábitos.",
+    "applicationCategory": "ProductivityApplication",
+    "operatingSystem": "Web"
+  }
+  </script>
+
+  <style>
+    :root {
+      --text-color: #2E1F12;
+      --accent-color: #7A5238;
+      --primary-color: #D4956A;
+      --secondary-bg: #EBD8C4;
+      --bg-sub: #F5EDE0;
+      --bg: #FDF8F2;
+      --fuente-titulo: "Fraunces", serif;
+      --fuente-texto: "Outfit", sans-serif;
+    }
+
+    *, *::before, *::after { box-sizing: border-box; }
+
+    html, body {
+      margin: 0;
+      padding: 0;
+      background: var(--bg);
+      font-family: var(--fuente-texto);
+      color: var(--text-color);
+    }
+
+    a { text-decoration: none; }
+
+    /* ── Nav ── */
+    .landing-nav {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 20px 64px;
+      border-bottom: 1px solid var(--secondary-bg);
+      position: sticky;
+      top: 0;
+      background: var(--bg);
+      z-index: 10;
+    }
+
+    .nav-brand {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .brand-mark {
+      width: 38px;
+      height: 38px;
+      background: var(--primary-color);
+      border-radius: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-family: var(--fuente-titulo);
+      font-size: 20px;
+      color: white;
+      font-weight: 500;
+    }
+
+    .brand-name {
+      font-family: var(--fuente-titulo);
+      font-size: 20px;
+      color: var(--text-color);
+      letter-spacing: -0.3px;
+    }
+
+    .nav-actions {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .nav-login {
+      font-family: var(--fuente-texto);
+      font-size: 14px;
+      color: var(--accent-color);
+      padding: 8px 18px;
+      border-radius: 8px;
+      transition: background 0.2s;
+    }
+
+    .nav-login:hover { background: var(--bg-sub); }
+
+    .nav-register {
+      font-family: var(--fuente-texto);
+      font-size: 14px;
+      font-weight: 600;
+      color: white;
+      background: var(--primary-color);
+      padding: 8px 18px;
+      border-radius: 8px;
+      transition: opacity 0.2s;
+    }
+
+    .nav-register:hover { opacity: 0.88; }
+
+    /* ── Hero ── */
+    .hero {
+      display: flex;
+      align-items: center;
+      gap: 80px;
+      padding: 96px 64px;
+    }
+
+    .hero-content {
+      flex: 1;
+      max-width: 520px;
+    }
+
+    .hero-eyebrow {
+      font-family: var(--fuente-texto);
+      font-size: 12px;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 1.5px;
+      color: var(--primary-color);
+      margin: 0 0 16px;
+    }
+
+    .hero-title {
+      font-family: var(--fuente-titulo);
+      font-size: 56px;
+      font-weight: 500;
+      color: var(--text-color);
+      line-height: 1.1;
+      margin: 0 0 20px;
+      letter-spacing: -1px;
+    }
+
+    .hero-title em {
+      font-style: italic;
+      color: var(--primary-color);
+    }
+
+    .hero-subtitle {
+      font-family: var(--fuente-texto);
+      font-size: 16px;
+      color: var(--accent-color);
+      line-height: 1.6;
+      margin: 0 0 40px;
+      max-width: 420px;
+    }
+
+    .hero-ctas {
+      display: flex;
+      gap: 14px;
+      flex-wrap: wrap;
+    }
+
+    /* ── Hero visual ── */
+    .hero-visual {
+      flex: 1;
+      max-width: 420px;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 16px;
+    }
+
+    .visual-card {
+      background: var(--bg-sub);
+      border: 1px solid var(--secondary-bg);
+      border-radius: 16px;
+      padding: 24px 20px;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      transition: transform 0.2s;
+    }
+
+    .visual-card:hover { transform: translateY(-3px); }
+
+    .visual-card:nth-child(2) { margin-top: 24px; }
+    .visual-card:nth-child(3) { margin-top: -8px; }
+    .visual-card:nth-child(4) { margin-top: 16px; }
+
+    .visual-card-icon { font-size: 28px; }
+
+    .visual-card-label {
+      font-family: var(--fuente-texto);
+      font-size: 13px;
+      font-weight: 500;
+      color: var(--text-color);
+      line-height: 1.3;
+    }
+
+    /* ── CTAs ── */
+    .cta-primary {
+      display: inline-flex;
+      align-items: center;
+      padding: 14px 28px;
+      background: var(--primary-color);
+      color: white;
+      font-family: var(--fuente-texto);
+      font-size: 15px;
+      font-weight: 600;
+      border-radius: 10px;
+      transition: opacity 0.2s;
+    }
+
+    .cta-primary:hover { opacity: 0.88; }
+
+    .cta-secondary {
+      display: inline-flex;
+      align-items: center;
+      padding: 14px 28px;
+      background: transparent;
+      color: var(--accent-color);
+      font-family: var(--fuente-texto);
+      font-size: 15px;
+      font-weight: 500;
+      border-radius: 10px;
+      border: 1.5px solid var(--secondary-bg);
+      transition: background 0.2s, border-color 0.2s;
+    }
+
+    .cta-secondary:hover {
+      background: var(--bg-sub);
+      border-color: var(--primary-color);
+    }
+
+    /* ── Features ── */
+    .features {
+      padding: 80px 64px;
+      background: var(--bg-sub);
+      border-top: 1px solid var(--secondary-bg);
+    }
+
+    .features-title {
+      font-family: var(--fuente-titulo);
+      font-size: 36px;
+      font-weight: 500;
+      color: var(--text-color);
+      text-align: center;
+      margin: 0 0 48px;
+      letter-spacing: -0.5px;
+    }
+
+    .features-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 20px;
+      max-width: 1100px;
+      margin: 0 auto;
+    }
+
+    .feat-card {
+      background: var(--bg);
+      border: 1px solid var(--secondary-bg);
+      border-radius: 16px;
+      padding: 28px 24px;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      transition: transform 0.2s, box-shadow 0.2s;
+    }
+
+    .feat-card:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 8px 24px color-mix(in srgb, var(--primary-color) 12%, transparent);
+    }
+
+    .feat-icon { font-size: 32px; }
+
+    .feat-name {
+      font-family: var(--fuente-titulo);
+      font-size: 18px;
+      font-weight: 500;
+      color: var(--text-color);
+      margin: 0;
+    }
+
+    .feat-desc {
+      font-family: var(--fuente-texto);
+      font-size: 13px;
+      color: var(--accent-color);
+      line-height: 1.55;
+      margin: 0;
+    }
+
+    /* ── Bottom CTA ── */
+    .bottom-cta {
+      padding: 96px 64px;
+      text-align: center;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 16px;
+    }
+
+    .bottom-cta-title {
+      font-family: var(--fuente-titulo);
+      font-size: 40px;
+      font-weight: 500;
+      color: var(--text-color);
+      margin: 0;
+      letter-spacing: -0.5px;
+    }
+
+    .bottom-cta-sub {
+      font-family: var(--fuente-texto);
+      font-size: 15px;
+      color: var(--accent-color);
+      margin: 0 0 8px;
+    }
+
+    /* ── Footer ── */
+    .landing-footer {
+      padding: 24px 64px;
+      border-top: 1px solid var(--secondary-bg);
+      font-family: var(--fuente-texto);
+      font-size: 13px;
+      color: var(--accent-color);
+      text-align: center;
+    }
+
+    /* ── Responsive ── */
+    @media (max-width: 1024px) {
+      .hero-visual { display: none; }
+      .features-grid { grid-template-columns: repeat(2, 1fr); }
+    }
+
+    @media (max-width: 640px) {
+      .landing-nav { padding: 16px 24px; }
+      .hero { padding: 64px 24px; }
+      .hero-title { font-size: 40px; }
+      .features { padding: 64px 24px; }
+      .features-grid { grid-template-columns: 1fr; }
+      .bottom-cta { padding: 64px 24px; }
+      .bottom-cta-title { font-size: 30px; }
+      .landing-footer { padding: 20px 24px; }
+    }
+  </style>
+</head>
+<body>
+
+  <nav class="landing-nav">
+    <div class="nav-brand">
+      <div class="brand-mark">L</div>
+      <span class="brand-name">LiveNotes</span>
+    </div>
+    <div class="nav-actions">
+      <a href="https://livenotes.app/login" class="nav-login">Iniciar sesión</a>
+      <a href="https://livenotes.app/register" class="nav-register">Empieza gratis</a>
+    </div>
+  </nav>
+
+  <section class="hero">
+    <div class="hero-content">
+      <p class="hero-eyebrow">Tu espacio personal</p>
+      <h1 class="hero-title">Todo en un <em>solo lugar.</em></h1>
+      <p class="hero-subtitle">
+        Agenda, finanzas, notas y hábitos en una sola app diseñada para tu día a día.
+      </p>
+      <div class="hero-ctas">
+        <a href="https://livenotes.app/register" class="cta-primary">Empieza gratis</a>
+        <a href="https://livenotes.app/login" class="cta-secondary">Ya tengo cuenta</a>
+      </div>
+    </div>
+
+    <div class="hero-visual" aria-hidden="true">
+      <div class="visual-card">
+        <span class="visual-card-icon">📅</span>
+        <span class="visual-card-label">Hoy, 3 eventos</span>
+      </div>
+      <div class="visual-card">
+        <span class="visual-card-icon">💶</span>
+        <span class="visual-card-label">Ahorro del mes: 84%</span>
+      </div>
+      <div class="visual-card">
+        <span class="visual-card-icon">📝</span>
+        <span class="visual-card-label">12 notas guardadas</span>
+      </div>
+      <div class="visual-card">
+        <span class="visual-card-icon">🌿</span>
+        <span class="visual-card-label">Racha de 7 días</span>
+      </div>
+    </div>
+  </section>
+
+  <section class="features">
+    <h2 class="features-title">Todo lo que necesitas</h2>
+    <div class="features-grid">
+      <div class="feat-card">
+        <span class="feat-icon">📅</span>
+        <h3 class="feat-name">Calendario</h3>
+        <p class="feat-desc">Organiza tus eventos con vistas diaria, semanal y mensual. Nunca pierdas una cita.</p>
+      </div>
+      <div class="feat-card">
+        <span class="feat-icon">💶</span>
+        <h3 class="feat-name">Finanzas</h3>
+        <p class="feat-desc">Controla gastos, ingresos y objetivos de ahorro. Tus finanzas, bajo control.</p>
+      </div>
+      <div class="feat-card">
+        <span class="feat-icon">📝</span>
+        <h3 class="feat-name">Notas</h3>
+        <p class="feat-desc">Escribe y organiza tus ideas. Encuentra cualquier nota al instante.</p>
+      </div>
+      <div class="feat-card">
+        <span class="feat-icon">🌿</span>
+        <h3 class="feat-name">Hábitos</h3>
+        <p class="feat-desc">Registra hábitos y estado de ánimo. Pequeños pasos, grandes cambios.</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="bottom-cta">
+    <h2 class="bottom-cta-title">¿Listo para empezar?</h2>
+    <p class="bottom-cta-sub">Crea tu cuenta gratis y organiza tu vida desde hoy.</p>
+    <a href="https://livenotes.app/register" class="cta-primary">Crear cuenta gratis</a>
+  </section>
+
+  <footer class="landing-footer">
+    <span>© 2025 LiveNotes</span>
+  </footer>
+
+</body>
+</html>
