@@ -28,6 +28,9 @@ export class ToDo implements OnInit {
   readonly hoveredItemId = signal<string | null>(null);
   readonly focusedInlineSubId = signal<string | null>(null);
   readonly inlineSubTexts = signal<Record<string, string>>({});
+  readonly editingItemId = signal<string | null>(null);
+  readonly editingSubKey = signal<{ todoId: string; subId: string } | null>(null);
+  readonly editingText = signal<string>('');
 
   readonly todos = this.todoService.todos;
 
@@ -346,6 +349,64 @@ export class ToDo implements OnInit {
 
   setInlineSubText(todoId: string, value: string): void {
     this.inlineSubTexts.update(m => ({ ...m, [todoId]: value }));
+  }
+
+  startEditItem(item: TodoItem, event: Event): void {
+    event.stopPropagation();
+    this.editingSubKey.set(null);
+    this.editingItemId.set(item._id);
+    this.editingText.set(item.texto);
+    setTimeout(() => {
+      const input = document.querySelector<HTMLInputElement>('.todo-edit-input');
+      input?.focus();
+      input?.select();
+    }, 0);
+  }
+
+  startEditSubItem(todoId: string, sub: SubItem, event: Event): void {
+    event.stopPropagation();
+    this.editingItemId.set(null);
+    this.editingSubKey.set({ todoId, subId: sub._id });
+    this.editingText.set(sub.texto);
+    setTimeout(() => {
+      const input = document.querySelector<HTMLInputElement>('.todo-edit-input');
+      input?.focus();
+      input?.select();
+    }, 0);
+  }
+
+  commitEditItem(id: string): void {
+    if (this.editingItemId() !== id) return;
+    const text = this.editingText().trim();
+    if (text && text !== this.todos().find(t => t._id === id)?.texto) {
+      this.todoService.updateTodo(id, { texto: text }).subscribe();
+    }
+    this.editingItemId.set(null);
+  }
+
+  commitEditSubItem(todoId: string, subId: string): void {
+    const key = this.editingSubKey();
+    if (!key || key.subId !== subId) return;
+    const text = this.editingText().trim();
+    const current = this.todos().find(t => t._id === todoId)?.subItems.find(s => s._id === subId)?.texto;
+    if (text && text !== current) {
+      this.todoService.updateSubItem(todoId, subId, { texto: text }).subscribe();
+    }
+    this.editingSubKey.set(null);
+  }
+
+  cancelEdit(): void {
+    this.editingItemId.set(null);
+    this.editingSubKey.set(null);
+  }
+
+  onEditKeydown(event: KeyboardEvent, commitFn: () => void): void {
+    if (event.key === 'Enter') {
+      event.preventDefault();
+      commitFn();
+    } else if (event.key === 'Escape') {
+      this.cancelEdit();
+    }
   }
 
   formatDate(fechaLimite: string | null): string {

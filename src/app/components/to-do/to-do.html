@@ -93,9 +93,20 @@
             }
           </button>
           <div class="todo-body">
-            <span class="todo-text">{{ item.texto }}</span>
-            @if (item.fechaLimite) {
-              <span class="todo-when">{{ formatDate(item.fechaLimite) }}</span>
+            @if (editingItemId() === item._id) {
+              <input
+                class="todo-edit-input"
+                type="text"
+                [value]="editingText()"
+                (input)="editingText.set($any($event.target).value)"
+                (keydown)="onEditKeydown($event, () => commitEditItem(item._id))"
+                (blur)="commitEditItem(item._id)"
+                #editItemInput />
+            } @else {
+              <span class="todo-text" (dblclick)="startEditItem(item, $event)">{{ item.texto }}</span>
+              @if (item.fechaLimite) {
+                <span class="todo-when">{{ formatDate(item.fechaLimite) }}</span>
+              }
             }
           </div>
           <button
@@ -127,7 +138,17 @@
                     <i class="fa-solid fa-check" aria-hidden="true"></i>
                   }
                 </button>
-                <span class="todo-text">{{ sub.texto }}</span>
+                @if (editingSubKey()?.subId === sub._id) {
+                  <input
+                    class="todo-edit-input"
+                    type="text"
+                    [value]="editingText()"
+                    (input)="editingText.set($any($event.target).value)"
+                    (keydown)="onEditKeydown($event, () => commitEditSubItem(item._id, sub._id))"
+                    (blur)="commitEditSubItem(item._id, sub._id)" />
+                } @else {
+                  <span class="todo-text" (dblclick)="startEditSubItem(item._id, sub, $event)">{{ sub.texto }}</span>
+                }
                 <button
                   class="delete-btn"
                   (click)="deleteSubItem(item._id, sub._id)"
