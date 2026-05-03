@@ -7,6 +7,12 @@
         (keydown.enter)="editNote.emit(note)"
         (keydown.space)="editNote.emit(note)"
         [attr.aria-label]="'Edit note: ' + note.titulo">
+      <button class="note-delete"
+              (click)="onDeleteNote($event, note)"
+              [attr.aria-label]="'Delete note: ' + note.titulo"
+              title="Delete note">
+        <i class="fa-solid fa-trash" aria-hidden="true"></i>
+      </button>
       @if (note.categoria) {
         <span class="note-category" [class]="categoryClass(note.categoria)">{{ note.categoria }}</span>
       }

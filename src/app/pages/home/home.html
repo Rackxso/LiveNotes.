@@ -16,24 +16,30 @@
     }
 
     <div class="quick-stats">
-      @if (currentMonthStats(); as stats) {
-        <div class="stat-pill">
-          <span class="stat-label">{{ t()('finance.income') }}</span>
-          <span class="stat-val green">€{{ stats.income | number:'1.0-0' }}</span>
-        </div>
-        <div class="stat-pill">
-          <span class="stat-label">{{ t()('finance.expenses') }}</span>
-          <span class="stat-val red">€{{ stats.expenses | number:'1.0-0' }}</span>
-        </div>
-        <div class="stat-pill">
-          <span class="stat-label">{{ t()('home.statsSaved') }}</span>
-          <span class="stat-val">€{{ stats.saved | number:'1.0-0' }}</span>
-        </div>
+      @if (isLoading()) {
+        <div class="skeleton skeleton-stat"></div>
+        <div class="skeleton skeleton-stat"></div>
+        <div class="skeleton skeleton-stat"></div>
       } @else {
-        <div class="stat-pill">
-          <span class="stat-label">{{ t()('home.statsNoData') }}</span>
-          <span class="stat-val">—</span>
-        </div>
+        @if (currentMonthStats(); as stats) {
+          <div class="stat-pill">
+            <span class="stat-label">{{ t()('finance.income') }}</span>
+            <span class="stat-val green">€{{ stats.income | number:'1.0-0' }}</span>
+          </div>
+          <div class="stat-pill">
+            <span class="stat-label">{{ t()('finance.expenses') }}</span>
+            <span class="stat-val red">€{{ stats.expenses | number:'1.0-0' }}</span>
+          </div>
+          <div class="stat-pill">
+            <span class="stat-label">{{ t()('home.statsSaved') }}</span>
+            <span class="stat-val">€{{ stats.saved | number:'1.0-0' }}</span>
+          </div>
+        } @else {
+          <div class="stat-pill">
+            <span class="stat-label">{{ t()('home.statsNoData') }}</span>
+            <span class="stat-val">—</span>
+          </div>
+        }
       }
     </div>
   </section>
@@ -75,32 +81,41 @@
     </div>
 
     <div class="day-events" aria-live="polite">
-      @for (ev of eventosDiaSeleccionado(); track ev.id) {
-        <button class="day-ev-row" (click)="abrirEventoModal(ev)" [attr.aria-label]="t()('home.viewEvent') + ev.titulo">
-          <span class="day-ev-time">{{ ev.hora || '—' }}</span>
-          <div class="day-ev-bar" aria-hidden="true"></div>
-          <span class="day-ev-title">{{ ev.titulo }}</span>
-        </button>
-      }
-      @empty {
-        <p class="empty-msg">{{ t()('home.noEventsDay') }}</p>
+      @if (isLoading()) {
+        <div class="skeleton skeleton-event-row"></div>
+        <div class="skeleton skeleton-event-row"></div>
+        <div class="skeleton skeleton-event-row"></div>
+      } @else {
+        @for (ev of eventosDiaSeleccionado(); track ev.id) {
+          <button class="day-ev-row" (click)="abrirEventoModal(ev)" [attr.aria-label]="t()('home.viewEvent') + ev.titulo">
+            <span class="day-ev-time">{{ ev.hora || '—' }}</span>
+            <div class="day-ev-bar" aria-hidden="true"></div>
+            <span class="day-ev-title">{{ ev.titulo }}</span>
+          </button>
+        } @empty {
+          <p class="empty-msg">{{ t()('home.noEventsDay') }}</p>
+        }
       }
     </div>
 
     <div class="upcoming-divider" aria-hidden="true"></div>
     <div class="upcoming-events">
       <p class="upcoming-label">{{ t()('home.upcomingEvents') }}</p>
-      @for (ev of proximosEventos(); track ev.id) {
-        <button class="upcoming-row" (click)="abrirEventoModal(ev)" [attr.aria-label]="t()('home.viewEvent') + ev.titulo">
-          <span class="upcoming-date">{{ formatUpcomingDate(ev.fecha) }}</span>
-          @if (ev.hora) {
-            <span class="upcoming-time">{{ ev.hora }}</span>
-          }
-          <span class="upcoming-name">{{ ev.titulo }}</span>
-        </button>
-      }
-      @empty {
-        <p class="empty-msg">{{ t()('home.noUpcomingEvents') }}</p>
+      @if (isLoading()) {
+        <div class="skeleton skeleton-event-row"></div>
+        <div class="skeleton skeleton-event-row"></div>
+      } @else {
+        @for (ev of proximosEventos(); track ev.id) {
+          <button class="upcoming-row" (click)="abrirEventoModal(ev)" [attr.aria-label]="t()('home.viewEvent') + ev.titulo">
+            <span class="upcoming-date">{{ formatUpcomingDate(ev.fecha) }}</span>
+            @if (ev.hora) {
+              <span class="upcoming-time">{{ ev.hora }}</span>
+            }
+            <span class="upcoming-name">{{ ev.titulo }}</span>
+          </button>
+        } @empty {
+          <p class="empty-msg">{{ t()('home.noUpcomingEvents') }}</p>
+        }
       }
     </div>
   </section>
@@ -112,41 +127,46 @@
       <a routerLink="/finance" class="q-link">{{ t()('home.seeAll') }}</a>
     </div>
 
-    @if (currentMonthStats(); as stats) {
-      <div class="finance-summary">
-        <div class="fin-card green">
-          <span class="fin-label">{{ t()('finance.income') }}</span>
-          <span class="fin-val">€{{ stats.income | number:'1.2-2' }}</span>
+    @if (isLoading()) {
+      <div class="skeleton skeleton-tx-row"></div>
+      <div class="skeleton skeleton-tx-row"></div>
+      <div class="skeleton skeleton-tx-row"></div>
+    } @else {
+      @if (currentMonthStats(); as stats) {
+        <div class="finance-summary">
+          <div class="fin-card green">
+            <span class="fin-label">{{ t()('finance.income') }}</span>
+            <span class="fin-val">€{{ stats.income | number:'1.2-2' }}</span>
+          </div>
+          <div class="fin-card red">
+            <span class="fin-label">{{ t()('finance.expenses') }}</span>
+            <span class="fin-val">€{{ stats.expenses | number:'1.2-2' }}</span>
+          </div>
         </div>
-        <div class="fin-card red">
-          <span class="fin-label">{{ t()('finance.expenses') }}</span>
-          <span class="fin-val">€{{ stats.expenses | number:'1.2-2' }}</span>
-        </div>
+      }
+
+      <app-goal-progress />
+
+      <div class="transacciones">
+        @for (tx of recentTransactions(); track tx.id) {
+          <div class="tx-row">
+            <span class="tx-name">{{ tx.name }}</span>
+            <span class="tx-cat" [style.--cat-color]="tx.categoryColor || 'var(--primary-color)'">{{ tx.category }}</span>
+            <span class="tx-amt" [class.pos]="tx.amount > 0" [class.neg]="tx.amount < 0">
+              {{ tx.amount > 0 ? '+' : '' }}{{ tx.amount | number:'1.0-0' }}€
+            </span>
+          </div>
+        } @empty {
+          <p class="empty-msg">{{ t()('home.noRecentTransactions') }}</p>
+        }
       </div>
-    }
-
-    <app-goal-progress />
-
-    <div class="transacciones">
-      @for (tx of recentTransactions(); track tx.id) {
-        <div class="tx-row">
-          <span class="tx-name">{{ tx.name }}</span>
-          <span class="tx-cat" [style.--cat-color]="tx.categoryColor || 'var(--primary-color)'">{{ tx.category }}</span>
-          <span class="tx-amt" [class.pos]="tx.amount > 0" [class.neg]="tx.amount < 0">
-            {{ tx.amount > 0 ? '+' : '' }}{{ tx.amount | number:'1.0-0' }}€
-          </span>
-        </div>
+      @if (hasMoreTransactions()) {
+        <a routerLink="/finance" class="tx-more" [attr.aria-label]="t()('home.viewAllMovements')">
+          <span class="tx-more-dot"></span>
+          <span class="tx-more-dot"></span>
+          <span class="tx-more-dot"></span>
+        </a>
       }
-      @empty {
-        <p class="empty-msg">{{ t()('home.noRecentTransactions') }}</p>
-      }
-    </div>
-    @if (hasMoreTransactions()) {
-      <a routerLink="/finance" class="tx-more" [attr.aria-label]="t()('home.viewAllMovements')">
-        <span class="tx-more-dot"></span>
-        <span class="tx-more-dot"></span>
-        <span class="tx-more-dot"></span>
-      </a>
     }
   </section>
 

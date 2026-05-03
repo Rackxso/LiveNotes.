@@ -121,11 +121,11 @@
 }
 
 .logo-mark {
-  font-size: 22px;
-  color: var(--text-color);
   flex-shrink: 0;
-  width: 20px;
-  text-align: center;
+  width: 24px;
+  height: 24px;
+  border-radius: 6px;
+  object-fit: cover;
 }
 
 .logo-text {

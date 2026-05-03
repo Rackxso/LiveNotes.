@@ -33,6 +33,9 @@ export class Home {
   readonly userName                = computed(() => this.auth.user()?.name ?? '');
   readonly requiresPasswordUpdate  = this.auth.requiresPasswordUpdate;
   readonly eventos                 = this.eventosService.eventos;
+  readonly isLoading               = computed(() =>
+    this.eventosService.loading() || this.financeService.loading()
+  );
 
   constructor() {
     this.eventosService.loadEventos();

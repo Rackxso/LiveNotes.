@@ -7,5 +7,5 @@ export const loggedInGuard: CanActivateFn = () => {
   const router = inject(Router);
 
   if (!auth.isLoggedIn()) return true;
-  return router.createUrlTree(['/']);
+  return router.createUrlTree(['/home']);
 };

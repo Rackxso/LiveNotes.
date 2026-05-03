@@ -1,6 +1,6 @@
 import { computed, inject, Injectable, signal } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { Observable, of, tap } from 'rxjs';
+import { Observable, of, tap, finalize } from 'rxjs';
 import { environment } from '../../environments/environment';
 
 // ── Frontend interfaces (used by components) ────────────────────────────────
@@ -133,6 +133,12 @@ export class FinanceService {
 
   readonly categorias = signal<ApiCategoria[]>([]);
 
+  readonly loading = signal(false);
+  private _activeLoads = 0;
+
+  private _startLoad(): void { this._activeLoads++; this.loading.set(true); }
+  private _endLoad(): void   { if (--this._activeLoads === 0) this.loading.set(false); }
+
   private _txLoaded = false;
   private _goalsLoaded = false;
   private _categoriasLoaded = false;
@@ -214,8 +220,10 @@ export class FinanceService {
   loadTransactions(): Observable<ApiMovimiento[]> {
     if (this._txLoaded) return of([]);
     this._txLoaded = true;
+    this._startLoad();
     return this.http.get<ApiMovimiento[]>(this.baseMovimientos).pipe(
-      tap(data => this.transactions.set(data.map(m => this.mapToTransaction(m))))
+      tap(data => this.transactions.set(data.map(m => this.mapToTransaction(m)))),
+      finalize(() => this._endLoad())
     );
   }
 
@@ -263,8 +271,10 @@ export class FinanceService {
   loadSavingsGoals(): Observable<ApiMeta[]> {
     if (this._goalsLoaded) return of([]);
     this._goalsLoaded = true;
+    this._startLoad();
     return this.http.get<ApiMeta[]>(this.baseMetas).pipe(
-      tap(data => this.savingsGoals.set(data.map((m, i) => this.mapToSavingsGoal(m, i))))
+      tap(data => this.savingsGoals.set(data.map((m, i) => this.mapToSavingsGoal(m, i)))),
+      finalize(() => this._endLoad())
     );
   }
 
@@ -337,6 +347,8 @@ export class FinanceService {
     this._goalsLoaded = false;
     this._categoriasLoaded = false;
     this._presupuestosLoaded = false;
+    this._activeLoads = 0;
+    this.loading.set(false);
     this.transactions.set([]);
     this.savingsGoals.set([]);
     this.budgetCategories.set([]);

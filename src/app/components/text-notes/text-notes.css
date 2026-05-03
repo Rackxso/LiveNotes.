@@ -22,12 +22,41 @@
   transition: border-color 0.15s;
   font-family: var(--fuente-texto);
   min-height: 90px;
+  position: relative;
 
   &:hover {
     border-color: var(--accent-color);
+
+    .note-delete { opacity: 1; }
   }
 
   &:focus-visible {
+    outline: 2px solid var(--accent-color);
+    outline-offset: 2px;
+  }
+}
+
+.note-delete {
+  position: absolute;
+  top: 8px;
+  right: 8px;
+  background: none;
+  border: none;
+  padding: 4px 6px;
+  cursor: pointer;
+  opacity: 0;
+  transition: opacity 0.15s, color 0.15s;
+  color: var(--text-subcolor);
+  font-size: 12px;
+  border-radius: 4px;
+  line-height: 1;
+
+  &:hover {
+    color: #e05252;
+  }
+
+  &:focus-visible {
+    opacity: 1;
     outline: 2px solid var(--accent-color);
     outline-offset: 2px;
   }

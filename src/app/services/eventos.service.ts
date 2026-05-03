@@ -1,6 +1,6 @@
 import { inject, Injectable, signal } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { retry, tap } from 'rxjs';
+import { finalize, retry, tap } from 'rxjs';
 import { Evento } from '../model/evento.model';
 import { environment } from '../../environments/environment';
 
@@ -23,13 +23,16 @@ export class EventosService {
   private readonly _eventos = signal<Evento[]>([]);
   private _loaded = false;
   readonly eventos = this._eventos.asReadonly();
+  readonly loading = signal(false);
 
   loadEventos(): void {
     if (this._loaded) return;
     this._loaded = true;
+    this.loading.set(true);
     this.http.get<CalendarEventResponse[]>(this.base).pipe(
       retry({ count: 3, delay: 1500 }),
-      tap(data => this._eventos.set(data.map(e => this.mapToEvento(e))))
+      tap(data => this._eventos.set(data.map(e => this.mapToEvento(e)))),
+      finalize(() => this.loading.set(false))
     ).subscribe({
       error: () => { this._loaded = false; }
     });

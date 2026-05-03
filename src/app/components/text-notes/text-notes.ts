@@ -37,6 +37,11 @@ export class TextNotes implements OnInit {
     return items;
   });
 
+  onDeleteNote(event: MouseEvent, note: Note): void {
+    event.stopPropagation();
+    this.notesService.deleteNote(note._id).subscribe();
+  }
+
   categoryClass(categoria: string): string {
     const map: Record<string, string> = {
       work: 'cat-work',

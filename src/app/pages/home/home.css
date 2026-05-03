@@ -582,6 +582,28 @@ app-goal-progress {
   flex-shrink: 0;
 }
 
+/* ── SKELETONS ───────────────────────────────────────── */
+@keyframes shimmer {
+  0%   { background-position: -400px 0; }
+  100% { background-position:  400px 0; }
+}
+
+.skeleton {
+  border-radius: 8px;
+  background: linear-gradient(
+    90deg,
+    var(--secondary-background-color) 25%,
+    color-mix(in srgb, var(--secondary-background-color) 60%, var(--text-color)) 50%,
+    var(--secondary-background-color) 75%
+  );
+  background-size: 800px 100%;
+  animation: shimmer 1.4s infinite linear;
+}
+
+.skeleton-stat      { height: 48px; width: 100%; margin-bottom: 8px; }
+.skeleton-event-row { height: 40px; width: 100%; margin-bottom: 8px; }
+.skeleton-tx-row    { height: 36px; width: 100%; margin-bottom: 8px; }
+
 @media (max-width: 600px) {
   :host {
     overflow-y: auto;
