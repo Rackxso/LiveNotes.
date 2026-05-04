@@ -64,7 +64,7 @@ export class TodoService {
 
   createTodo(dto: TodoDto): Observable<TodoItem> {
     return this.http.post<TodoItem>(this.base, dto).pipe(
-      tap(todo => this._todos.update(todos => [todo, ...todos]))
+      tap(todo => this._todos.update(todos => [...todos, todo]))
     );
   }
 
