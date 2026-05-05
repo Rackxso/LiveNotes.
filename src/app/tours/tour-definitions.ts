@@ -57,7 +57,6 @@ export const TOUR_DEFINITIONS: Record<TourId, TourSegment[]> = {
     {
       route: '/notes',
       steps: [
-        { element: '[aria-label="Notes"]', popover: { titleKey: 'tour.notes.notesOverviewTitle', descriptionKey: 'tour.notes.notesOverviewDesc', side: 'right'  } },
         { element: '.category-chips',      popover: { titleKey: 'tour.notes.categoriesTitle',    descriptionKey: 'tour.notes.categoriesDesc',    side: 'bottom' } },
         { element: '.notes-grid',          popover: { titleKey: 'tour.notes.gridTitle',           descriptionKey: 'tour.notes.gridDesc',           side: 'top'    } },
         { element: '.header-actions',      popover: { titleKey: 'tour.notes.actionsTitle',        descriptionKey: 'tour.notes.actionsDesc',        side: 'bottom' } },
