@@ -1,4 +1,5 @@
 /* You can add global styles to this file, and also import other style files */
+@import 'driver.js/dist/driver.css';
 :root {
     --text-color: #2E1F12;
     --text-subcolor: #4A2E18;

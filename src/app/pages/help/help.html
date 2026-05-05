@@ -101,6 +101,43 @@
       </div>
     </section>
 
+    <!-- ── Tours interactivos ────────────────────────────────────────── -->
+    <section aria-labelledby="tours-heading">
+      <div class="history-header">
+        <h2 id="tours-heading" class="section-label">Tours interactivos</h2>
+        <button type="button" class="btn-toggle" (click)="tourService.resetAll()">
+          Resetear todos
+          <i class="fa-solid fa-rotate-left" aria-hidden="true"></i>
+        </button>
+      </div>
+
+      <div class="tours-grid">
+        @for (id of tourIds; track id) {
+          <div class="tour-card">
+            <div class="tour-card-icon">
+              <i [class]="tourMeta[id].icon" aria-hidden="true"></i>
+            </div>
+            <div class="tour-card-body">
+              <div class="tour-card-top">
+                <span class="tour-card-label">{{ tourMeta[id].label }}</span>
+                @if (tourService.isCompleted(id)) {
+                  <span class="tour-badge-done">Completado</span>
+                }
+              </div>
+              <p class="tour-card-desc">{{ tourMeta[id].description }}</p>
+            </div>
+            <button
+              type="button"
+              class="btn-tour"
+              (click)="tourService.startTour(id)"
+              [attr.aria-label]="'Iniciar tour ' + tourMeta[id].label">
+              {{ tourService.isCompleted(id) ? 'Repetir' : 'Iniciar' }}
+            </button>
+          </div>
+        }
+      </div>
+    </section>
+
     <!-- ── Historial de tickets ───────────────────────────────────────── -->
     <section aria-labelledby="history-heading">
       <div class="history-header">

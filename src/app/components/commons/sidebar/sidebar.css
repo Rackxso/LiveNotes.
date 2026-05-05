@@ -292,6 +292,15 @@
   &:hover { background: #d97706; }
 }
 
+/* ── TOUR NAV BUTTON ───────────────────────────────────── */
+.nav-item--btn {
+  background: none;
+  border: none;
+  width: 100%;
+  text-align: left;
+  font-family: inherit;
+}
+
 /* ── PREMIUM NAV ITEM ──────────────────────────────────── */
 .nav-item[href="/premium"] {
   color: #f59e0b;

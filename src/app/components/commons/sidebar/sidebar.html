@@ -56,6 +56,13 @@
           <span class="nav-label">Admin</span>
         </a>
       }
+      <button class="nav-item nav-item--btn"
+              (click)="startActiveTour()"
+              [title]="!expanded() ? 'Tour' : null"
+              aria-label="Iniciar tour">
+        <i class="fa-solid fa-map" aria-hidden="true"></i>
+        <span class="nav-label">Tour</span>
+      </button>
       @for (item of secondaryNav(); track item.route) {
         <a class="nav-item"
            [routerLink]="item.route"

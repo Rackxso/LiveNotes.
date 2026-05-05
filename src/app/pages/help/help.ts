@@ -2,6 +2,8 @@ import { ChangeDetectionStrategy, Component, inject, signal } from '@angular/cor
 import { ReactiveFormsModule, FormBuilder, Validators } from '@angular/forms';
 import { DatePipe } from '@angular/common';
 import { TicketService, Ticket } from '../../services/ticket.service';
+import { TourService } from '../../services/tour.service';
+import { TOUR_META, type TourId } from '../../tours/tour-definitions';
 
 @Component({
   selector: 'app-help',
@@ -13,6 +15,10 @@ import { TicketService, Ticket } from '../../services/ticket.service';
 export class Help {
   private readonly fb            = inject(FormBuilder);
   private readonly ticketService = inject(TicketService);
+  readonly tourService           = inject(TourService);
+
+  readonly tourIds: TourId[] = ['home', 'calendar', 'notes', 'finance', 'tracker', 'global'];
+  readonly tourMeta = TOUR_META;
 
   readonly form = this.fb.group({
     asunto:      ['', [Validators.required, Validators.maxLength(120)]],
