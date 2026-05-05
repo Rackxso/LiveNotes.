@@ -1,20 +1,29 @@
-import { Injectable, inject, signal } from '@angular/core';
+import { Injectable, effect, inject, signal } from '@angular/core';
 import { NavigationEnd, Router } from '@angular/router';
+import { HttpClient } from '@angular/common/http';
 import { filter } from 'rxjs';
 import { driver } from 'driver.js';
 import type { Driver, DriveStep } from 'driver.js';
 import { TOUR_DEFINITIONS, type TourId, type TourSegment } from '../tours/tour-definitions';
 import { I18nService } from './i18n.service';
+import { AuthService } from './auth.service';
+import { environment } from '../../environments/environment';
 
 @Injectable({ providedIn: 'root' })
 export class TourService {
-  private readonly router = inject(Router);
-  private readonly i18n   = inject(I18nService);
+  private readonly router      = inject(Router);
+  private readonly http        = inject(HttpClient);
+  private readonly i18n        = inject(I18nService);
+  private readonly authService = inject(AuthService);
+  private readonly base        = `${environment.apiUrl}/user`;
 
-  readonly tourActive         = signal(false);
-  readonly currentTourId      = signal<TourId | null>(null);
-  readonly globalSegmentIndex = signal(0);
-  readonly currentStepId      = signal<string | null>(null);
+  readonly tourActive          = signal(false);
+  readonly currentTourId       = signal<TourId | null>(null);
+  readonly globalSegmentIndex  = signal(0);
+  readonly currentStepId       = signal<string | null>(null);
+
+  private readonly _completedTours = signal<Set<string>>(new Set());
+  readonly completedTours          = this._completedTours.asReadonly();
 
   private driverInstance: Driver | null = null;
   private pendingSegments: TourSegment[] = [];
@@ -29,6 +38,21 @@ export class TourService {
         const url = (e as NavigationEnd).urlAfterRedirects.split('?')[0];
         this.launchSegmentForUrl(url);
       });
+
+    effect(() => {
+      if (this.authService.isLoggedIn()) {
+        this.loadCompletedTours();
+      } else {
+        this._completedTours.set(new Set());
+      }
+    });
+  }
+
+  private loadCompletedTours(): void {
+    const email = this.authService.user()?.email;
+    if (!email) return;
+    this.http.get<{ completedTours: string[] }>(`${this.base}/${email}/tours`)
+      .subscribe(data => this._completedTours.set(new Set(data.completedTours)));
   }
 
   startTour(tourId: TourId): void {
@@ -90,7 +114,6 @@ export class TourService {
       },
     });
 
-    // Small delay to let the page render before highlighting elements
     setTimeout(() => this.driverInstance?.drive(), 150);
   }
 
@@ -129,27 +152,33 @@ export class TourService {
   }
 
   markCompleted(tourId: TourId): void {
-    localStorage.setItem(`tour_completed_${tourId}`, 'true');
+    this._completedTours.update(s => new Set([...s, tourId]));
+    const email = this.authService.user()?.email;
+    if (email) {
+      this.http.patch(`${this.base}/${email}/tours/${tourId}`, {}).subscribe();
+    }
   }
 
   isCompleted(tourId: TourId): boolean {
-    return localStorage.getItem(`tour_completed_${tourId}`) === 'true';
+    return this._completedTours().has(tourId);
   }
 
   resetTour(tourId: TourId): void {
-    localStorage.removeItem(`tour_completed_${tourId}`);
+    this._completedTours.update(s => { const n = new Set(s); n.delete(tourId); return n; });
   }
 
   resetAll(): void {
-    const ids: TourId[] = ['home', 'calendar', 'notes', 'finance', 'tracker', 'global'];
-    ids.forEach(id => this.resetTour(id));
+    this._completedTours.set(new Set());
+    const email = this.authService.user()?.email;
+    if (email) {
+      this.http.delete(`${this.base}/${email}/tours`).subscribe();
+    }
   }
 
   startTourIfNewUser(): void {
     const key = 'tour_new_user';
     if (localStorage.getItem(key)) return;
     localStorage.setItem(key, 'true');
-    // Small delay so the app finishes initial navigation first
     setTimeout(() => this.startGlobalTour(), 500);
   }
 }

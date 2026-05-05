@@ -20,7 +20,7 @@
 
       <div class="tours-grid">
         @for (id of tourIds; track id) {
-          <div class="tour-card">
+          <div class="tour-card" [class.completed]="tourService.isCompleted(id)">
             <div class="tour-card-icon">
               <i [class]="tourMeta[id].icon" aria-hidden="true"></i>
             </div>

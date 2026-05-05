@@ -317,10 +317,16 @@ section {
 .tour-card {
   background: var(--secondary-background-color);
   border-radius: 14px;
+  border: 2px solid transparent;
   padding: 14px 18px;
   display: flex;
   align-items: center;
   gap: 14px;
+  transition: border-color 0.2s;
+
+  &.completed {
+    border-color: var(--green);
+  }
 }
 
 .tour-card-icon {
