@@ -5,9 +5,16 @@
       <div class="event-icon" aria-hidden="true">
         <i class="fa-solid fa-calendar-day"></i>
       </div>
-      <button class="close-btn" (click)="onCerrar()" aria-label="Cerrar">
-        <i class="fa-solid fa-xmark" aria-hidden="true"></i>
-      </button>
+      <div class="header-actions">
+        @if (mostrarBotonEditar()) {
+          <button class="action-btn" (click)="onEditar()" aria-label="Editar evento">
+            <i class="fa-solid fa-pen" aria-hidden="true"></i>
+          </button>
+        }
+        <button class="close-btn" (click)="onCerrar()" aria-label="Cerrar">
+          <i class="fa-solid fa-xmark" aria-hidden="true"></i>
+        </button>
+      </div>
     </div>
 
     <h2 class="event-title">{{ evento().titulo }}</h2>

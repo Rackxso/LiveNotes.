@@ -38,7 +38,7 @@ export class Home {
   );
 
   constructor() {
-    this.eventosService.loadEventos();
+    this.eventosService.loadEventos().subscribe();
     this.financeService.loadTransactions().subscribe();
     this.financeService.loadSavingsGoals().subscribe();
   }

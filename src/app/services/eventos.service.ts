@@ -1,6 +1,6 @@
 import { inject, Injectable, signal } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { finalize, retry, tap } from 'rxjs';
+import { catchError, finalize, map, Observable, of, retry, tap } from 'rxjs';
 import { Evento } from '../model/evento.model';
 import { environment } from '../../environments/environment';
 
@@ -25,17 +25,17 @@ export class EventosService {
   readonly eventos = this._eventos.asReadonly();
   readonly loading = signal(false);
 
-  loadEventos(): void {
-    if (this._loaded) return;
+  loadEventos(): Observable<Evento[]> {
+    if (this._loaded) return of(this._eventos());
     this._loaded = true;
     this.loading.set(true);
-    this.http.get<CalendarEventResponse[]>(this.base).pipe(
+    return this.http.get<CalendarEventResponse[]>(this.base).pipe(
       retry({ count: 3, delay: 1500 }),
       tap(data => this._eventos.set(data.map(e => this.mapToEvento(e)))),
-      finalize(() => this.loading.set(false))
-    ).subscribe({
-      error: () => { this._loaded = false; }
-    });
+      finalize(() => this.loading.set(false)),
+      map(() => this._eventos()),
+      catchError(() => { this._loaded = false; return of([]); })
+    );
   }
 
   addEvento(evento: Omit<Evento, 'id'>): void {
@@ -56,6 +56,26 @@ export class EventosService {
       },
       error: () => {
         this._eventos.update(evs => evs.filter(e => e.id !== tempId));
+      }
+    });
+  }
+
+  updateEvento(id: string, data: Omit<Evento, 'id'>): void {
+    this._eventos.update(evs => evs.map(e => e.id === id ? { id, ...data } : e));
+
+    const dto = {
+      title: data.titulo,
+      date: this.buildISODate(data.fecha, data.hora),
+      notes: data.descripcion,
+    };
+
+    this.http.put<CalendarEventResponse>(`${this.base}/${id}`, dto).subscribe({
+      next: updated => {
+        this._eventos.update(evs => evs.map(e => e.id === id ? this.mapToEvento(updated) : e));
+      },
+      error: () => {
+        this._loaded = false;
+        this.loadEventos();
       }
     });
   }

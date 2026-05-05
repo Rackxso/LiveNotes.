@@ -3,7 +3,7 @@
   <div class="modal" (click)="$event.stopPropagation()">
 
     <div class="modal-header">
-      <h2>{{ t()('modal.newEvent') }}</h2>
+      <h2>{{ esEdicion ? t()('modal.editEvent') : t()('modal.newEvent') }}</h2>
       <button class="close-btn" (click)="onCerrar()">✕</button>
     </div>
 

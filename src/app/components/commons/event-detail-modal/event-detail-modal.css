@@ -37,18 +37,27 @@
   font-size: 15px;
 }
 
+.header-actions {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.action-btn,
 .close-btn {
   background: none;
   border: none;
   cursor: pointer;
   font-size: 16px;
   color: var(--text-subcolor);
-  padding: 4px;
+  padding: 6px;
   line-height: 1;
-  transition: color 0.15s;
+  border-radius: 6px;
+  transition: color 0.15s, background 0.15s;
 
   &:hover {
     color: var(--text-color);
+    background: color-mix(in srgb, var(--text-color) 8%, transparent);
   }
 }
 

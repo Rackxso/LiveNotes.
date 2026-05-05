@@ -17,8 +17,10 @@ export class AddEventModal {
   readonly t = this.i18n.t;
 
   readonly fechaInicial = input<Date | null>(null);
+  readonly eventoEditar = input<Evento | null>(null);
   readonly cerrar = output<void>();
   readonly guardar = output<Omit<Evento, 'id'>>();
+  readonly actualizar = output<Evento>();
 
   titulo = '';
   descripcion = '';
@@ -26,10 +28,20 @@ export class AddEventModal {
   hora = '';
 
   ngOnInit(): void {
-    const f = this.fechaInicial();
-    if (f) {
-      this.fecha = this.dateToInputValue(f);
+    const ev = this.eventoEditar();
+    if (ev) {
+      this.titulo = ev.titulo;
+      this.descripcion = ev.descripcion ?? '';
+      this.fecha = this.dateToInputValue(ev.fecha);
+      this.hora = ev.hora ?? '';
+    } else {
+      const f = this.fechaInicial();
+      if (f) this.fecha = this.dateToInputValue(f);
     }
+  }
+
+  get esEdicion(): boolean {
+    return this.eventoEditar() !== null;
   }
 
   private dateToInputValue(d: Date): string {
@@ -42,12 +54,19 @@ export class AddEventModal {
   onGuardar(): void {
     if (!this.titulo.trim() || !this.fecha) return;
     const [yyyy, mm, dd] = this.fecha.split('-').map(Number);
-    this.guardar.emit({
+    const data: Omit<Evento, 'id'> = {
       titulo: this.titulo.trim(),
       descripcion: this.descripcion.trim() || undefined,
       fecha: new Date(yyyy, mm - 1, dd),
       hora: this.hora || undefined,
-    });
+    };
+
+    const ev = this.eventoEditar();
+    if (ev) {
+      this.actualizar.emit({ id: ev.id, ...data });
+    } else {
+      this.guardar.emit(data);
+    }
     this.onCerrar();
   }
 

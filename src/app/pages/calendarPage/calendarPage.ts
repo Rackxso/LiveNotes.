@@ -168,8 +168,15 @@ export class CalendarPage {
   public fechaModal = signal<Date | null>(null);
 
   readonly eventoSeleccionado = signal<Evento | null>(null);
+  readonly eventoParaEditar = signal<Evento | null>(null);
+
   abrirDetalleEvento(ev: Evento): void { this.eventoSeleccionado.set(ev); }
   cerrarDetalleEvento(): void { this.eventoSeleccionado.set(null); }
+
+  abrirEdicionEvento(ev: Evento): void {
+    this.eventoSeleccionado.set(null);
+    this.eventoParaEditar.set(ev);
+  }
 
   abrirModalHeader(): void {
     this.fechaModal.set(null);
@@ -183,10 +190,16 @@ export class CalendarPage {
 
   cerrarModal(): void {
     this.modalAbierto.set(false);
+    this.eventoParaEditar.set(null);
   }
 
   onGuardarEvento(evento: Omit<Evento, 'id'>): void {
     this.eventosService.addEvento(evento);
+    this.cerrarModal();
+  }
+
+  onActualizarEvento(evento: Evento): void {
+    this.eventosService.updateEvento(evento.id, evento);
     this.cerrarModal();
   }
 

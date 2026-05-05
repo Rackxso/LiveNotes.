@@ -1,7 +1,10 @@
+import { inject } from '@angular/core';
 import { Routes } from '@angular/router';
 import { authGuard } from './guards/auth.guard';
 import { loggedInGuard } from './guards/logged-in.guard';
 import { adminGuard } from './guards/admin.guard';
+import { EventosService } from './services/eventos.service';
+import { FinanceService } from './services/finance.service';
 
 export const routes: Routes = [
     {
@@ -30,22 +33,30 @@ export const routes: Routes = [
     {
         path: '',
         canActivate: [authGuard],
-        loadComponent: () => import('./pages/home/home').then(m => m.Home)
+        loadComponent: () => import('./pages/home/home').then(m => m.Home),
+        resolve: {
+            eventos: () => inject(EventosService).loadEventos(),
+            transactions: () => inject(FinanceService).loadTransactions(),
+            goals: () => inject(FinanceService).loadSavingsGoals(),
+        }
     },
     {
         path: 'calendar/month',
         canActivate: [authGuard],
-        loadComponent: () => import('./pages/calendarPage/calendarPage').then(m => m.CalendarPage)
+        loadComponent: () => import('./pages/calendarPage/calendarPage').then(m => m.CalendarPage),
+        resolve: { eventos: () => inject(EventosService).loadEventos() }
     },
     {
         path: 'calendar/week',
         canActivate: [authGuard],
-        loadComponent: () => import('./pages/calendarPage/calendarPage').then(m => m.CalendarPage)
+        loadComponent: () => import('./pages/calendarPage/calendarPage').then(m => m.CalendarPage),
+        resolve: { eventos: () => inject(EventosService).loadEventos() }
     },
     {
         path: 'calendar/day',
         canActivate: [authGuard],
-        loadComponent: () => import('./pages/calendarPage/calendarPage').then(m => m.CalendarPage)
+        loadComponent: () => import('./pages/calendarPage/calendarPage').then(m => m.CalendarPage),
+        resolve: { eventos: () => inject(EventosService).loadEventos() }
     },
     {
         path: 'notes',

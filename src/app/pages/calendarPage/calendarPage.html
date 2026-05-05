@@ -60,16 +60,20 @@
   </div>
 </div>
 
-@if(modalAbierto()){
+@if (modalAbierto() || eventoParaEditar()) {
   <app-add-event-modal
     [fechaInicial]="fechaModal()"
+    [eventoEditar]="eventoParaEditar()"
     (cerrar)="cerrarModal()"
-    (guardar)="onGuardarEvento($event)"/>
+    (guardar)="onGuardarEvento($event)"
+    (actualizar)="onActualizarEvento($event)" />
 }
 
 @if (eventoSeleccionado(); as ev) {
   <app-event-detail-modal
     [evento]="ev"
     [mostrarEnlaceCalendario]="false"
-    (cerrar)="cerrarDetalleEvento()" />
+    [mostrarBotonEditar]="true"
+    (cerrar)="cerrarDetalleEvento()"
+    (editar)="abrirEdicionEvento(ev)" />
 }

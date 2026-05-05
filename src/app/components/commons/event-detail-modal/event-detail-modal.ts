@@ -15,7 +15,9 @@ export class EventDetailModal {
 
   readonly evento = input.required<Evento>();
   readonly mostrarEnlaceCalendario = input(true);
+  readonly mostrarBotonEditar = input(false);
   readonly cerrar = output<void>();
+  readonly editar = output<void>();
 
   get fechaFormateada(): string {
     const f = this.evento().fecha;
@@ -26,5 +28,9 @@ export class EventDetailModal {
 
   onCerrar(): void {
     this.cerrar.emit();
+  }
+
+  onEditar(): void {
+    this.editar.emit();
   }
 }

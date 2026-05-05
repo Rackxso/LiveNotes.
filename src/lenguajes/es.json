@@ -23,6 +23,7 @@
   },
   "modal": {
     "newEvent": "Nuevo evento",
+    "editEvent": "Editar evento",
     "title": "Título",
     "titlePlaceholder": "Añadir título",
     "date": "Fecha",
