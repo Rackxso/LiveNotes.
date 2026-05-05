@@ -28,6 +28,22 @@
       <textarea [(ngModel)]="descripcion" [placeholder]="t()('modal.descriptionPlaceholder')"></textarea>
     </div>
 
+    <div class="field">
+      <label>{{ t()('modal.recurrence.label') }}</label>
+      <select [(ngModel)]="recurrenceType">
+        @for (opt of recurrenceOptions; track opt.value) {
+          <option [value]="opt.value">{{ t()(opt.labelKey) }}</option>
+        }
+      </select>
+    </div>
+
+    @if (recurrenceType !== 'none') {
+      <div class="field">
+        <label>{{ t()('modal.recurrence.endDate') }}</label>
+        <input type="date" [(ngModel)]="recurrenceEnd" />
+      </div>
+    }
+
     <div class="modal-footer">
       <app-secondary-button class="small" [config]="{texto: t()('modal.cancel')}" (clicked)="onCerrar()" />
       <app-primary-button class="small" [config]="{texto: t()('modal.saveEvent')}" (clicked)="onGuardar()" />

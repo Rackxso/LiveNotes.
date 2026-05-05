@@ -1,6 +1,6 @@
 import { ChangeDetectionStrategy, Component, inject, input, output } from '@angular/core';
 import { FormsModule } from '@angular/forms';
-import { Evento } from '../../../model/evento.model';
+import { Evento, RecurrenceType } from '../../../model/evento.model';
 import { I18nService } from '../../../services/i18n.service';
 import { PrimaryButton } from '../primary-button/primary-button';
 import { SecondaryButton } from '../secondary-button/secondary-button';
@@ -26,6 +26,15 @@ export class AddEventModal {
   descripcion = '';
   fecha = '';
   hora = '';
+  recurrenceType: RecurrenceType = 'none';
+  recurrenceEnd = '';
+
+  readonly recurrenceOptions: { value: RecurrenceType; labelKey: string }[] = [
+    { value: 'none',    labelKey: 'modal.recurrence.none' },
+    { value: 'daily',   labelKey: 'modal.recurrence.daily' },
+    { value: 'weekly',  labelKey: 'modal.recurrence.weekly' },
+    { value: 'monthly', labelKey: 'modal.recurrence.monthly' },
+  ];
 
   ngOnInit(): void {
     const ev = this.eventoEditar();
@@ -34,6 +43,8 @@ export class AddEventModal {
       this.descripcion = ev.descripcion ?? '';
       this.fecha = this.dateToInputValue(ev.fecha);
       this.hora = ev.hora ?? '';
+      this.recurrenceType = ev.recurrenceType ?? 'none';
+      this.recurrenceEnd = ev.recurrenceEnd ? this.dateToInputValue(ev.recurrenceEnd) : '';
     } else {
       const f = this.fechaInicial();
       if (f) this.fecha = this.dateToInputValue(f);
@@ -59,6 +70,10 @@ export class AddEventModal {
       descripcion: this.descripcion.trim() || undefined,
       fecha: new Date(yyyy, mm - 1, dd),
       hora: this.hora || undefined,
+      recurrenceType: this.recurrenceType,
+      recurrenceEnd: this.recurrenceType !== 'none' && this.recurrenceEnd
+        ? new Date(this.recurrenceEnd)
+        : undefined,
     };
 
     const ev = this.eventoEditar();
@@ -75,6 +90,8 @@ export class AddEventModal {
     this.descripcion = '';
     this.fecha = '';
     this.hora = '';
+    this.recurrenceType = 'none';
+    this.recurrenceEnd = '';
     this.cerrar.emit();
   }
 }

@@ -31,7 +31,15 @@
     "description": "Descripción",
     "descriptionPlaceholder": "Añadir descripción (opcional)",
     "cancel": "Cancelar",
-    "saveEvent": "Guardar evento"
+    "saveEvent": "Guardar evento",
+    "recurrence": {
+      "label": "Repetición",
+      "none": "No se repite",
+      "daily": "Todos los días",
+      "weekly": "Semanalmente",
+      "monthly": "Mensualmente",
+      "endDate": "Repetir hasta (opcional)"
+    }
   },
   "eventos": {
     "thisDay": "Eventos de hoy",

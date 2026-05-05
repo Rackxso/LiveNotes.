@@ -1,7 +1,7 @@
 import { inject, Injectable, signal } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { catchError, finalize, map, Observable, of, retry, tap } from 'rxjs';
-import { Evento } from '../model/evento.model';
+import { Evento, RecurrenceType } from '../model/evento.model';
 import { environment } from '../../environments/environment';
 
 interface CalendarEventResponse {
@@ -13,6 +13,8 @@ interface CalendarEventResponse {
   location?: string;
   allDay?: boolean;
   color?: string;
+  recurrenceType?: RecurrenceType;
+  recurrenceEnd?: string;
 }
 
 @Injectable({ providedIn: 'root' })
@@ -46,6 +48,8 @@ export class EventosService {
       title: evento.titulo,
       date: this.buildISODate(evento.fecha, evento.hora),
       notes: evento.descripcion,
+      recurrenceType: evento.recurrenceType ?? 'none',
+      recurrenceEnd: evento.recurrenceEnd?.toISOString() ?? null,
     };
 
     this.http.post<CalendarEventResponse>(this.base, dto).subscribe({
@@ -67,6 +71,8 @@ export class EventosService {
       title: data.titulo,
       date: this.buildISODate(data.fecha, data.hora),
       notes: data.descripcion,
+      recurrenceType: data.recurrenceType ?? 'none',
+      recurrenceEnd: data.recurrenceEnd?.toISOString() ?? null,
     };
 
     this.http.put<CalendarEventResponse>(`${this.base}/${id}`, dto).subscribe({
@@ -99,6 +105,8 @@ export class EventosService {
       descripcion: e.notes,
       fecha,
       hora,
+      recurrenceType: e.recurrenceType ?? 'none',
+      recurrenceEnd: e.recurrenceEnd ? new Date(e.recurrenceEnd) : undefined,
     };
   }
 
