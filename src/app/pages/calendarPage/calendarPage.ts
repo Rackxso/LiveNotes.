@@ -1,4 +1,4 @@
-import { Component, computed, inject, signal } from '@angular/core';
+import { Component, computed, effect, inject, signal } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Header } from '../../components/header/header';
 import { MonthView } from '../../components/month-view/month-view';
@@ -10,6 +10,7 @@ import { Evento } from '../../model/evento.model';
 import { AddEventModal } from '../../components/commons/add-event-modal/add-event-modal';
 import { EventDetailModal } from '../../components/commons/event-detail-modal/event-detail-modal';
 import { I18nService } from '../../services/i18n.service';
+import { TourService } from '../../services/tour.service';
 
 @Component({
   selector: 'app-calendar-page',
@@ -22,6 +23,7 @@ export class CalendarPage {
   private readonly route = inject(ActivatedRoute);
   private readonly router = inject(Router);
   private readonly i18n = inject(I18nService);
+  private readonly tourService = inject(TourService);
   readonly t = this.i18n.t;
 
   // Clave interna de vista (invariante al idioma, usada para routing)
@@ -58,6 +60,12 @@ export class CalendarPage {
       const view = lastIndex >= 0 ? segments[lastIndex].path : undefined;
       this.vistaActual.set(this.urlViewToKey(view));
     });
+    effect(() => {
+      const stepId = this.tourService.currentStepId();
+      if (stepId === 'calendar-sheet' || stepId === 'calendar-eventos') {
+        this.bottomSheetAbierto.set(true);
+      }
+    }, { allowSignalWrites: true });
   }
 
   private urlViewToKey(view: string | undefined): string {

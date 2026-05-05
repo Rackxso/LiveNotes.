@@ -11,9 +11,10 @@ export class TourService {
   private readonly router = inject(Router);
   private readonly i18n   = inject(I18nService);
 
-  readonly tourActive        = signal(false);
-  readonly currentTourId     = signal<TourId | null>(null);
+  readonly tourActive         = signal(false);
+  readonly currentTourId      = signal<TourId | null>(null);
   readonly globalSegmentIndex = signal(0);
+  readonly currentStepId      = signal<string | null>(null);
 
   private driverInstance: Driver | null = null;
   private pendingSegments: TourSegment[] = [];
@@ -70,6 +71,9 @@ export class TourService {
         description: t(s.popover.descriptionKey),
         side: s.popover.side,
       },
+      ...(s.stepId && {
+        onHighlightStarted: () => this.currentStepId.set(s.stepId!),
+      }),
     }));
 
     this.driverInstance = driver({
@@ -111,6 +115,7 @@ export class TourService {
     if (id) this.markCompleted(id);
     this.tourActive.set(false);
     this.currentTourId.set(null);
+    this.currentStepId.set(null);
     this.globalSegmentIndex.set(0);
     this.pendingSegments = [];
     this.pendingSegmentIndex = 0;
