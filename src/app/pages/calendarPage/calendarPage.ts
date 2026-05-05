@@ -48,10 +48,7 @@ export class CalendarPage {
     return this.t()(map[this.vistaActual()] ?? 'calendar.views.month');
   });
 
-  public primaryButton = computed(() => ({ texto: this.t()('calendar.addEvent'), url: '#' }));
-  public secondaryButton = computed(() => ({ texto: this.t()('calendar.today'), url: 'calendar' }));
   public nombreVista = computed(() => this.t()('calendar.pageTitle'));
-  public buttons = signal<boolean>(true);
 
   constructor() {
     this.eventosService.loadEventos();
@@ -186,11 +183,6 @@ export class CalendarPage {
     this.eventoParaEditar.set(ev);
   }
 
-  abrirModalHeader(): void {
-    this.fechaModal.set(null);
-    this.modalAbierto.set(true);
-  }
-
   abrirModalDia(): void {
     this.fechaModal.set(this.diaSeleccionado());
     this.modalAbierto.set(true);
@@ -209,10 +201,6 @@ export class CalendarPage {
   onActualizarEvento(evento: Evento): void {
     this.eventosService.updateEvento(evento.id, evento);
     this.cerrarModal();
-  }
-
-  onPrimaryClicked(): void {
-    this.abrirModalHeader();
   }
 
   onDiaSeleccionado(fecha: Date): void {

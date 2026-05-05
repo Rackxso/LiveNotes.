@@ -3,11 +3,7 @@
   [vistaActiva]="vistaActivaTraducida()"
   [iconosList]="vistasIconos"
   [name]="nombreVista()"
-  [primaryButton]="primaryButton()"
-  [secondaryButton]="secondaryButton()"
-  (vistaSeleccionada)="onVistaSeleccionada($event)"
-  (primaryClicked)="onPrimaryClicked()"
-  [buttons]="true">
+  (vistaSeleccionada)="onVistaSeleccionada($event)">
 </app-header>
 
 <div class="cuerpo" [class.sin-sheet]="vistaActual() !== 'Month'">

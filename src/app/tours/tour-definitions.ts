@@ -35,9 +35,8 @@ export const TOUR_DEFINITIONS: Record<TourId, TourSegment[]> = {
         { element: 'app-month-view',     popover: { titleKey: 'tour.calendar.monthTitle',   descriptionKey: 'tour.calendar.monthDesc',   side: 'bottom' } },
         { element: '.mes',               popover: { titleKey: 'tour.calendar.navTitle',     descriptionKey: 'tour.calendar.navDesc',     side: 'bottom' } },
         { element: '.dias',              popover: { titleKey: 'tour.calendar.daysTitle',    descriptionKey: 'tour.calendar.daysDesc',    side: 'top'    } },
-        { element: '.sheet-handle',      stepId: 'calendar-sheet',   popover: { titleKey: 'tour.calendar.sheetTitle',   descriptionKey: 'tour.calendar.sheetDesc',   side: 'top'    } },
         { element: 'app-eventos',        stepId: 'calendar-eventos', popover: { titleKey: 'tour.calendar.eventosTitle', descriptionKey: 'tour.calendar.eventosDesc', side: 'top'    } },
-        { element: 'app-primary-button', popover: { titleKey: 'tour.calendar.addBtnTitle', descriptionKey: 'tour.calendar.addBtnDesc', side: 'bottom' } },
+        { element: 'addBlank', popover: { titleKey: 'tour.calendar.addBtnTitle', descriptionKey: 'tour.calendar.addBtnDesc', side: 'top' } },
       ],
     },
     {
