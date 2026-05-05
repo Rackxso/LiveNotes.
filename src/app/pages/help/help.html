@@ -27,9 +27,6 @@
             <div class="tour-card-body">
               <div class="tour-card-top">
                 <span class="tour-card-label">{{ t()(tourMeta[id].labelKey) }}</span>
-                @if (tourService.isCompleted(id)) {
-                  <span class="tour-badge-done">Completado</span>
-                }
               </div>
               <p class="tour-card-desc">{{ t()(tourMeta[id].metaKey) }}</p>
             </div>
