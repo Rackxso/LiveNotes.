@@ -74,8 +74,8 @@ export const TOUR_DEFINITIONS: Record<TourId, TourSegment[]> = {
       route: '/finance/overview',
       steps: [
         { element: '.money-cards',       popover: { titleKey: 'tour.finance.cardsTitle',     descriptionKey: 'tour.finance.cardsDesc',     side: 'bottom' } },
-        { element: '.spending-insight',  popover: { titleKey: 'tour.finance.insightTitle',   descriptionKey: 'tour.finance.insightDesc',   side: 'top'    } },
-        { element: '.bar-chart',         popover: { titleKey: 'tour.finance.chartTitle',     descriptionKey: 'tour.finance.chartDesc',     side: 'left'   } },
+        { element: '#budgetTracker',  popover: { titleKey: 'tour.finance.insightTitle',   descriptionKey: 'tour.finance.insightDesc',   side: 'top'    } },
+        { element: '#barchart',         popover: { titleKey: 'tour.finance.chartTitle',     descriptionKey: 'tour.finance.chartDesc',     side: 'left'   } },
         { element: '.section-card',      popover: { titleKey: 'tour.finance.recentTitle',    descriptionKey: 'tour.finance.recentDesc',    side: 'top'    } },
       ],
     },

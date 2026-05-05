@@ -26,7 +26,7 @@
       variant="blue" />
   </div>
 
-  <div class="section-card">
+  <div class="section-card" id="budgetTracker">
     <app-goal-progress />
   </div>
 
@@ -58,7 +58,7 @@
 <!-- Right panel -->
 <div class="side-col">
   <!-- Past months grouped bar chart -->
-  <div class="side-card">
+  <div class="side-card" id="barchart">
     <h3 class="side-title">{{ t()('finance.pastMonths') }}</h3>
     <div class="bar-chart" role="img" [attr.aria-label]="t()('finance.pastMonths')">
       @for (stat of monthlyStats(); track stat.month) {
