@@ -108,3 +108,93 @@ router-outlet + * {
         }
     }
 }
+
+/* ── Driver.js tour overrides ─────────────────────────────────────── */
+.driver-overlay {
+    background: color-mix(in srgb, var(--text-color) 55%, transparent);
+}
+
+.driver-popover {
+    background-color: var(--background-color);
+    border: 1px solid var(--primary-subcolor);
+    border-radius: 12px;
+    box-shadow: 0 8px 24px color-mix(in srgb, var(--accent-color) 20%, transparent);
+    padding: 20px;
+    min-width: 260px;
+    max-width: 340px;
+}
+
+.driver-popover-title {
+    font-family: var(--fuente-titulo);
+    font-size: 1.1rem;
+    color: var(--text-color);
+    margin-bottom: 6px;
+}
+
+.driver-popover-description {
+    font-family: var(--fuente-texto);
+    font-size: 0.875rem;
+    color: var(--text-subcolor);
+    line-height: 1.5;
+}
+
+.driver-popover-footer {
+    margin-top: 16px;
+    gap: 8px;
+}
+
+.driver-popover-progress-text {
+    font-family: var(--fuente-texto);
+    font-size: 0.75rem;
+    color: var(--text-subcolor);
+}
+
+.driver-popover-navigation-btns button {
+    font-family: var(--fuente-texto);
+    font-size: 0.8rem;
+    border-radius: 8px;
+    padding: 6px 14px;
+    border: none;
+    cursor: pointer;
+    transition: opacity 0.15s;
+
+    &:hover { opacity: 0.85; }
+    &:active { opacity: 0.7; }
+}
+
+#driver-popover-next-btn {
+    background: var(--primary-color);
+    color: var(--background-color);
+    box-shadow: var(--shadow-button);
+}
+
+#driver-popover-prev-btn {
+    background: var(--secondary-background-color);
+    color: var(--text-color);
+}
+
+#driver-popover-close-btn {
+    color: var(--text-subcolor);
+    font-size: 1rem;
+
+    &:hover { color: var(--text-color); }
+}
+
+.driver-popover-arrow {
+    &::after {
+        border-color: var(--primary-subcolor) transparent transparent transparent;
+    }
+}
+.driver-popover-arrow-side-bottom::after { border-color: transparent transparent var(--primary-subcolor) transparent; }
+.driver-popover-arrow-side-left::after   { border-color: transparent transparent transparent var(--primary-subcolor); }
+.driver-popover-arrow-side-right::after  { border-color: transparent var(--primary-subcolor) transparent transparent; }
+
+.dark-theme {
+    .driver-popover {
+        background-color: var(--secondary-background-color);
+        border-color: var(--accent-subcolor);
+    }
+    #driver-popover-prev-btn {
+        background: var(--background-subcolor);
+    }
+}

@@ -3,7 +3,6 @@ import { Router, RouterLink, RouterLinkActive } from '@angular/router';
 import { I18nService } from '../../../services/i18n.service';
 import { AuthService } from '../../../services/auth.service';
 import { AdminService } from '../../../services/admin.service';
-import { TourService } from '../../../services/tour.service';
 
 export interface NavItem {
   label: string;
@@ -25,7 +24,6 @@ export class SidebarComponent {
   readonly auth           = inject(AuthService);
   readonly adminService   = inject(AdminService);
   private readonly router = inject(Router);
-  readonly tourService    = inject(TourService);
   readonly t = this.i18n.t;
 
   readonly expanded     = signal(false);
@@ -44,16 +42,6 @@ export class SidebarComponent {
       error: () => this.router.navigate(['/login']),
     });
     this.userMenuOpen.set(false);
-  }
-
-  startActiveTour(): void {
-    const url = this.router.url.split('?')[0];
-    if (url === '/')                              { this.tourService.startTour('home');     return; }
-    if (url.startsWith('/calendar'))             { this.tourService.startTour('calendar'); return; }
-    if (url.startsWith('/notes'))                { this.tourService.startTour('notes');    return; }
-    if (url.startsWith('/finance'))              { this.tourService.startTour('finance');  return; }
-    if (url.startsWith('/tracker'))              { this.tourService.startTour('tracker');  return; }
-    this.tourService.startGlobalTour();
   }
 
   readonly mainNav = computed<NavItem[]>(() => [

@@ -2,12 +2,14 @@ import { Injectable, inject, signal } from '@angular/core';
 import { NavigationEnd, Router } from '@angular/router';
 import { filter } from 'rxjs';
 import { driver } from 'driver.js';
-import type { Driver } from 'driver.js';
+import type { Driver, DriveStep } from 'driver.js';
 import { TOUR_DEFINITIONS, type TourId, type TourSegment } from '../tours/tour-definitions';
+import { I18nService } from './i18n.service';
 
 @Injectable({ providedIn: 'root' })
 export class TourService {
   private readonly router = inject(Router);
+  private readonly i18n   = inject(I18nService);
 
   readonly tourActive        = signal(false);
   readonly currentTourId     = signal<TourId | null>(null);
@@ -60,14 +62,24 @@ export class TourService {
 
     this.destroyDriver();
 
+    const t = this.i18n.t();
+    const steps: DriveStep[] = segment.steps.map(s => ({
+      element: s.element,
+      popover: {
+        title: t(s.popover.titleKey),
+        description: t(s.popover.descriptionKey),
+        side: s.popover.side,
+      },
+    }));
+
     this.driverInstance = driver({
       animate: true,
       showProgress: true,
       showButtons: ['next', 'previous', 'close'],
-      nextBtnText: 'Siguiente',
-      prevBtnText: 'Anterior',
-      doneBtnText: 'Listo',
-      steps: segment.steps,
+      nextBtnText: t('tour.next'),
+      prevBtnText: t('tour.prev'),
+      doneBtnText: t('tour.done'),
+      steps,
       onDestroyStarted: () => {
         this.driverInstance?.destroy();
         this.onSegmentDone();

@@ -385,16 +385,13 @@
   gap: 0;
   padding: 8px 10px;
   border-radius: 10px;
-  cursor: pointer;
+  cursor: default;
+  pointer-events: none;
   white-space: nowrap;
   background: transparent;
   border: none;
   color: inherit;
   transition: background 0.2s, justify-content 0s;
-
-  &:hover {
-    background: color-mix(in srgb, var(--text-color) 10%, transparent);
-  }
 
   &:focus-visible {
     outline: 2px solid var(--background-color);
@@ -520,6 +517,12 @@
   .user-card {
     width: auto;
     padding: 6px;
+    cursor: pointer;
+    pointer-events: auto;
+
+    &:hover {
+      background: color-mix(in srgb, var(--text-color) 10%, transparent);
+    }
   }
 
   .user-info {

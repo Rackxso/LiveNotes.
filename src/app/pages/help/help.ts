@@ -4,6 +4,7 @@ import { DatePipe } from '@angular/common';
 import { TicketService, Ticket } from '../../services/ticket.service';
 import { TourService } from '../../services/tour.service';
 import { TOUR_META, type TourId } from '../../tours/tour-definitions';
+import { I18nService } from '../../services/i18n.service';
 
 @Component({
   selector: 'app-help',
@@ -16,7 +17,9 @@ export class Help {
   private readonly fb            = inject(FormBuilder);
   private readonly ticketService = inject(TicketService);
   readonly tourService           = inject(TourService);
+  private readonly i18n          = inject(I18nService);
 
+  readonly t = this.i18n.t;
   readonly tourIds: TourId[] = ['home', 'calendar', 'notes', 'finance', 'tracker', 'global'];
   readonly tourMeta = TOUR_META;
 
