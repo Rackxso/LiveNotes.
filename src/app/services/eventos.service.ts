@@ -1,6 +1,6 @@
 import { inject, Injectable, signal } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { catchError, finalize, map, Observable, of, retry, tap } from 'rxjs';
+import { catchError, finalize, map, Observable, of, retry, shareReplay, tap } from 'rxjs';
 import { Evento, RecurrenceType } from '../model/evento.model';
 import { environment } from '../../environments/environment';
 
@@ -24,20 +24,30 @@ export class EventosService {
 
   private readonly _eventos = signal<Evento[]>([]);
   private _loaded = false;
+  private _inflight$: Observable<Evento[]> | null = null;
   readonly eventos = this._eventos.asReadonly();
   readonly loading = signal(false);
 
   loadEventos(): Observable<Evento[]> {
     if (this._loaded) return of(this._eventos());
-    this._loaded = true;
+    if (this._inflight$) return this._inflight$;
+
     this.loading.set(true);
-    return this.http.get<CalendarEventResponse[]>(this.base).pipe(
+    this._inflight$ = this.http.get<CalendarEventResponse[]>(this.base).pipe(
       retry({ count: 3, delay: 1500 }),
-      tap(data => this._eventos.set(data.map(e => this.mapToEvento(e)))),
-      finalize(() => this.loading.set(false)),
+      tap(data => {
+        this._eventos.set(data.map(e => this.mapToEvento(e)));
+        this._loaded = true;
+      }),
+      finalize(() => {
+        this.loading.set(false);
+        this._inflight$ = null;
+      }),
       map(() => this._eventos()),
-      catchError(() => { this._loaded = false; return of([]); })
+      catchError(() => { this._loaded = false; return of([]); }),
+      shareReplay(1),
     );
+    return this._inflight$;
   }
 
   addEvento(evento: Omit<Evento, 'id'>): void {

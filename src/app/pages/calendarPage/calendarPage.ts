@@ -51,7 +51,6 @@ export class CalendarPage {
   public nombreVista = computed(() => this.t()('calendar.pageTitle'));
 
   constructor() {
-    this.eventosService.loadEventos();
     this.route.url.subscribe(segments => {
       const lastIndex = segments.length - 1;
       const view = lastIndex >= 0 ? segments[lastIndex].path : undefined;
