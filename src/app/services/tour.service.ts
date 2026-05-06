@@ -1,4 +1,4 @@
-import { Injectable, effect, inject, signal } from '@angular/core';
+import { Injectable, effect, inject, signal, untracked } from '@angular/core';
 import { NavigationEnd, Router } from '@angular/router';
 import { HttpClient } from '@angular/common/http';
 import { filter } from 'rxjs';
@@ -30,6 +30,9 @@ export class TourService {
   private pendingSegmentIndex = 0;
   private isGlobal = false;
 
+  private readonly _toursLoaded = signal(false);
+  private _pendingTourCheck = false;
+
   constructor() {
     this.router.events
       .pipe(filter(e => e instanceof NavigationEnd))
@@ -44,6 +47,18 @@ export class TourService {
         this.loadCompletedTours();
       } else {
         this._completedTours.set(new Set());
+        this._toursLoaded.set(false);
+      }
+    });
+
+    // Deferred check: when tours finish loading, fire any pending auto-show check
+    effect(() => {
+      if (!this._toursLoaded()) return;
+      if (!this._pendingTourCheck) return;
+      this._pendingTourCheck = false;
+      if (!untracked(() => this._completedTours().has('global_seen'))) {
+        this.markGlobalSeen();
+        setTimeout(() => this.startGlobalTour(), 500);
       }
     });
   }
@@ -52,7 +67,10 @@ export class TourService {
     const email = this.authService.user()?.email;
     if (!email) return;
     this.http.get<{ completedTours: string[] }>(`${this.base}/${email}/tours`)
-      .subscribe(data => this._completedTours.set(new Set(data.completedTours)));
+      .subscribe(data => {
+        this._completedTours.set(new Set(data.completedTours));
+        this._toursLoaded.set(true);
+      });
   }
 
   startTour(tourId: TourId): void {
@@ -176,9 +194,20 @@ export class TourService {
   }
 
   startTourIfNewUser(): void {
-    const key = 'tour_new_user';
-    if (localStorage.getItem(key)) return;
-    localStorage.setItem(key, 'true');
+    if (!this._toursLoaded()) {
+      this._pendingTourCheck = true;
+      return;
+    }
+    if (this._completedTours().has('global_seen')) return;
+    this.markGlobalSeen();
     setTimeout(() => this.startGlobalTour(), 500);
+  }
+
+  private markGlobalSeen(): void {
+    this._completedTours.update(s => new Set([...s, 'global_seen']));
+    const email = this.authService.user()?.email;
+    if (email) {
+      this.http.patch(`${this.base}/${email}/tours/global_seen`, {}).subscribe();
+    }
   }
 }
