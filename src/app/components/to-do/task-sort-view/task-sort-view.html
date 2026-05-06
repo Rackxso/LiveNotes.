@@ -99,18 +99,33 @@
       </div>
 
       <div class="sort-footer">
-        <button class="algo-btn jumping-cat" (click)="runJumpingCat()">
-          <i class="fa-solid fa-cat" aria-hidden="true"></i>
-          JumpingCat
-        </button>
-        <button class="algo-btn balanced-flow" (click)="runBalancedFlow()">
-          <i class="fa-solid fa-brain" aria-hidden="true"></i>
-          BalancedFlow
-        </button>
-        <button class="algo-btn pila-score" (click)="runPilaScore()">
-          <i class="fa-solid fa-medal" aria-hidden="true"></i>
-          PilaScore
-        </button>
+        <div class="algo-wrapper">
+          <button class="algo-btn jumping-cat" (click)="runJumpingCat()">
+            <i class="fa-solid fa-cat" aria-hidden="true"></i>
+            JumpingCat
+          </button>
+          <button class="info-btn" (click)="toggleInfo('jumpingCat', $event)" [class.info-active]="activeInfo() === 'jumpingCat'" aria-label="Información sobre JumpingCat">
+            <i class="fa-solid fa-circle-info" aria-hidden="true"></i>
+          </button>
+        </div>
+        <div class="algo-wrapper">
+          <button class="algo-btn balanced-flow" (click)="runBalancedFlow()">
+            <i class="fa-solid fa-brain" aria-hidden="true"></i>
+            BalancedFlow
+          </button>
+          <button class="info-btn" (click)="toggleInfo('balancedFlow', $event)" [class.info-active]="activeInfo() === 'balancedFlow'" aria-label="Información sobre BalancedFlow">
+            <i class="fa-solid fa-circle-info" aria-hidden="true"></i>
+          </button>
+        </div>
+        <div class="algo-wrapper">
+          <button class="algo-btn pila-score" (click)="runPilaScore()">
+            <i class="fa-solid fa-medal" aria-hidden="true"></i>
+            PilaScore
+          </button>
+          <button class="info-btn" (click)="toggleInfo('pilaScore', $event)" [class.info-active]="activeInfo() === 'pilaScore'" aria-label="Información sobre PilaScore">
+            <i class="fa-solid fa-circle-info" aria-hidden="true"></i>
+          </button>
+        </div>
       </div>
     }
 
@@ -141,6 +156,28 @@
           }
           {{ t()('todo.sort.apply') }}
         </button>
+      </div>
+    }
+
+    @if (activeInfo()) {
+      <div class="info-overlay" (click)="closeInfo()">
+        <div class="info-card" (click)="$event.stopPropagation()">
+          @if (activeInfo() === 'jumpingCat') {
+            <p class="info-name"><i class="fa-solid fa-cat" aria-hidden="true"></i> JumpingCat</p>
+            <p class="info-text">Alterna entre tareas de distintos niveles de importancia. Ideal para no saturarte con todo lo crítico de golpe.</p>
+          }
+          @if (activeInfo() === 'balancedFlow') {
+            <p class="info-name"><i class="fa-solid fa-brain" aria-hidden="true"></i> BalancedFlow</p>
+            <p class="info-text">Simula tu nivel de energía a lo largo del día: intercala tareas difíciles y fáciles para mantener un ritmo sostenible sin picos de agotamiento.</p>
+          }
+          @if (activeInfo() === 'pilaScore') {
+            <p class="info-name"><i class="fa-solid fa-medal" aria-hidden="true"></i> PilaScore</p>
+            <p class="info-text">Calcula una puntuación combinada de importancia y dificultad. Las tareas con mayor puntuación total van primero.</p>
+          }
+          <button class="info-close" (click)="closeInfo()" aria-label="Cerrar">
+            <i class="fa-solid fa-xmark" aria-hidden="true"></i>
+          </button>
+        </div>
       </div>
     }
 

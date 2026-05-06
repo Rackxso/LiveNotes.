@@ -64,7 +64,6 @@ export const TOUR_DEFINITIONS: Record<TourId, TourSegment[]> = {
         { element: '.tabs-row',            popover: { titleKey: 'tour.notes.listsTitle',          descriptionKey: 'tour.notes.listsDesc',          side: 'bottom' } },
         { element: '.quick-add',           popover: { titleKey: 'tour.notes.quickAddTitle',       descriptionKey: 'tour.notes.quickAddDesc',       side: 'top'    } },
         { element: '.tab-body',            popover: { titleKey: 'tour.notes.subItemTitle',        descriptionKey: 'tour.notes.subItemDesc',        side: 'top'    } },
-        { element: '.tab-sort-btn',        popover: { titleKey: 'tour.notes.smartSortTitle',      descriptionKey: 'tour.notes.smartSortDesc',      side: 'bottom' } },
       ],
     },
   ],
@@ -76,7 +75,7 @@ export const TOUR_DEFINITIONS: Record<TourId, TourSegment[]> = {
         { element: '.money-cards',       popover: { titleKey: 'tour.finance.cardsTitle',     descriptionKey: 'tour.finance.cardsDesc',     side: 'bottom' } },
         { element: '#budgetTracker',  popover: { titleKey: 'tour.finance.insightTitle',   descriptionKey: 'tour.finance.insightDesc',   side: 'top'    } },
         { element: '#barchart',         popover: { titleKey: 'tour.finance.chartTitle',     descriptionKey: 'tour.finance.chartDesc',     side: 'left'   } },
-        { element: '.section-card',      popover: { titleKey: 'tour.finance.recentTitle',    descriptionKey: 'tour.finance.recentDesc',    side: 'top'    } },
+        { element: '#transactions',      popover: { titleKey: 'tour.finance.recentTitle',    descriptionKey: 'tour.finance.recentDesc',    side: 'top'    } },
       ],
     },
     {

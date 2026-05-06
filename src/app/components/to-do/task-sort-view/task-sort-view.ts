@@ -51,6 +51,7 @@ export class TaskSortView implements OnInit {
 
   readonly draggedImpId = signal<string | null>(null);
   readonly draggedDifId = signal<string | null>(null);
+  readonly activeInfo = signal<'jumpingCat' | 'balancedFlow' | 'pilaScore' | null>(null);
 
   // Maps task _id → computed group value based on current position
   readonly impGroupMap = computed(() => {
@@ -239,6 +240,15 @@ export class TaskSortView implements OnInit {
         this.saving.set(false);
       },
     });
+  }
+
+  toggleInfo(algo: 'jumpingCat' | 'balancedFlow' | 'pilaScore', event: Event): void {
+    event.stopPropagation();
+    this.activeInfo.update(v => v === algo ? null : algo);
+  }
+
+  closeInfo(): void {
+    this.activeInfo.set(null);
   }
 
   backToSetup(): void {

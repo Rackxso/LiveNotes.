@@ -314,6 +314,110 @@
   background: var(--background-color);
 }
 
+.algo-wrapper {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  min-width: 0;
+}
+
+.algo-wrapper .algo-btn {
+  flex: 1;
+  min-width: 0;
+}
+
+@media (max-width: 520px) {
+  .sort-footer {
+    flex-direction: column;
+  }
+
+  .algo-wrapper {
+    flex: unset;
+    width: 100%;
+  }
+}
+
+/* ── Info button ─────────────────────────── */
+.info-btn {
+  flex-shrink: 0;
+  background: none;
+  border: none;
+  cursor: pointer;
+  color: var(--text-subcolor);
+  font-size: 13px;
+  padding: 6px;
+  border-radius: 6px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: color 0.15s, background 0.15s;
+
+  &:hover { color: var(--text-color); background: var(--background-subcolor); }
+  &:focus-visible { outline: 2px solid var(--accent-color); outline-offset: 2px; }
+  &.info-active { color: var(--accent-color); }
+}
+
+/* ── Info mini-modal ─────────────────────── */
+.info-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 1100;
+  background: color-mix(in srgb, var(--text-color) 25%, transparent);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 16px;
+}
+
+.info-card {
+  background: var(--background-color);
+  border: 1px solid var(--primary-subcolor);
+  border-radius: 12px;
+  padding: 1.1rem 1.25rem 1rem;
+  max-width: 300px;
+  width: 100%;
+  position: relative;
+  box-shadow: var(--shadow-button);
+}
+
+.info-name {
+  font-family: var(--fuente-texto);
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--text-color);
+  margin: 0 0 0.5rem;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.info-text {
+  font-family: var(--fuente-texto);
+  font-size: 12px;
+  color: var(--text-subcolor);
+  margin: 0;
+  line-height: 1.55;
+  padding-right: 1rem;
+}
+
+.info-close {
+  position: absolute;
+  top: 8px;
+  right: 8px;
+  background: none;
+  border: none;
+  cursor: pointer;
+  color: var(--text-subcolor);
+  font-size: 12px;
+  padding: 4px 6px;
+  border-radius: 6px;
+  transition: color 0.15s, background 0.15s;
+
+  &:hover { color: var(--text-color); background: var(--background-subcolor); }
+  &:focus-visible { outline: 2px solid var(--accent-color); outline-offset: 2px; }
+}
+
 .algo-btn {
   flex: 1;
   display: flex;
