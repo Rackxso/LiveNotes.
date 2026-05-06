@@ -18,6 +18,7 @@ export class EventDetailModal {
   readonly mostrarBotonEditar = input(false);
   readonly cerrar = output<void>();
   readonly editar = output<void>();
+  readonly eliminar = output<void>();
 
   get fechaFormateada(): string {
     const f = this.evento().fecha;
@@ -32,5 +33,9 @@ export class EventDetailModal {
 
   onEditar(): void {
     this.editar.emit();
+  }
+
+  onEliminar(): void {
+    this.eliminar.emit();
   }
 }

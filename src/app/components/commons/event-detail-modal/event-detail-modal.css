@@ -43,6 +43,15 @@
   gap: 4px;
 }
 
+.action-btn--danger {
+  color: var(--danger-color, #e74c3c) !important;
+
+  &:hover {
+    color: var(--danger-color, #e74c3c) !important;
+    background: color-mix(in srgb, var(--danger-color, #e74c3c) 12%, transparent) !important;
+  }
+}
+
 .action-btn,
 .close-btn {
   background: none;

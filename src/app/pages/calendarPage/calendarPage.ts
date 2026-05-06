@@ -177,6 +177,11 @@ export class CalendarPage {
   abrirDetalleEvento(ev: Evento): void { this.eventoSeleccionado.set(ev); }
   cerrarDetalleEvento(): void { this.eventoSeleccionado.set(null); }
 
+  eliminarEvento(ev: Evento): void {
+    this.eventosService.deleteEvento(ev.id);
+    this.eventoSeleccionado.set(null);
+  }
+
   abrirEdicionEvento(ev: Evento): void {
     this.eventoSeleccionado.set(null);
     this.eventoParaEditar.set(ev);

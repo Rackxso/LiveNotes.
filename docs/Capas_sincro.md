@@ -48,19 +48,33 @@ Esto implica que el loader desaparece solo cuando **todas** las peticiones han t
 
 ---
 
-### Capa 3 — Flags `_loaded` para evitar peticiones duplicadas
+### Capa 3 — Flags `_loaded` + observable en vuelo para evitar peticiones duplicadas
 
-Cada servicio guarda un flag booleano que impide repetir la petición HTTP si los datos ya fueron cargados en esa sesión:
+Cada servicio guarda un flag booleano que impide repetir la petición HTTP si los datos ya fueron cargados en esa sesión. `EventosService` además guarda el observable en vuelo para que llamadas simultáneas compartan el mismo request:
 
 ```ts
 private _loaded = false;
+private _inflight$: Observable<Evento[]> | null = null;
 
 loadEventos(): Observable<Evento[]> {
-  if (this._loaded) return of(this._eventos()); // retorno inmediato
-  this._loaded = true;
-  // ... HTTP
+  if (this._loaded) return of(this._eventos());   // caché: retorno inmediato
+  if (this._inflight$) return this._inflight$;    // request en curso: se comparte
+
+  this._inflight$ = this.http.get<...>(...).pipe(
+    tap(data => {
+      this._eventos.set(data.map(e => this.mapToEvento(e)));
+      this._loaded = true;          // solo se marca al tener éxito
+    }),
+    finalize(() => { this._inflight$ = null; }),
+    catchError(() => { this._loaded = false; return of([]); }),
+    shareReplay(1),
+  );
+  return this._inflight$;
 }
 ```
+
+**Por qué `_loaded = true` va dentro del `tap` y no antes del HTTP:**
+Si se pone antes de suscribirse (patrón anterior), una navegación cancelada deja `_loaded = true` con `_eventos = []`. La siguiente visita a home devuelve caché vacía sin hacer ningún HTTP call; solo un reload lo arregla. Moviéndolo al `tap`, si el resolver se cancela `_loaded` queda en `false` y el siguiente intento reintenta el fetch.
 
 `FinanceService` tiene cuatro flags independientes: `_txLoaded`, `_goalsLoaded`, `_categoriasLoaded`, `_presupuestosLoaded`, uno por cada colección.
 
