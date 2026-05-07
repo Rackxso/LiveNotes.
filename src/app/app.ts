@@ -18,7 +18,7 @@ export class App implements OnInit {
   private readonly tourService = inject(TourService);
 
   private isAuthUrl(url: string): boolean {
-    return url.startsWith('/login') || url.startsWith('/register') || url.startsWith('/forgot-password');
+    return url.startsWith('/login') || url.startsWith('/register') || url.startsWith('/forgot-password') || url.startsWith('/reset-password') || url.startsWith('/email-confirmado');
   }
 
   ngOnInit(): void {

@@ -16,10 +16,11 @@ function doRefresh(req: HttpRequest<unknown>, next: HttpHandlerFn, auth: AuthSer
   }
 
   const http = new HttpClient(backend);
-  return http.post<{ accessToken: string }>(`${environment.apiUrl}/user/refresh`, { refreshToken }).pipe(
+  return http.post<{ accessToken: string; refreshToken?: string }>(`${environment.apiUrl}/user/refresh`, { refreshToken }).pipe(
     switchMap(res => {
       refreshing = false;
       auth.setToken(res.accessToken);
+      if (res.refreshToken) auth.setRefreshToken(res.refreshToken);
       const retried = req.clone({ setHeaders: { Authorization: `Bearer ${res.accessToken}` } });
       return next(retried);
     }),

@@ -19,9 +19,11 @@ interface LoginResponse {
 }
 
 const STORAGE_KEY      = 'ln_user';
-const TOKEN_KEY        = 'ln_token';
 const REFRESH_KEY      = 'ln_refresh';
 const PWD_UPDATE_KEY   = 'ln_pwd_update';
+
+// El access token vive solo en memoria: no es accesible desde JS externo (XSS)
+let _inMemoryAccessToken: string | null = null;
 
 @Injectable({ providedIn: 'root' })
 export class AuthService {
@@ -43,7 +45,7 @@ export class AuthService {
     return this.http.post<LoginResponse>(`${this.base}/login`, { email, password }).pipe(
       tap(res => {
         this.setUser(res.user);
-        localStorage.setItem(TOKEN_KEY, res.accessToken);
+        _inMemoryAccessToken = res.accessToken;
         localStorage.setItem(REFRESH_KEY, res.refreshToken);
         const needsUpdate = res.requiresPasswordUpdate ?? false;
         this._requiresPasswordUpdate.set(needsUpdate);
@@ -54,7 +56,7 @@ export class AuthService {
   }
 
   getToken(): string | null {
-    return localStorage.getItem(TOKEN_KEY);
+    return _inMemoryAccessToken;
   }
 
   getRefreshToken(): string | null {
@@ -62,7 +64,11 @@ export class AuthService {
   }
 
   setToken(token: string): void {
-    localStorage.setItem(TOKEN_KEY, token);
+    _inMemoryAccessToken = token;
+  }
+
+  setRefreshToken(token: string): void {
+    localStorage.setItem(REFRESH_KEY, token);
   }
 
   register(name: string, email: string, password: string): Observable<unknown> {
@@ -98,9 +104,9 @@ export class AuthService {
   }
 
   clearUser(): void {
+    _inMemoryAccessToken = null;
     this._user.set(null);
     localStorage.removeItem(STORAGE_KEY);
-    localStorage.removeItem(TOKEN_KEY);
     localStorage.removeItem(REFRESH_KEY);
     localStorage.removeItem(PWD_UPDATE_KEY);
     this._requiresPasswordUpdate.set(false);
