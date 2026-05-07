@@ -3,8 +3,7 @@
   <!-- Panel izquierdo: marca -->
   <aside class="brand-panel" aria-hidden="true">
     <div class="brand-logo">
-      <div class="brand-logo-mark">L</div>
-      <span class="brand-logo-name">LiveNotes</span>
+      <img class="brand-logo-img" src="/Logo.png" alt="LiveNotes" />
     </div>
 
     <div class="brand-tagline">
@@ -13,19 +12,19 @@
 
     <ul class="brand-features" role="list">
       <li class="brand-feat">
-        <span class="brand-feat-icon" aria-hidden="true">📅</span>
+        <span class="brand-feat-icon" aria-hidden="true"><i class="fa-solid fa-calendar-days"></i></span>
         Calendario y eventos
       </li>
       <li class="brand-feat">
-        <span class="brand-feat-icon" aria-hidden="true">💶</span>
+        <span class="brand-feat-icon" aria-hidden="true"><i class="fa-solid fa-coins"></i></span>
         Finanzas y presupuestos
       </li>
       <li class="brand-feat">
-        <span class="brand-feat-icon" aria-hidden="true">📝</span>
+        <span class="brand-feat-icon" aria-hidden="true"><i class="fa-solid fa-note-sticky"></i></span>
         Notas y listas
       </li>
       <li class="brand-feat">
-        <span class="brand-feat-icon" aria-hidden="true">🌿</span>
+        <span class="brand-feat-icon" aria-hidden="true"><i class="fa-solid fa-leaf"></i></span>
         Hábitos y estado de ánimo
       </li>
     </ul>
@@ -37,7 +36,7 @@
 
       @if (success()) {
         <div class="form-success" role="status">
-          <div class="form-success-icon" aria-hidden="true">✉️</div>
+          <div class="form-success-icon" aria-hidden="true"><i class="fa-solid fa-envelope"></i></div>
           <h1 class="form-title">Revisa tu <em>correo</em></h1>
           <p class="form-subtitle">
             Te hemos enviado un enlace de verificación a tu email.
@@ -108,7 +107,7 @@
                 (click)="togglePass()"
                 [attr.aria-label]="showPass() ? 'Ocultar contraseña' : 'Mostrar contraseña'"
               >
-                {{ showPass() ? '🙈' : '👁' }}
+                <i class="fa-solid" [class.fa-eye-slash]="showPass()" [class.fa-eye]="!showPass()"></i>
               </button>
             </div>
             @if (passwordInvalid) {
@@ -137,7 +136,7 @@
                 (click)="togglePass2()"
                 [attr.aria-label]="showPass2() ? 'Ocultar contraseña' : 'Mostrar contraseña'"
               >
-                {{ showPass2() ? '🙈' : '👁' }}
+                <i class="fa-solid" [class.fa-eye-slash]="showPass2()" [class.fa-eye]="!showPass2()"></i>
               </button>
             </div>
             @if (confirmInvalid) {

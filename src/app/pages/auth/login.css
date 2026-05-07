@@ -56,26 +56,11 @@
   gap: 12px;
 }
 
-.brand-logo-mark {
-  width: 44px;
+.brand-logo-img {
   height: 44px;
-  background: rgba(255, 255, 255, 0.15);
-  border: 1.5px solid rgba(255, 255, 255, 0.3);
-  border-radius: 14px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-family: var(--fuente-titulo);
-  font-size: 22px;
-  color: white;
-  font-weight: 500;
-}
-
-.brand-logo-name {
-  font-family: var(--fuente-titulo);
-  font-size: 22px;
-  color: white;
-  letter-spacing: -0.3px;
+  width: auto;
+  object-fit: contain;
+  filter: brightness(0) invert(1);
 }
 
 /* Tagline */
