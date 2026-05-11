@@ -3,6 +3,7 @@ import { FormsModule } from '@angular/forms';
 import { Evento, RecurrenceType } from '../../../model/evento.model';
 import { I18nService } from '../../../services/i18n.service';
 import { NotesService, Note } from '../../../services/notes.service';
+import { TodoService, TodoItem } from '../../../services/todo.service';
 import { EventosService } from '../../../services/eventos.service';
 import { PrimaryButton } from '../primary-button/primary-button';
 import { SecondaryButton } from '../secondary-button/secondary-button';
@@ -17,6 +18,7 @@ import { SecondaryButton } from '../secondary-button/secondary-button';
 export class AddEventModal {
   private readonly i18n = inject(I18nService);
   private readonly notesService = inject(NotesService);
+  private readonly todoService = inject(TodoService);
   private readonly eventosService = inject(EventosService);
   readonly t = this.i18n.t;
 
@@ -41,6 +43,14 @@ export class AddEventModal {
     return this.notesService.notes().filter(n => !linked.has(n._id));
   });
 
+  readonly linkedTodos = signal<TodoItem[]>([]);
+  selectedTodoId = '';
+
+  readonly availableTodos = computed(() => {
+    const linked = new Set(this.linkedTodos().map(t => t._id));
+    return this.todoService.todos().filter(t => !linked.has(t._id));
+  });
+
   readonly recurrenceOptions: { value: RecurrenceType; labelKey: string }[] = [
     { value: 'none',    labelKey: 'modal.recurrence.none' },
     { value: 'daily',   labelKey: 'modal.recurrence.daily' },
@@ -61,8 +71,12 @@ export class AddEventModal {
       if (this.notesService.notes().length === 0) {
         this.notesService.getNotes().subscribe();
       }
+      if (this.todoService.todos().length === 0) {
+        this.todoService.getTodos().subscribe();
+      }
       this.eventosService.getLinkedItems(ev.id).subscribe(items => {
         this.linkedNotas.set(items.notas);
+        this.linkedTodos.set(items.todos);
       });
     } else {
       const f = this.fechaInicial();
@@ -86,6 +100,25 @@ export class AddEventModal {
     if (!ev) return;
     this.eventosService.unlinkItem(ev.id, 'nota', notaId).subscribe({
       next: () => this.linkedNotas.update(ns => ns.filter(n => n._id !== notaId)),
+    });
+  }
+
+  linkTodo(): void {
+    const ev = this.eventoEditar();
+    if (!this.selectedTodoId || !ev) return;
+    this.eventosService.linkItem(ev.id, 'todo', this.selectedTodoId).subscribe({
+      next: todo => {
+        this.linkedTodos.update(ts => [...ts, todo as TodoItem]);
+        this.selectedTodoId = '';
+      },
+    });
+  }
+
+  unlinkTodo(todoId: string): void {
+    const ev = this.eventoEditar();
+    if (!ev) return;
+    this.eventosService.unlinkItem(ev.id, 'todo', todoId).subscribe({
+      next: () => this.linkedTodos.update(ts => ts.filter(t => t._id !== todoId)),
     });
   }
 
@@ -132,6 +165,8 @@ export class AddEventModal {
     this.recurrenceEnd = '';
     this.linkedNotas.set([]);
     this.selectedNotaId = '';
+    this.linkedTodos.set([]);
+    this.selectedTodoId = '';
     this.cerrar.emit();
   }
 }
