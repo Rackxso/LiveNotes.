@@ -211,7 +211,7 @@
   }
 
   &.active {
-    background: var(--background-color);
+    background: var(--secondary-background-color);
   }
 
   &:focus-visible {
