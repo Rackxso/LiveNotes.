@@ -1,4 +1,5 @@
 import { ChangeDetectionStrategy, Component, computed, inject, input, output, signal } from '@angular/core';
+import { Router } from '@angular/router';
 import { FormsModule } from '@angular/forms';
 import { Evento, RecurrenceType } from '../../../model/evento.model';
 import { I18nService } from '../../../services/i18n.service';
@@ -20,6 +21,7 @@ export class AddEventModal {
   private readonly notesService = inject(NotesService);
   private readonly todoService = inject(TodoService);
   private readonly eventosService = inject(EventosService);
+  private readonly router = inject(Router);
   readonly t = this.i18n.t;
 
   readonly fechaInicial = input<Date | null>(null);
@@ -120,6 +122,16 @@ export class AddEventModal {
     this.eventosService.unlinkItem(ev.id, 'todo', todoId).subscribe({
       next: () => this.linkedTodos.update(ts => ts.filter(t => t._id !== todoId)),
     });
+  }
+
+  navigateToNota(nota: Note): void {
+    this.cerrar.emit();
+    this.router.navigate(['/notes'], { queryParams: { noteId: nota._id } });
+  }
+
+  navigateToTodo(todo: TodoItem): void {
+    this.cerrar.emit();
+    this.router.navigate(['/notes'], { queryParams: { todoList: todo.idLista } });
   }
 
   get esEdicion(): boolean {

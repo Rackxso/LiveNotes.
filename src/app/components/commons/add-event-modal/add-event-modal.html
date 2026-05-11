@@ -60,7 +60,7 @@
           <div class="linked-chips">
             @for (nota of linkedNotas(); track nota._id) {
               <span class="linked-chip">
-                {{ nota.titulo }}
+                <button type="button" class="chip-link" (click)="navigateToNota(nota)">{{ nota.titulo }}</button>
                 <button type="button" class="chip-remove" (click)="unlinkNota(nota._id)">✕</button>
               </span>
             }
@@ -83,7 +83,7 @@
           <div class="linked-chips">
             @for (todo of linkedTodos(); track todo._id) {
               <span class="linked-chip">
-                {{ todo.texto }}
+                <button type="button" class="chip-link" (click)="navigateToTodo(todo)">{{ todo.texto }}</button>
                 <button type="button" class="chip-remove" (click)="unlinkTodo(todo._id)">✕</button>
               </span>
             }

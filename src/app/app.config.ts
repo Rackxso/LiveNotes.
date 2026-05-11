@@ -7,13 +7,14 @@ import { credentialsInterceptor } from './interceptors/credentials.interceptor';
 import { authErrorInterceptor } from './interceptors/auth-error.interceptor';
 import { langInterceptor } from './interceptors/lang.interceptor';
 import { ThemeService } from './services/theme.service';
+import { AuthService } from './services/auth.service';
 
 export const appConfig: ApplicationConfig = {
   providers: [
     provideBrowserGlobalErrorListeners(),
     provideRouter(routes),
     provideHttpClient(withInterceptors([credentialsInterceptor, authErrorInterceptor, langInterceptor])),
-    // Arranca ThemeService al inicio para aplicar el tema antes del primer render
     { provide: APP_INITIALIZER, useFactory: (t: ThemeService) => () => t, deps: [ThemeService], multi: true },
+    { provide: APP_INITIALIZER, useFactory: (auth: AuthService) => () => auth.refreshOnStartup(), deps: [AuthService], multi: true },
   ]
 };

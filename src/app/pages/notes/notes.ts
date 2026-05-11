@@ -1,4 +1,6 @@
-import { ChangeDetectionStrategy, Component, computed, inject, signal } from '@angular/core';
+import { ChangeDetectionStrategy, Component, computed, inject, OnInit, signal } from '@angular/core';
+import { ActivatedRoute, Router } from '@angular/router';
+import { take } from 'rxjs';
 import { Header } from '../../components/header/header';
 import { ToDo } from '../../components/to-do/to-do';
 import { TextNotes } from '../../components/text-notes/text-notes';
@@ -14,14 +16,17 @@ import { NotesService, Note } from '../../services/notes.service';
   styleUrl: './notes.css',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class Notes {
+export class Notes implements OnInit {
   private readonly i18n = inject(I18nService);
   private readonly notesService = inject(NotesService);
+  private readonly route = inject(ActivatedRoute);
+  private readonly router = inject(Router);
   readonly t = this.i18n.t;
   readonly nombreVista = computed(() => this.t()('notes.pageTitle'));
 
   readonly notesSearch = signal('');
   readonly todosSearch = signal('');
+  readonly pendingTodoList = signal('');
   readonly notesSearchOpen = signal(false);
   readonly todosSearchOpen = signal(false);
   readonly showAddNoteModal = signal(false);
@@ -39,6 +44,32 @@ export class Notes {
   });
 
   readonly editingNote = signal<Note | null>(null);
+
+  ngOnInit(): void {
+    this.route.queryParams.pipe(take(1)).subscribe(params => {
+      const noteId = params['noteId'];
+      const todoList = params['todoList'];
+      if (!noteId && !todoList) return;
+
+      this.router.navigate([], { replaceUrl: true, queryParams: {} });
+
+      if (noteId) {
+        const tryOpen = () => {
+          const note = this.notesService.notes().find(n => n._id === noteId);
+          if (note) this.openEditNoteModal(note);
+        };
+        if (this.notesService.notes().length > 0) {
+          tryOpen();
+        } else {
+          this.notesService.getNotes().subscribe(tryOpen);
+        }
+      }
+
+      if (todoList) {
+        this.pendingTodoList.set(todoList);
+      }
+    });
+  }
 
   openAddNoteModal(): void {
     this.editingNote.set(null);

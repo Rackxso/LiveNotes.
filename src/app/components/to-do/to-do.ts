@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, computed, inject, input, OnInit, signal } from '@angular/core';
+import { ChangeDetectionStrategy, Component, computed, effect, inject, input, OnInit, signal } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { TodoService, TodoItem, SubItem } from '../../services/todo.service';
 import { EventosService } from '../../services/eventos.service';
@@ -18,6 +18,7 @@ export class ToDo implements OnInit {
   readonly t = inject(I18nService).t;
 
   readonly searchQuery = input<string>('');
+  readonly initialList = input<string>('');
   readonly selectedList = signal<string>('all');
   readonly newTaskText = signal<string>('');
   readonly addingList = signal<boolean>(false);
@@ -68,6 +69,13 @@ export class ToDo implements OnInit {
   }
 
   readonly draggedListName = signal<string | null>(null);
+
+  constructor() {
+    effect(() => {
+      const list = this.initialList();
+      if (list) this.selectedList.set(list);
+    });
+  }
 
   ngOnInit(): void {
     this.eventosService.loadEventos().subscribe();

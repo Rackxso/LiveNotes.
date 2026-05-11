@@ -1,6 +1,6 @@
 import { computed, inject, Injectable, signal } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
-import { Observable, tap } from 'rxjs';
+import { HttpBackend, HttpClient } from '@angular/common/http';
+import { catchError, EMPTY, firstValueFrom, Observable, tap } from 'rxjs';
 import { environment } from '../../environments/environment';
 import { FinanceService } from './finance.service';
 
@@ -28,6 +28,7 @@ let _inMemoryAccessToken: string | null = null;
 @Injectable({ providedIn: 'root' })
 export class AuthService {
   private readonly http = inject(HttpClient);
+  private readonly backend = inject(HttpBackend);
   private readonly financeService = inject(FinanceService);
   private readonly base = `${environment.apiUrl}/user`;
 
@@ -116,6 +117,26 @@ export class AuthService {
   private setUser(user: AuthUser): void {
     this._user.set(user);
     localStorage.setItem(STORAGE_KEY, JSON.stringify(user));
+  }
+
+  refreshOnStartup(): Promise<void> {
+    const refreshToken = this.getRefreshToken();
+    if (!refreshToken) return Promise.resolve();
+
+    const http = new HttpClient(this.backend);
+    return firstValueFrom(
+      http.post<{ accessToken: string; refreshToken?: string }>(`${this.base}/refresh`, { refreshToken }).pipe(
+        tap(res => {
+          _inMemoryAccessToken = res.accessToken;
+          if (res.refreshToken) this.setRefreshToken(res.refreshToken);
+        }),
+        catchError(() => {
+          this.clearUser();
+          return EMPTY;
+        })
+      ),
+      { defaultValue: undefined }
+    );
   }
 
   private readStorage(): AuthUser | null {
