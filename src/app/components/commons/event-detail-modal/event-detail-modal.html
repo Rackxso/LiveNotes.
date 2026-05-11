@@ -41,7 +41,7 @@
       }
     </div>
 
-    @if (linkedNotas().length > 0 || linkedTodos().length > 0) {
+    @if (linkedNotas().length > 0 || linkedTodoLists().length > 0) {
       <div class="linked-section">
         @if (linkedNotas().length > 0) {
           <div class="linked-group">
@@ -56,15 +56,15 @@
             </div>
           </div>
         }
-        @if (linkedTodos().length > 0) {
+        @if (linkedTodoLists().length > 0) {
           <div class="linked-group">
             <span class="linked-label">
               <i class="fa-solid fa-list-check" aria-hidden="true"></i>
-              To-dos
+              To-do lists
             </span>
             <div class="linked-chips">
-              @for (todo of linkedTodos(); track todo._id) {
-                <button type="button" class="linked-chip" (click)="navigateToTodo(todo)">{{ todo.texto }}</button>
+              @for (list of linkedTodoLists(); track list) {
+                <button type="button" class="linked-chip" (click)="navigateToTodo(list)">{{ list }}</button>
               }
             </div>
           </div>

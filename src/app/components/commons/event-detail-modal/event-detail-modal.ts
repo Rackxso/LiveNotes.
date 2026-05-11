@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, effect, inject, input, output, signal } from '@angular/core';
+import { ChangeDetectionStrategy, Component, computed, effect, inject, input, output, signal } from '@angular/core';
 import { Router, RouterLink } from '@angular/router';
 import { Evento } from '../../../model/evento.model';
 import { I18nService } from '../../../services/i18n.service';
@@ -26,16 +26,19 @@ export class EventDetailModal {
   readonly eliminar = output<void>();
 
   readonly linkedNotas = signal<Note[]>([]);
-  readonly linkedTodos = signal<TodoItem[]>([]);
+  private readonly _linkedTodos = signal<TodoItem[]>([]);
+  readonly linkedTodoLists = computed(() =>
+    [...new Set(this._linkedTodos().map(t => t.idLista).filter((l): l is string => !!l))]
+  );
 
   constructor() {
     effect(() => {
       const ev = this.evento();
       this.linkedNotas.set([]);
-      this.linkedTodos.set([]);
+      this._linkedTodos.set([]);
       this.eventosService.getLinkedItems(ev.id).subscribe((items: LinkedItems) => {
         this.linkedNotas.set(items.notas);
-        this.linkedTodos.set(items.todos);
+        this._linkedTodos.set(items.todos);
       });
     });
   }
@@ -45,9 +48,9 @@ export class EventDetailModal {
     this.router.navigate(['/notes'], { queryParams: { noteId: nota._id } });
   }
 
-  navigateToTodo(todo: TodoItem): void {
+  navigateToTodo(listName: string): void {
     this.cerrar.emit();
-    this.router.navigate(['/notes'], { queryParams: { todoList: todo.idLista } });
+    this.router.navigate(['/notes'], { queryParams: { todoList: listName } });
   }
 
   get fechaFormateada(): string {

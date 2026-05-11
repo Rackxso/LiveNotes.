@@ -45,12 +45,17 @@ export class AddEventModal {
     return this.notesService.notes().filter(n => !linked.has(n._id));
   });
 
-  readonly linkedTodos = signal<TodoItem[]>([]);
-  selectedTodoId = '';
+  private readonly _linkedTodos = signal<TodoItem[]>([]);
+  selectedTodoList = '';
 
-  readonly availableTodos = computed(() => {
-    const linked = new Set(this.linkedTodos().map(t => t._id));
-    return this.todoService.todos().filter(t => !linked.has(t._id));
+  readonly linkedTodoLists = computed(() =>
+    [...new Set(this._linkedTodos().map(t => t.idLista).filter((l): l is string => !!l))]
+  );
+
+  readonly availableTodoLists = computed(() => {
+    const linked = new Set(this.linkedTodoLists());
+    return [...new Set(this.todoService.todos().map(t => t.idLista).filter((l): l is string => !!l))]
+      .filter(l => !linked.has(l));
   });
 
   readonly recurrenceOptions: { value: RecurrenceType; labelKey: string }[] = [
@@ -78,7 +83,7 @@ export class AddEventModal {
       }
       this.eventosService.getLinkedItems(ev.id).subscribe(items => {
         this.linkedNotas.set(items.notas);
-        this.linkedTodos.set(items.todos);
+        this._linkedTodos.set(items.todos);
       });
     } else {
       const f = this.fechaInicial();
@@ -105,23 +110,19 @@ export class AddEventModal {
     });
   }
 
-  linkTodo(): void {
+  linkTodoList(): void {
     const ev = this.eventoEditar();
-    if (!this.selectedTodoId || !ev) return;
-    this.eventosService.linkItem(ev.id, 'todo', this.selectedTodoId).subscribe({
-      next: todo => {
-        this.linkedTodos.update(ts => [...ts, todo as TodoItem]);
-        this.selectedTodoId = '';
-      },
-    });
+    if (!this.selectedTodoList || !ev) return;
+    const todos = this.todoService.todos().filter(t => t.idLista === this.selectedTodoList);
+    todos.forEach(t => this.todoService.updateTodo(t._id, { eventoId: ev.id }).subscribe());
+    this._linkedTodos.update(existing => [...existing, ...todos]);
+    this.selectedTodoList = '';
   }
 
-  unlinkTodo(todoId: string): void {
-    const ev = this.eventoEditar();
-    if (!ev) return;
-    this.eventosService.unlinkItem(ev.id, 'todo', todoId).subscribe({
-      next: () => this.linkedTodos.update(ts => ts.filter(t => t._id !== todoId)),
-    });
+  unlinkTodoList(listName: string): void {
+    const todosToUnlink = this._linkedTodos().filter(t => t.idLista === listName);
+    todosToUnlink.forEach(t => this.todoService.updateTodo(t._id, { eventoId: null }).subscribe());
+    this._linkedTodos.update(ts => ts.filter(t => t.idLista !== listName));
   }
 
   navigateToNota(nota: Note): void {
@@ -129,9 +130,9 @@ export class AddEventModal {
     this.router.navigate(['/notes'], { queryParams: { noteId: nota._id } });
   }
 
-  navigateToTodo(todo: TodoItem): void {
+  navigateToTodo(listName: string): void {
     this.cerrar.emit();
-    this.router.navigate(['/notes'], { queryParams: { todoList: todo.idLista } });
+    this.router.navigate(['/notes'], { queryParams: { todoList: listName } });
   }
 
   get esEdicion(): boolean {
@@ -177,8 +178,8 @@ export class AddEventModal {
     this.recurrenceEnd = '';
     this.linkedNotas.set([]);
     this.selectedNotaId = '';
-    this.linkedTodos.set([]);
-    this.selectedTodoId = '';
+    this._linkedTodos.set([]);
+    this.selectedTodoList = '';
     this.cerrar.emit();
   }
 }

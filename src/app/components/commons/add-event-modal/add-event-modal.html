@@ -69,22 +69,22 @@
       </div>
 
       <div class="field">
-        <label>Linked to-dos</label>
+        <label>Linked to-do lists</label>
         <div class="link-row">
-          <select [(ngModel)]="selectedTodoId" class="link-select">
-            <option value="">Select a to-do…</option>
-            @for (todo of availableTodos(); track todo._id) {
-              <option [value]="todo._id">{{ todo.texto }}</option>
+          <select [(ngModel)]="selectedTodoList" class="link-select">
+            <option value="">Select a list…</option>
+            @for (list of availableTodoLists(); track list) {
+              <option [value]="list">{{ list }}</option>
             }
           </select>
-          <button type="button" class="link-btn" [disabled]="!selectedTodoId" (click)="linkTodo()">Add</button>
+          <button type="button" class="link-btn" [disabled]="!selectedTodoList" (click)="linkTodoList()">Add</button>
         </div>
-        @if (linkedTodos().length > 0) {
+        @if (linkedTodoLists().length > 0) {
           <div class="linked-chips">
-            @for (todo of linkedTodos(); track todo._id) {
+            @for (list of linkedTodoLists(); track list) {
               <span class="linked-chip">
-                <button type="button" class="chip-link" (click)="navigateToTodo(todo)">{{ todo.texto }}</button>
-                <button type="button" class="chip-remove" (click)="unlinkTodo(todo._id)">✕</button>
+                <button type="button" class="chip-link" (click)="navigateToTodo(list)">{{ list }}</button>
+                <button type="button" class="chip-remove" (click)="unlinkTodoList(list)">✕</button>
               </span>
             }
           </div>
