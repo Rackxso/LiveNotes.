@@ -1,6 +1,7 @@
-import { ChangeDetectionStrategy, Component, effect, inject, input, output } from '@angular/core';
+import { ChangeDetectionStrategy, Component, computed, effect, inject, input, output } from '@angular/core';
 import { ReactiveFormsModule, FormControl, FormGroup, Validators } from '@angular/forms';
 import { NotesService, NoteDto, Note } from '../../../services/notes.service';
+import { EventosService } from '../../../services/eventos.service';
 import { PrimaryButton } from '../primary-button/primary-button';
 import { SecondaryButton } from '../secondary-button/secondary-button';
 
@@ -13,6 +14,7 @@ import { SecondaryButton } from '../secondary-button/secondary-button';
 })
 export class AddNoteModal {
   private readonly notesService = inject(NotesService);
+  private readonly eventosService = inject(EventosService);
 
   readonly note = input<Note | null>(null);
   readonly existingCategories = input<string[]>([]);
@@ -25,17 +27,32 @@ export class AddNoteModal {
     titulo:    new FormControl('', { nonNullable: true, validators: [Validators.required, Validators.maxLength(100)] }),
     contenido: new FormControl('', { nonNullable: true, validators: [Validators.maxLength(2000)] }),
     categoria: new FormControl('', { nonNullable: true }),
+    eventoId:  new FormControl<string>('', { nonNullable: true }),
   });
 
+  readonly sortedEventos = computed(() =>
+    [...this.eventosService.eventos()].sort((a, b) => b.fecha.getTime() - a.fecha.getTime())
+  );
+
   constructor() {
+    this.eventosService.loadEventos().subscribe();
     effect(() => {
       const n = this.note();
       if (n) {
-        this.form.patchValue({ titulo: n.titulo, contenido: n.contenido, categoria: n.categoria ?? '' });
+        this.form.patchValue({
+          titulo: n.titulo,
+          contenido: n.contenido,
+          categoria: n.categoria ?? '',
+          eventoId: n.eventoId ?? '',
+        });
       } else {
         this.form.reset();
       }
     });
+  }
+
+  formatEventDate(fecha: Date): string {
+    return fecha.toLocaleDateString('es-ES', { day: '2-digit', month: 'short', year: 'numeric' });
   }
 
   get isEditing(): boolean { return !!this.note(); }
@@ -56,6 +73,7 @@ export class AddNoteModal {
       titulo:    this.form.controls.titulo.value.trim(),
       contenido: this.form.controls.contenido.value.trim(),
       categoria: this.form.controls.categoria.value.trim(),
+      eventoId:  this.form.controls.eventoId.value || null,
     };
     const n = this.note();
     const request$ = n

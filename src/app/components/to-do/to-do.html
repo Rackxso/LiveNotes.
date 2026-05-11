@@ -68,6 +68,18 @@
 </div>
 
 <div class="tab-body">
+  @if (selectedList() !== 'all') {
+    <div class="list-evento-bar">
+      <select class="list-evento-select"
+        [ngModel]="currentListEventoId()"
+        (ngModelChange)="onListEventoChange(selectedList(), $event)">
+        <option value="">No event</option>
+        @for (ev of sortedEventos(); track ev.id) {
+          <option [value]="ev.id">{{ ev.titulo }}</option>
+        }
+      </select>
+    </div>
+  }
   <ul class="todo-list" role="list">
     @for (item of displayTodos(); track item._id) {
       <li

@@ -44,6 +44,31 @@
       </div>
     }
 
+    @if (esEdicion) {
+      <div class="field">
+        <label>Linked notes</label>
+        <div class="link-row">
+          <select [(ngModel)]="selectedNotaId" class="link-select">
+            <option value="">Select a note…</option>
+            @for (nota of availableNotas(); track nota._id) {
+              <option [value]="nota._id">{{ nota.titulo }}</option>
+            }
+          </select>
+          <button type="button" class="link-btn" [disabled]="!selectedNotaId" (click)="linkNota()">Add</button>
+        </div>
+        @if (linkedNotas().length > 0) {
+          <div class="linked-chips">
+            @for (nota of linkedNotas(); track nota._id) {
+              <span class="linked-chip">
+                {{ nota.titulo }}
+                <button type="button" class="chip-remove" (click)="unlinkNota(nota._id)">✕</button>
+              </span>
+            }
+          </div>
+        }
+      </div>
+    }
+
     <div class="modal-footer">
       <app-secondary-button class="small" [config]="{texto: t()('modal.cancel')}" (clicked)="onCerrar()" />
       <app-primary-button class="small" [config]="{texto: t()('modal.saveEvent')}" (clicked)="onGuardar()" />

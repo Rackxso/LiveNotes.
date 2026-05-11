@@ -3,6 +3,13 @@ import { HttpClient } from '@angular/common/http';
 import { catchError, finalize, map, Observable, of, retry, shareReplay, tap } from 'rxjs';
 import { Evento, RecurrenceType } from '../model/evento.model';
 import { environment } from '../../environments/environment';
+import { Note } from './notes.service';
+import { TodoItem } from './todo.service';
+
+export interface LinkedItems {
+  notas: Note[];
+  todos: TodoItem[];
+}
 
 interface CalendarEventResponse {
   _id: string;
@@ -94,6 +101,18 @@ export class EventosService {
         this.loadEventos();
       }
     });
+  }
+
+  getLinkedItems(eventoId: string): Observable<LinkedItems> {
+    return this.http.get<LinkedItems>(`${this.base}/${eventoId}/linked`);
+  }
+
+  linkItem(eventoId: string, tipo: 'nota' | 'todo', itemId: string): Observable<Note | TodoItem> {
+    return this.http.patch<Note | TodoItem>(`${this.base}/${eventoId}/link`, { tipo, itemId });
+  }
+
+  unlinkItem(eventoId: string, tipo: 'nota' | 'todo', itemId: string): Observable<unknown> {
+    return this.http.patch(`${this.base}/${eventoId}/unlink/${itemId}`, { tipo });
   }
 
   deleteEvento(id: string): void {

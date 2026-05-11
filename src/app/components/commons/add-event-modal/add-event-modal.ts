@@ -1,7 +1,9 @@
-import { ChangeDetectionStrategy, Component, inject, input, output } from '@angular/core';
+import { ChangeDetectionStrategy, Component, computed, inject, input, output, signal } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { Evento, RecurrenceType } from '../../../model/evento.model';
 import { I18nService } from '../../../services/i18n.service';
+import { NotesService, Note } from '../../../services/notes.service';
+import { EventosService } from '../../../services/eventos.service';
 import { PrimaryButton } from '../primary-button/primary-button';
 import { SecondaryButton } from '../secondary-button/secondary-button';
 
@@ -14,6 +16,8 @@ import { SecondaryButton } from '../secondary-button/secondary-button';
 })
 export class AddEventModal {
   private readonly i18n = inject(I18nService);
+  private readonly notesService = inject(NotesService);
+  private readonly eventosService = inject(EventosService);
   readonly t = this.i18n.t;
 
   readonly fechaInicial = input<Date | null>(null);
@@ -28,6 +32,14 @@ export class AddEventModal {
   hora = '';
   recurrenceType: RecurrenceType = 'none';
   recurrenceEnd = '';
+
+  readonly linkedNotas = signal<Note[]>([]);
+  selectedNotaId = '';
+
+  readonly availableNotas = computed(() => {
+    const linked = new Set(this.linkedNotas().map(n => n._id));
+    return this.notesService.notes().filter(n => !linked.has(n._id));
+  });
 
   readonly recurrenceOptions: { value: RecurrenceType; labelKey: string }[] = [
     { value: 'none',    labelKey: 'modal.recurrence.none' },
@@ -45,10 +57,36 @@ export class AddEventModal {
       this.hora = ev.hora ?? '';
       this.recurrenceType = ev.recurrenceType ?? 'none';
       this.recurrenceEnd = ev.recurrenceEnd ? this.dateToInputValue(ev.recurrenceEnd) : '';
+
+      if (this.notesService.notes().length === 0) {
+        this.notesService.getNotes().subscribe();
+      }
+      this.eventosService.getLinkedItems(ev.id).subscribe(items => {
+        this.linkedNotas.set(items.notas);
+      });
     } else {
       const f = this.fechaInicial();
       if (f) this.fecha = this.dateToInputValue(f);
     }
+  }
+
+  linkNota(): void {
+    const ev = this.eventoEditar();
+    if (!this.selectedNotaId || !ev) return;
+    this.eventosService.linkItem(ev.id, 'nota', this.selectedNotaId).subscribe({
+      next: nota => {
+        this.linkedNotas.update(ns => [...ns, nota as Note]);
+        this.selectedNotaId = '';
+      },
+    });
+  }
+
+  unlinkNota(notaId: string): void {
+    const ev = this.eventoEditar();
+    if (!ev) return;
+    this.eventosService.unlinkItem(ev.id, 'nota', notaId).subscribe({
+      next: () => this.linkedNotas.update(ns => ns.filter(n => n._id !== notaId)),
+    });
   }
 
   get esEdicion(): boolean {
@@ -92,6 +130,8 @@ export class AddEventModal {
     this.hora = '';
     this.recurrenceType = 'none';
     this.recurrenceEnd = '';
+    this.linkedNotas.set([]);
+    this.selectedNotaId = '';
     this.cerrar.emit();
   }
 }

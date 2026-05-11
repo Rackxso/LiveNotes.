@@ -35,6 +35,18 @@
         </select>
       </div>
 
+      @if (isEditing) {
+        <div class="field">
+          <label for="note-evento">Linked event</label>
+          <select id="note-evento" formControlName="eventoId" class="category-select">
+            <option value="">No event</option>
+            @for (ev of sortedEventos(); track ev.id) {
+              <option [value]="ev.id">{{ ev.titulo }} — {{ formatEventDate(ev.fecha) }}</option>
+            }
+          </select>
+        </div>
+      }
+
       <div class="field">
         <label for="note-content">Content</label>
         <textarea

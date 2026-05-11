@@ -25,6 +25,7 @@ export interface TodoItem {
   etiquetas: string[];
   subItems: SubItem[];
   order: number;
+  eventoId?: string | null;
 }
 
 export interface TodoDto {
@@ -35,6 +36,7 @@ export interface TodoDto {
   importancia?: number;
   fechaLimite?: string;
   etiquetas?: string[];
+  eventoId?: string | null;
 }
 
 export interface SubItemDto {

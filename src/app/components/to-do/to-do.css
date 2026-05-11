@@ -192,6 +192,30 @@
   font-family: var(--fuente-texto);
 }
 
+/* ── List-evento bar ───────────────────────────── */
+.list-evento-bar {
+  display: flex;
+  justify-content: flex-end;
+  padding: 6px 0 2px;
+}
+
+.list-evento-select {
+  font-size: 11px;
+  font-family: var(--fuente-texto);
+  background: var(--background-subcolor);
+  border: 1px solid var(--primary-subcolor);
+  border-radius: 6px;
+  padding: 3px 8px;
+  color: var(--text-subcolor);
+  cursor: pointer;
+  max-width: 200px;
+  outline: none;
+  transition: border-color 0.15s, color 0.15s;
+
+  &:focus { border-color: var(--accent-color); }
+  &:hover { color: var(--text-color); }
+}
+
 /* ── Todo list ─────────────────────────────────── */
 .todo-list {
   list-style: none;

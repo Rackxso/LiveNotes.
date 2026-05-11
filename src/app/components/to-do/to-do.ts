@@ -1,17 +1,20 @@
 import { ChangeDetectionStrategy, Component, computed, inject, input, OnInit, signal } from '@angular/core';
+import { FormsModule } from '@angular/forms';
 import { TodoService, TodoItem, SubItem } from '../../services/todo.service';
+import { EventosService } from '../../services/eventos.service';
 import { I18nService } from '../../services/i18n.service';
 import { TaskSortView } from './task-sort-view/task-sort-view';
 
 @Component({
   selector: 'app-to-do',
-  imports: [TaskSortView],
+  imports: [TaskSortView, FormsModule],
   templateUrl: './to-do.html',
   styleUrl: './to-do.css',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ToDo implements OnInit {
   private readonly todoService = inject(TodoService);
+  private readonly eventosService = inject(EventosService);
   readonly t = inject(I18nService).t;
 
   readonly searchQuery = input<string>('');
@@ -39,6 +42,19 @@ export class ToDo implements OnInit {
     JSON.parse(localStorage.getItem('ln_todo_lists') ?? '[]')
   );
 
+  readonly sortedEventos = computed(() =>
+    [...this.eventosService.eventos()].sort((a, b) => b.fecha.getTime() - a.fecha.getTime())
+  );
+
+  readonly currentListEventoId = computed(() => {
+    const list = this.selectedList();
+    if (list === 'all') return '';
+    const inList = this.todos().filter(t => t.idLista === list);
+    if (inList.length === 0) return '';
+    const first = inList[0].eventoId ?? '';
+    return inList.every(t => (t.eventoId ?? '') === first) ? first : '';
+  });
+
   readonly sortViewOpen = signal(false);
   readonly canOpenSortView = computed(() => this.selectedList() !== 'all');
   readonly sortViewTasks = computed(() =>
@@ -54,6 +70,7 @@ export class ToDo implements OnInit {
   readonly draggedListName = signal<string | null>(null);
 
   ngOnInit(): void {
+    this.eventosService.loadEventos().subscribe();
     this.todoService.getTodos().subscribe(todos => {
       const fromTodos = [...new Set(todos.map(t => t.idLista).filter(l => l !== ''))];
       this._customLists.update(existing => {
@@ -429,6 +446,13 @@ export class ToDo implements OnInit {
     } else if (event.key === 'Escape') {
       this.cancelEdit();
     }
+  }
+
+  onListEventoChange(list: string, eventoId: string): void {
+    const todos = this.todos().filter(t => t.idLista === list);
+    todos.forEach(t => {
+      this.todoService.updateTodo(t._id, { eventoId: eventoId || null }).subscribe();
+    });
   }
 
   formatDate(fechaLimite: string | null): string {
