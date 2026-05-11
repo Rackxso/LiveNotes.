@@ -108,6 +108,53 @@
   line-height: 1.5;
 }
 
+.linked-section {
+  margin-top: 1.25rem;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.linked-group {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.linked-label {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-family: var(--fuente-texto);
+  font-size: 12px;
+  color: var(--text-subcolor);
+
+  i { color: var(--accent-color); width: 14px; text-align: center; }
+}
+
+.linked-chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+
+.linked-chip {
+  background: color-mix(in srgb, var(--accent-color) 10%, var(--background-subcolor));
+  border: 1px solid color-mix(in srgb, var(--accent-color) 25%, transparent);
+  border-radius: 20px;
+  padding: 4px 12px;
+  font-family: var(--fuente-texto);
+  font-size: 12px;
+  color: var(--text-color);
+  cursor: pointer;
+  transition: background 0.15s, color 0.15s;
+
+  &:hover {
+    background: color-mix(in srgb, var(--accent-color) 20%, var(--background-subcolor));
+    color: var(--accent-color);
+  }
+}
+
 .modal-footer {
   margin-top: 1.5rem;
   padding-top: 1rem;

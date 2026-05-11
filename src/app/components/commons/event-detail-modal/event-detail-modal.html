@@ -41,6 +41,37 @@
       }
     </div>
 
+    @if (linkedNotas().length > 0 || linkedTodos().length > 0) {
+      <div class="linked-section">
+        @if (linkedNotas().length > 0) {
+          <div class="linked-group">
+            <span class="linked-label">
+              <i class="fa-regular fa-note-sticky" aria-hidden="true"></i>
+              Notes
+            </span>
+            <div class="linked-chips">
+              @for (nota of linkedNotas(); track nota._id) {
+                <button type="button" class="linked-chip" (click)="navigateToNota(nota)">{{ nota.titulo }}</button>
+              }
+            </div>
+          </div>
+        }
+        @if (linkedTodos().length > 0) {
+          <div class="linked-group">
+            <span class="linked-label">
+              <i class="fa-solid fa-list-check" aria-hidden="true"></i>
+              To-dos
+            </span>
+            <div class="linked-chips">
+              @for (todo of linkedTodos(); track todo._id) {
+                <button type="button" class="linked-chip" (click)="navigateToTodo(todo)">{{ todo.texto }}</button>
+              }
+            </div>
+          </div>
+        }
+      </div>
+    }
+
     @if (mostrarEnlaceCalendario()) {
       <div class="modal-footer">
         <a routerLink="/calendar/month" class="cal-link" (click)="onCerrar()">
