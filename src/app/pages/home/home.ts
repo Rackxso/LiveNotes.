@@ -164,6 +164,8 @@ export class Home {
     return this.financeService.monthlyStats().find(s => s.month === label) ?? null;
   });
 
+  readonly totalSaved         = this.financeService.totalSaved;
+
   readonly recentTransactions = computed(() =>
     this.financeService.transactions().slice(0, 3)
   );

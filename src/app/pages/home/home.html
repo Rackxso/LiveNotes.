@@ -32,7 +32,7 @@
           </div>
           <div class="stat-pill">
             <span class="stat-label">{{ t()('home.statsSaved') }}</span>
-            <span class="stat-val">€{{ stats.saved | number:'1.0-0' }}</span>
+            <span class="stat-val">€{{ totalSaved() | number:'1.0-0' }}</span>
           </div>
         } @else {
           <div class="stat-pill">

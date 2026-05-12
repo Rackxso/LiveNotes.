@@ -395,6 +395,92 @@ Un usuario autenticado que envíe el `_id` de la nota de otro usuario recibirá 
 
 ---
 
+## Capas de seguridad — flujo extremo a extremo
+
+Ejemplo: `GET /api/events/calendar` (leer eventos del calendario del usuario autenticado).
+
+```mermaid
+flowchart LR
+    U(["👤 Usuario"])
+
+    U -->|navega a /calendar| AG
+
+    subgraph FE ["☁️  Frontend — Angular"]
+        direction TB
+        AG["① Auth Guard
+        Sin sesión → redirige a /login"]
+        AG -->|sesión activa| INT
+        INT["② HTTP Interceptor
+        Añade Authorization: Bearer &lt;accessToken&gt;
+        El token vive en memoria, nunca en localStorage"]
+    end
+
+    INT -->|petición HTTPS| TLS
+
+    subgraph BE ["🖥️  Backend — Node / Express + MongoDB"]
+        direction TB
+        TLS["③ HTTPS / HSTS
+        Tráfico cifrado en tránsito
+        Strict-Transport-Security vía Helmet"]
+
+        TLS --> CORS_M
+        CORS_M["④ CORS
+        Origen en lista blanca?"]
+        CORS_M -->|origen no permitido| R1["🚫 Error CORS"]
+        CORS_M -->|✓| HLM
+
+        HLM["⑤ Helmet
+        CSP · X-Frame-Options
+        X-Content-Type-Options · Referrer-Policy…"]
+        HLM --> RL
+
+        RL["⑥ Rate Limiter
+        100 req / 15 min por IP"]
+        RL -->|límite superado| R2["🚫 429 Too Many Requests"]
+        RL -->|✓| SAN
+
+        SAN["⑦ mongo-sanitize
+        Elimina claves con $ o . del body/query
+        Previene NoSQL injection"]
+        SAN --> AUTH
+
+        AUTH["⑧ authMiddleware
+        Verifica firma JWT con JWT_SECRET"]
+        AUTH -->|firma inválida / token revocado| R3["🚫 401 Unauthorized"]
+        AUTH -->|token expirado| REF["🔄 Refresco silencioso
+        Nuevo access token desde cookie httpOnly"]
+        REF -->|refresh inválido| R3
+        REF -->|✓| CTRL
+        AUTH -->|✓| CTRL
+
+        CTRL["⑨ evento.controller.js
+        Evento.find &#40;{ userId: req.user.id }&#41;
+        userId sacado del JWT, nunca del body"]
+        CTRL --> MDB
+
+        MDB["⑩ MongoDB — Filtro por propietario
+        Solo documentos donde userId coincide
+        Un _id ajeno devuelve array vacío"]
+    end
+
+    MDB -->|datos filtrados| RES(["✅ 200 OK
+    Solo los eventos del usuario autenticado"])
+```
+
+> **Dónde puede fallar una petición maliciosa**
+>
+> | Zona | Intento | Capa que lo detiene |
+> |------|---------|---------------------|
+> | **Frontend** | Sin sesión activa | ① Auth Guard → redirige a /login antes de enviar nada |
+> | **Frontend** | Token robado de localStorage | ② Interceptor — el access token nunca está en localStorage |
+> | **Backend** | Origen no autorizado | ④ CORS → bloqueado antes de cualquier lógica de negocio |
+> | **Backend** | Flood / scraping | ⑥ Rate Limiter → 429 |
+> | **Backend** | Payload con `$gt`, `$where`… | ⑦ mongo-sanitize → operador eliminado del query |
+> | **Backend** | Token falsificado o expirado | ⑧ authMiddleware → 401 |
+> | **Backend** | Token válido pero de otro usuario | ⑨ + ⑩ → el `userId` del JWT no coincide con los documentos → resultado vacío o 404 |
+
+---
+
 ## Resumen por tipo de ataque
 
 | Ataque | Medidas que lo mitigan |
