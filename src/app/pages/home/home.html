@@ -15,31 +15,37 @@
       </a>
     }
 
-    <div class="quick-stats">
-      @if (isLoading()) {
-        <div class="skeleton skeleton-stat"></div>
-        <div class="skeleton skeleton-stat"></div>
-        <div class="skeleton skeleton-stat"></div>
+    <div class="q1-habits">
+      <div class="q1-habits-header">
+        <span class="q1-habits-title">{{ t()('tracker.habits') }}</span>
+        <a routerLink="/tracker" class="q-link">{{ t()('home.seeAll') }}</a>
+      </div>
+      @if (habits().length === 0) {
+        <p class="empty-msg">{{ t()('tracker.noHabits') }}</p>
       } @else {
-        @if (currentMonthStats(); as stats) {
-          <div class="stat-pill">
-            <span class="stat-label">{{ t()('finance.income') }}</span>
-            <span class="stat-val green">€{{ stats.income | number:'1.0-0' }}</span>
-          </div>
-          <div class="stat-pill">
-            <span class="stat-label">{{ t()('finance.expenses') }}</span>
-            <span class="stat-val red">€{{ stats.expenses | number:'1.0-0' }}</span>
-          </div>
-          <div class="stat-pill">
-            <span class="stat-label">{{ t()('home.statsSaved') }}</span>
-            <span class="stat-val">€{{ totalSaved() | number:'1.0-0' }}</span>
-          </div>
-        } @else {
-          <div class="stat-pill">
-            <span class="stat-label">{{ t()('home.statsNoData') }}</span>
-            <span class="stat-val">—</span>
-          </div>
-        }
+        <ul class="q1-habit-list" aria-label="{{ t()('tracker.habits') }}">
+          @for (habit of habits(); track habit._id) {
+            <li class="q1-habit-row">
+              <span class="q1-habit-icon" aria-hidden="true">{{ habit.icon }}</span>
+              <span class="q1-habit-name">{{ habit.name }}</span>
+              <span class="q1-habit-streak" aria-label="{{ habit.rachaActual }} {{ t()('tracker.streak') }}">
+                🔥 {{ habit.rachaActual }}
+              </span>
+              <button
+                class="q1-habit-btn"
+                [class.done]="isDoneToday(habit)"
+                (click)="markHabit(habit._id)"
+                [attr.aria-label]="isDoneToday(habit) ? t()('tracker.done') : t()('tracker.markDone')"
+                [attr.aria-pressed]="isDoneToday(habit)">
+                @if (isDoneToday(habit)) {
+                  <i class="fa-solid fa-check" aria-hidden="true"></i>
+                } @else {
+                  <i class="fa-regular fa-circle" aria-hidden="true"></i>
+                }
+              </button>
+            </li>
+          }
+        </ul>
       }
     </div>
   </section>

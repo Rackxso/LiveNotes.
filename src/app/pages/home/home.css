@@ -156,45 +156,97 @@
   flex-shrink: 0;
 }
 
-.quick-stats {
+/* ── Q1: HABITS WIDGET ───────────────────────────────── */
+.q1-habits {
   display: flex;
-  gap: 10px;
+  flex-direction: column;
+  gap: 6px;
   margin-top: auto;
   flex-shrink: 0;
 }
 
-.stat-pill {
-  flex: 1;
-  background: var(--secondary-background-color);
-  border-radius: 12px;
-  padding: 10px 12px;
+.q1-habits-header {
   display: flex;
-  flex-direction: column;
-  gap: 2px;
+  justify-content: space-between;
+  align-items: center;
 }
 
-.stat-label {
-  font-size: 10px;
+.q1-habits-title {
+  font-size: 12px;
+  font-weight: 600;
   color: var(--text-subcolor);
   text-transform: uppercase;
   letter-spacing: 0.08em;
 }
 
-.stat-val {
-  font-family: var(--fuente-titulo);
-  font-size: 22px;
-  color: var(--text-color);
-  line-height: 1;
-
-  &.green { color: var(--green); }
-  &.red   { color: var(--red);   }
+.q1-habit-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
 }
 
-.stat-change {
-  font-size: 11px;
-  color: var(--green);
+.q1-habit-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  background: var(--secondary-background-color);
+  border-radius: 10px;
+  padding: 7px 10px;
+}
 
-  &.red { color: var(--red); }
+.q1-habit-icon {
+  font-size: 16px;
+  line-height: 1;
+  flex-shrink: 0;
+}
+
+.q1-habit-name {
+  flex: 1;
+  font-size: 13px;
+  color: var(--text-color);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.q1-habit-streak {
+  font-size: 12px;
+  color: var(--text-subcolor);
+  flex-shrink: 0;
+}
+
+.q1-habit-btn {
+  background: none;
+  border: 1.5px solid var(--text-subcolor);
+  border-radius: 50%;
+  width: 26px;
+  height: 26px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  color: var(--text-subcolor);
+  flex-shrink: 0;
+  transition: background 0.15s, border-color 0.15s, color 0.15s;
+
+  &.done {
+    background: var(--accent-color);
+    border-color: var(--accent-color);
+    color: #fff;
+  }
+
+  &:hover:not(.done) {
+    border-color: var(--accent-color);
+    color: var(--accent-color);
+  }
+
+  &:focus-visible {
+    outline: 2px solid var(--accent-color);
+    outline-offset: 2px;
+  }
 }
 
 /* ── Q2: WEEK STRIP ──────────────────────────────────── */

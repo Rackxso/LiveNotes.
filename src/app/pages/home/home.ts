@@ -5,6 +5,7 @@ import { I18nService } from '../../services/i18n.service';
 import { AuthService } from '../../services/auth.service';
 import { EventosService } from '../../services/eventos.service';
 import { FinanceService } from '../../services/finance.service';
+import { HabitsService, Habit } from '../../services/habits.service';
 import { Note } from '../../services/notes.service';
 import { GoalProgress } from '../../components/commons/goal-progress/goal-progress';
 import { ToDo } from '../../components/to-do/to-do';
@@ -24,6 +25,7 @@ export class Home {
   private readonly auth           = inject(AuthService);
   private readonly eventosService = inject(EventosService);
   private readonly financeService = inject(FinanceService);
+  private readonly habitsService  = inject(HabitsService);
   readonly t = this.i18n.t;
 
   private readonly _today = new Date();
@@ -41,6 +43,7 @@ export class Home {
     this.eventosService.loadEventos().subscribe();
     this.financeService.loadTransactions().subscribe();
     this.financeService.loadSavingsGoals().subscribe();
+    this.habitsService.getHabits().subscribe();
   }
 
   readonly fechaHoy = computed(() =>
@@ -191,4 +194,21 @@ export class Home {
   openEditNoteModal(note: Note): void { this.editingNote.set(note); this.showAddNoteModal.set(true); }
 
   onDiaSeleccionado(fecha: Date): void { this.diaSeleccionado.set(fecha); }
+
+  // ── Hábitos (Q1) ──────────────────────────────────────
+
+  readonly habits = this.habitsService.habits;
+
+  isDoneToday(habit: Habit): boolean {
+    if (!habit.ultimoHecho) return false;
+    const last = new Date(habit.ultimoHecho);
+    const t = this._today;
+    return last.getFullYear() === t.getFullYear() &&
+           last.getMonth()    === t.getMonth()    &&
+           last.getDate()     === t.getDate();
+  }
+
+  markHabit(id: string): void {
+    this.habitsService.markHabit(id).subscribe();
+  }
 }
