@@ -1,5 +1,6 @@
 import { ChangeDetectionStrategy, Component, computed, inject } from '@angular/core';
 import { ActivatedRoute, RouterLink } from '@angular/router';
+import { I18nService } from '../../services/i18n.service';
 
 interface Config {
   icon: string;
@@ -44,6 +45,7 @@ const CONFIGS: Record<string, Config> = {
 })
 export class EmailConfirmado {
   private readonly route = inject(ActivatedRoute);
+  readonly t = inject(I18nService).t;
 
   protected readonly config = computed<Config>(() => {
     const tipo = this.route.snapshot.queryParamMap.get('tipo') ?? 'error';

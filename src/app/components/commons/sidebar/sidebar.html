@@ -1,7 +1,7 @@
 <aside class="sidebar" [class.expanded]="expanded()">
 
   <button class="toggle-btn" (click)="toggle()"
-    [attr.aria-label]="expanded() ? 'Collapse sidebar' : 'Expand sidebar'">
+    [attr.aria-label]="expanded() ? t()('sidebar.collapse') : t()('sidebar.expand')">
     <i class="fa-solid fa-angles-right" aria-hidden="true"></i>
   </button>
 
@@ -50,10 +50,10 @@
         <a class="nav-item nav-item--admin"
            routerLink="/admin"
            routerLinkActive="active"
-           [title]="!expanded() ? 'Admin' : null"
-           aria-label="Admin">
+           [title]="!expanded() ? t()('sidebar.admin') : null"
+           [attr.aria-label]="t()('sidebar.admin')">
           <i class="fa-solid fa-shield-halved" aria-hidden="true"></i>
-          <span class="nav-label">Admin</span>
+          <span class="nav-label">{{ t()('sidebar.admin') }}</span>
         </a>
       }
       @for (item of secondaryNav(); track item.route) {

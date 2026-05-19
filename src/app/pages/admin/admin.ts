@@ -13,6 +13,7 @@ import { AdminService, ViewMode } from '../../services/admin.service';
 import { TicketService, AdminTicket } from '../../services/ticket.service';
 import { LangSelector } from '../../components/commons/lang-selector/lang-selector';
 import { Selector } from '../../components/commons/selector/selector';
+import { I18nService } from '../../services/i18n.service';
 
 type EstadoFilter = 'todos' | 'abierto' | 'en_revision' | 'resuelto';
 
@@ -27,6 +28,7 @@ export class AdminComponent implements OnInit {
   readonly auth       = inject(AuthService);
   readonly adminSvc   = inject(AdminService);
   private readonly ticketSvc = inject(TicketService);
+  readonly t = inject(I18nService).t;
 
   readonly tickets        = signal<AdminTicket[]>([]);
   readonly loading        = signal(false);

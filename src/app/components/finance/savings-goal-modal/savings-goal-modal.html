@@ -2,37 +2,37 @@
   <div class="modal-panel">
 
     <header class="modal-header">
-      <h2 class="modal-title">{{ mode() === 'edit' ? 'Editar meta' : 'Nueva meta de ahorro' }}</h2>
-      <button type="button" class="modal-close" (click)="close()" aria-label="Cerrar">×</button>
+      <h2 class="modal-title">{{ mode() === 'edit' ? t()('savingsModal.titleEdit') : t()('savingsModal.titleCreate') }}</h2>
+      <button type="button" class="modal-close" (click)="close()" [attr.aria-label]="t()('savingsModal.close')">×</button>
     </header>
 
     <form class="create-form" [formGroup]="form" (ngSubmit)="submit()">
 
       @if (mode() === 'create') {
         <div class="field">
-          <label for="sg-name">Nombre</label>
-          <input id="sg-name" type="text" formControlName="name" placeholder="Ej: Viaje, Coche, Emergencias..." />
+          <label for="sg-name">{{ t()('savingsModal.name') }}</label>
+          <input id="sg-name" type="text" formControlName="name" [placeholder]="t()('savingsModal.namePlaceholder')" />
         </div>
       }
 
       @if (mode() === 'edit') {
         <div class="field">
-          <label>Nombre</label>
+          <label>{{ t()('savingsModal.name') }}</label>
           <p class="edit-name">{{ editingName() }}</p>
         </div>
       }
 
       <div class="field">
-        <label for="sg-target">Objetivo (€)</label>
+        <label for="sg-target">{{ t()('savingsModal.target') }}</label>
         <input id="sg-target" type="number" formControlName="target" min="0.01" step="0.01" />
       </div>
 
       <div class="form-actions">
         @if (mode() === 'edit') {
-          <button type="button" class="delete-btn" (click)="deleteGoal()">Eliminar</button>
+          <button type="button" class="delete-btn" (click)="deleteGoal()">{{ t()('savingsModal.delete') }}</button>
         }
-        <app-secondary-button [config]="{texto: 'Cancelar'}" (clicked)="close()" />
-        <app-primary-button [config]="{texto: mode() === 'edit' ? 'Guardar' : 'Crear meta', type: 'submit'}" [disabled]="form.invalid" />
+        <app-secondary-button [config]="{texto: t()('savingsModal.cancel')}" (clicked)="close()" />
+        <app-primary-button [config]="{texto: mode() === 'edit' ? t()('savingsModal.save') : t()('savingsModal.createBtn'), type: 'submit'}" [disabled]="form.invalid" />
       </div>
 
     </form>

@@ -11,6 +11,7 @@ import { I18nService } from '../../../services/i18n.service';
 })
 export class MiniCalendar {
   private readonly i18n = inject(I18nService);
+  readonly t = this.i18n.t;
 
   private readonly _today = new Date();
 

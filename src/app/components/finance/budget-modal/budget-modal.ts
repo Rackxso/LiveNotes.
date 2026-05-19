@@ -11,6 +11,7 @@ import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angula
 import { ApiPresupuestoDto, FinanceService } from '../../../services/finance.service';
 import { PrimaryButton } from '../../commons/primary-button/primary-button';
 import { SecondaryButton } from '../../commons/secondary-button/secondary-button';
+import { I18nService } from '../../../services/i18n.service';
 
 export const BUDGET_COLORS = [
   '#7A5A8A', '#5A8A60', '#B85040', '#4A7FA5',
@@ -26,6 +27,7 @@ export const BUDGET_COLORS = [
 })
 export class BudgetModal {
   private readonly financeService = inject(FinanceService);
+  readonly t = inject(I18nService).t;
 
   readonly saved = output<void>();
   readonly deleted = output<void>();

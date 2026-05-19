@@ -3,6 +3,7 @@ import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angula
 import { Router, RouterLink } from '@angular/router';
 import { AuthService } from '../../services/auth.service';
 import { PrimaryButton } from '../../components/commons/primary-button/primary-button';
+import { I18nService } from '../../services/i18n.service';
 
 @Component({
   selector: 'app-register',
@@ -14,6 +15,7 @@ import { PrimaryButton } from '../../components/commons/primary-button/primary-b
 export class Register {
   private readonly auth = inject(AuthService);
   private readonly router = inject(Router);
+  readonly t = inject(I18nService).t;
 
   protected readonly form = new FormGroup({
     name:            new FormControl('', [Validators.required, Validators.minLength(2)]),

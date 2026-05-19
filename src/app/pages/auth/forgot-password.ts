@@ -4,6 +4,7 @@ import { HttpClient } from '@angular/common/http';
 import { FormsModule } from '@angular/forms';
 import { environment } from '../../../environments/environment';
 import { PrimaryButton } from '../../components/commons/primary-button/primary-button';
+import { I18nService } from '../../services/i18n.service';
 
 @Component({
   selector: 'app-forgot-password',
@@ -14,6 +15,7 @@ import { PrimaryButton } from '../../components/commons/primary-button/primary-b
 })
 export class ForgotPassword {
   private readonly http = inject(HttpClient);
+  readonly t = inject(I18nService).t;
 
   protected readonly email   = signal('');
   protected readonly loading = signal(false);

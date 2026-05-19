@@ -2,33 +2,33 @@
   <div class="modal" (click)="$event.stopPropagation()">
 
     <div class="modal-header">
-      <h2 id="add-note-title">{{ isEditing ? 'Edit note' : 'New note' }}</h2>
-      <button class="close-btn" type="button" aria-label="Close" (click)="onCerrar()">✕</button>
+      <h2 id="add-note-title">{{ isEditing ? t()('noteModal.titleEdit') : t()('noteModal.titleNew') }}</h2>
+      <button class="close-btn" type="button" [attr.aria-label]="t()('noteModal.close')" (click)="onCerrar()">✕</button>
     </div>
 
     <form [formGroup]="form" (ngSubmit)="onGuardar()">
 
       <div class="field">
-        <label for="note-title">Title <span aria-hidden="true">*</span></label>
+        <label for="note-title">{{ t()('noteModal.titleLabel') }} <span aria-hidden="true">*</span></label>
         <input
           id="note-title"
           type="text"
           formControlName="titulo"
-          placeholder="Note title"
+          [placeholder]="t()('noteModal.titlePlaceholder')"
           autocomplete="off"
           [attr.aria-invalid]="form.controls.titulo.invalid && form.controls.titulo.touched" />
         @if (form.controls.titulo.invalid && form.controls.titulo.touched) {
           <span class="field-error" role="alert">
-            @if (form.controls.titulo.hasError('required')) { Title is required. }
-            @else if (form.controls.titulo.hasError('maxlength')) { Max 100 characters. }
+            @if (form.controls.titulo.hasError('required')) { {{ t()('noteModal.titleRequired') }} }
+            @else if (form.controls.titulo.hasError('maxlength')) { {{ t()('noteModal.titleMaxLength') }} }
           </span>
         }
       </div>
 
       <div class="field">
-        <label for="note-category">Category</label>
+        <label for="note-category">{{ t()('noteModal.category') }}</label>
         <select id="note-category" formControlName="categoria" class="category-select">
-          <option value="">No category</option>
+          <option value="">{{ t()('noteModal.noCategory') }}</option>
           @for (cat of allCategories; track cat) {
             <option [value]="cat">{{ cat }}</option>
           }
@@ -37,9 +37,9 @@
 
       @if (isEditing) {
         <div class="field">
-          <label for="note-evento">Linked event</label>
+          <label for="note-evento">{{ t()('noteModal.linkedEvent') }}</label>
           <select id="note-evento" formControlName="eventoId" class="category-select">
-            <option value="">No event</option>
+            <option value="">{{ t()('noteModal.noEvent') }}</option>
             @for (ev of sortedEventos(); track ev.id) {
               <option [value]="ev.id">{{ ev.titulo }} — {{ formatEventDate(ev.fecha) }}</option>
             }
@@ -48,20 +48,20 @@
       }
 
       <div class="field">
-        <label for="note-content">Content</label>
+        <label for="note-content">{{ t()('noteModal.content') }}</label>
         <textarea
           id="note-content"
           formControlName="contenido"
-          placeholder="Write something…"
+          [placeholder]="t()('noteModal.contentPlaceholder')"
           [attr.aria-invalid]="form.controls.contenido.invalid && form.controls.contenido.touched"></textarea>
         @if (form.controls.contenido.hasError('maxlength') && form.controls.contenido.touched) {
-          <span class="field-error" role="alert">Max 2000 characters.</span>
+          <span class="field-error" role="alert">{{ t()('noteModal.contentMaxLength') }}</span>
         }
       </div>
 
       <div class="modal-footer">
-        <app-secondary-button class="small" [config]="{texto: 'Cancel'}" (clicked)="onCerrar()" />
-        <app-primary-button class="small" [config]="{texto: isEditing ? 'Save changes' : 'Save note', type: 'submit'}" />
+        <app-secondary-button class="small" [config]="{texto: t()('noteModal.cancel')}" (clicked)="onCerrar()" />
+        <app-primary-button class="small" [config]="{texto: isEditing ? t()('noteModal.saveChanges') : t()('noteModal.save'), type: 'submit'}" />
       </div>
 
     </form>

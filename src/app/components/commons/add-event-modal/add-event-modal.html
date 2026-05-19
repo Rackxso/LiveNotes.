@@ -46,15 +46,15 @@
 
     @if (esEdicion) {
       <div class="field">
-        <label>Linked notes</label>
+        <label>{{ t()('eventModal.linkedNotes') }}</label>
         <div class="link-row">
           <select [(ngModel)]="selectedNotaId" class="link-select">
-            <option value="">Select a note…</option>
+            <option value="">{{ t()('eventModal.selectNote') }}</option>
             @for (nota of availableNotas(); track nota._id) {
               <option [value]="nota._id">{{ nota.titulo }}</option>
             }
           </select>
-          <button type="button" class="link-btn" [disabled]="!selectedNotaId" (click)="linkNota()">Add</button>
+          <button type="button" class="link-btn" [disabled]="!selectedNotaId" (click)="linkNota()">{{ t()('eventModal.add') }}</button>
         </div>
         @if (linkedNotas().length > 0) {
           <div class="linked-chips">
@@ -69,15 +69,15 @@
       </div>
 
       <div class="field">
-        <label>Linked to-do lists</label>
+        <label>{{ t()('eventModal.linkedTodos') }}</label>
         <div class="link-row">
           <select [(ngModel)]="selectedTodoList" class="link-select">
-            <option value="">Select a list…</option>
+            <option value="">{{ t()('eventModal.selectList') }}</option>
             @for (list of availableTodoLists(); track list) {
               <option [value]="list">{{ list }}</option>
             }
           </select>
-          <button type="button" class="link-btn" [disabled]="!selectedTodoList" (click)="linkTodoList()">Add</button>
+          <button type="button" class="link-btn" [disabled]="!selectedTodoList" (click)="linkTodoList()">{{ t()('eventModal.add') }}</button>
         </div>
         @if (linkedTodoLists().length > 0) {
           <div class="linked-chips">

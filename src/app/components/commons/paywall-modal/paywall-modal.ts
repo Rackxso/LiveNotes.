@@ -11,6 +11,7 @@ import {
 import { TitleCasePipe } from '@angular/common';
 import { PremiumService } from '../../../services/premium.service';
 import { AuthService } from '../../../services/auth.service';
+import { I18nService } from '../../../services/i18n.service';
 
 @Component({
   selector: 'app-paywall-modal',
@@ -22,6 +23,7 @@ import { AuthService } from '../../../services/auth.service';
 export class PaywallModal {
   private readonly premium = inject(PremiumService);
   readonly auth = inject(AuthService);
+  readonly t = inject(I18nService).t;
 
   readonly feature = input<string>('presupuestos');
 

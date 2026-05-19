@@ -4,7 +4,7 @@
       <img class="brand-logo-img" src="/Logo.png" alt="LiveNotes" />
     </div>
     <div class="brand-tagline">
-      Todo en un<br><em>solo lugar.</em>
+      {{ t()('auth.tagline') }}
     </div>
   </aside>
 
@@ -15,7 +15,7 @@
         {{ config().title }} <em>{{ config().titleEm }}</em>
       </h1>
       <p class="confirm-message">{{ config().message }}</p>
-      <a routerLink="/" class="confirm-btn">Ir al inicio</a>
+      <a routerLink="/" class="confirm-btn">{{ t()('auth.confirmado.goHome') }}</a>
     </div>
   </main>
 </div>

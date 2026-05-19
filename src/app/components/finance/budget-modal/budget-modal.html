@@ -2,20 +2,20 @@
   <div class="modal-panel">
 
     <header class="modal-header">
-      <h2 class="modal-title">{{ mode() === 'edit' ? 'Editar presupuesto' : 'Nuevo presupuesto' }}</h2>
-      <button type="button" class="modal-close" (click)="close()" aria-label="Cerrar">×</button>
+      <h2 class="modal-title">{{ mode() === 'edit' ? t()('budgetModal.titleEdit') : t()('budgetModal.titleCreate') }}</h2>
+      <button type="button" class="modal-close" (click)="close()" [attr.aria-label]="t()('budgetModal.close')">×</button>
     </header>
 
     <form class="create-form" [formGroup]="form" (ngSubmit)="submit()">
 
       @if (mode() === 'create') {
         <div class="field">
-          <label for="b-nombre">Categoría</label>
-          <input id="b-nombre" type="text" formControlName="nombre" placeholder="Ej: Alimentación, Ocio..." />
+          <label for="b-nombre">{{ t()('budgetModal.category') }}</label>
+          <input id="b-nombre" type="text" formControlName="nombre" [placeholder]="t()('budgetModal.categoryPlaceholder')" />
         </div>
 
         <div class="field">
-          <label>Color</label>
+          <label>{{ t()('budgetModal.color') }}</label>
           <div class="color-swatches">
             @for (c of colors; track c) {
               <button type="button" class="swatch"
@@ -31,22 +31,22 @@
 
       @if (mode() === 'edit') {
         <div class="field">
-          <label>Categoría</label>
+          <label>{{ t()('budgetModal.category') }}</label>
           <p class="edit-category-name">{{ editingName() }}</p>
         </div>
       }
 
       <div class="field">
-        <label for="b-limite">Límite (€)</label>
+        <label for="b-limite">{{ t()('budgetModal.limit') }}</label>
         <input id="b-limite" type="number" formControlName="limite" min="0.01" step="0.01" />
       </div>
 
       <div class="form-actions">
         @if (mode() === 'edit') {
-          <button type="button" class="delete-btn" (click)="deleteBudget()">Eliminar</button>
+          <button type="button" class="delete-btn" (click)="deleteBudget()">{{ t()('budgetModal.delete') }}</button>
         }
-        <app-secondary-button class="small" [config]="{texto: 'Cancelar'}" (clicked)="close()" />
-        <app-primary-button class="small" [config]="{texto: 'Guardar', type: 'submit'}" [disabled]="form.invalid" />
+        <app-secondary-button class="small" [config]="{texto: t()('budgetModal.cancel')}" (clicked)="close()" />
+        <app-primary-button class="small" [config]="{texto: t()('budgetModal.save'), type: 'submit'}" [disabled]="form.invalid" />
       </div>
 
     </form>

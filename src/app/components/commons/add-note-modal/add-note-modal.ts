@@ -4,6 +4,7 @@ import { NotesService, NoteDto, Note } from '../../../services/notes.service';
 import { EventosService } from '../../../services/eventos.service';
 import { PrimaryButton } from '../primary-button/primary-button';
 import { SecondaryButton } from '../secondary-button/secondary-button';
+import { I18nService } from '../../../services/i18n.service';
 
 @Component({
   selector: 'app-add-note-modal',
@@ -15,6 +16,7 @@ import { SecondaryButton } from '../secondary-button/secondary-button';
 export class AddNoteModal {
   private readonly notesService = inject(NotesService);
   private readonly eventosService = inject(EventosService);
+  readonly t = inject(I18nService).t;
 
   readonly note = input<Note | null>(null);
   readonly existingCategories = input<string[]>([]);

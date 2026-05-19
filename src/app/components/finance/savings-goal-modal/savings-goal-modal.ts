@@ -11,6 +11,7 @@ import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angula
 import { ApiMetaDto, FinanceService } from '../../../services/finance.service';
 import { PrimaryButton } from '../../commons/primary-button/primary-button';
 import { SecondaryButton } from '../../commons/secondary-button/secondary-button';
+import { I18nService } from '../../../services/i18n.service';
 
 @Component({
   selector: 'app-savings-goal-modal',
@@ -21,6 +22,7 @@ import { SecondaryButton } from '../../commons/secondary-button/secondary-button
 })
 export class SavingsGoalModal {
   private readonly financeService = inject(FinanceService);
+  readonly t = inject(I18nService).t;
 
   readonly saved   = output<void>();
   readonly deleted = output<void>();

@@ -4,6 +4,7 @@ import { Router, RouterLink } from '@angular/router';
 import { AuthService } from '../../services/auth.service';
 import { PrimaryButton } from '../../components/commons/primary-button/primary-button';
 import { PosthogService } from '../../services/posthog.service';
+import { I18nService } from '../../services/i18n.service';
 
 @Component({
   selector: 'app-login',
@@ -16,6 +17,7 @@ export class Login {
   private readonly auth = inject(AuthService);
   private readonly router = inject(Router);
   private readonly posthog = inject(PosthogService);
+  readonly t = inject(I18nService).t;
 
   protected readonly form = new FormGroup({
     email: new FormControl('', [Validators.required, Validators.email]),

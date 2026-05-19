@@ -8,25 +8,25 @@
     </div>
 
     <div class="brand-tagline">
-      Todo en un<br><em>solo lugar.</em>
+      {{ t()('auth.tagline') }}
     </div>
 
     <ul class="brand-features" role="list">
       <li class="brand-feat">
         <span class="brand-feat-icon" aria-hidden="true"><i class="fa-solid fa-calendar-days"></i></span>
-        Calendario y eventos
+        {{ t()('auth.feat.calendar') }}
       </li>
       <li class="brand-feat">
         <span class="brand-feat-icon" aria-hidden="true"><i class="fa-solid fa-coins"></i></span>
-        Finanzas y presupuestos
+        {{ t()('auth.feat.finance') }}
       </li>
       <li class="brand-feat">
         <span class="brand-feat-icon" aria-hidden="true"><i class="fa-solid fa-note-sticky"></i></span>
-        Notas y listas
+        {{ t()('auth.feat.notes') }}
       </li>
       <li class="brand-feat">
         <span class="brand-feat-icon" aria-hidden="true"><i class="fa-solid fa-leaf"></i></span>
-        Hábitos y estado de ánimo
+        {{ t()('auth.feat.habits') }}
       </li>
     </ul>
   </aside>
@@ -34,39 +34,39 @@
   <!-- Panel derecho: formulario -->
   <main class="form-panel">
     <div class="form-card">
-      <h1 class="form-title">Bienvenido <em>de nuevo</em></h1>
-      <p class="form-subtitle">Inicia sesión para acceder a tu espacio personal.</p>
+      <h1 class="form-title">{{ t()('auth.login.titleStart') }} <em>{{ t()('auth.login.titleEm') }}</em></h1>
+      <p class="form-subtitle">{{ t()('auth.login.subtitle') }}</p>
 
       <form [formGroup]="form" (ngSubmit)="submit()" novalidate>
 
         <div class="field">
-          <label class="field-label" for="email">Correo electrónico</label>
+          <label class="field-label" for="email">{{ t()('auth.emailLabel') }}</label>
           <input
             id="email"
             class="field-input"
             [class.field-input--error]="emailInvalid"
             type="email"
-            placeholder="tu@email.com"
+            [placeholder]="t()('auth.emailPlaceholder')"
             formControlName="email"
             autocomplete="email"
             aria-describedby="email-error"
           />
           @if (emailInvalid) {
             <span id="email-error" class="field-error" role="alert">
-              Introduce un correo válido.
+              {{ t()('auth.emailError') }}
             </span>
           }
         </div>
 
         <div class="field">
-          <label class="field-label" for="password">Contraseña</label>
+          <label class="field-label" for="password">{{ t()('auth.passwordLabel') }}</label>
           <div class="field-input-wrap">
             <input
               id="password"
               class="field-input"
               [class.field-input--error]="passwordInvalid"
               [type]="showPassword() ? 'text' : 'password'"
-              placeholder="••••••••"
+              [placeholder]="t()('auth.passwordPlaceholder')"
               formControlName="password"
               autocomplete="current-password"
               aria-describedby="password-error"
@@ -75,17 +75,17 @@
               type="button"
               class="field-toggle"
               (click)="togglePassword()"
-              [attr.aria-label]="showPassword() ? 'Ocultar contraseña' : 'Mostrar contraseña'"
+              [attr.aria-label]="showPassword() ? t()('auth.hidePassword') : t()('auth.showPassword')"
             >
               <i class="fa-solid" [class.fa-eye-slash]="showPassword()" [class.fa-eye]="!showPassword()"></i>
             </button>
           </div>
           @if (passwordInvalid) {
             <span id="password-error" class="field-error" role="alert">
-              La contraseña debe tener al menos 6 caracteres.
+              {{ t()('auth.login.passwordError') }}
             </span>
           }
-          <a class="forgot-link" routerLink="/forgot-password">¿Olvidaste tu contraseña?</a>
+          <a class="forgot-link" routerLink="/forgot-password">{{ t()('auth.login.forgotPassword') }}</a>
         </div>
 
         @if (error()) {
@@ -94,14 +94,14 @@
 
         <app-primary-button
           class="full"
-          [config]="{texto: loading() ? 'Iniciando sesión…' : 'Iniciar sesión', type: 'submit'}"
+          [config]="{texto: loading() ? t()('auth.login.submitting') : t()('auth.login.submit'), type: 'submit'}"
           [disabled]="loading()"
         />
 
       </form>
 
       <p class="form-switch">
-        ¿No tienes cuenta? <a routerLink="/register">Regístrate gratis</a>
+        {{ t()('auth.login.noAccount') }} <a routerLink="/register">{{ t()('auth.login.registerLink') }}</a>
       </p>
     </div>
   </main>

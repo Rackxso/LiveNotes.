@@ -1,33 +1,33 @@
 <dialog #dialogEl (click)="onBackdropClick($event)" aria-labelledby="paywall-title" aria-describedby="paywall-desc">
   <div class="modal-panel">
 
-    <button type="button" class="modal-close" (click)="close()" aria-label="Cerrar">×</button>
+    <button type="button" class="modal-close" (click)="close()" [attr.aria-label]="t()('paywall.close')">×</button>
 
     <div class="crown-wrap" aria-hidden="true">
       <i class="fa-solid fa-crown crown-icon"></i>
     </div>
 
-    <h2 id="paywall-title" class="modal-title">Hazte Premium</h2>
+    <h2 id="paywall-title" class="modal-title">{{ t()('paywall.title') }}</h2>
     <p id="paywall-desc" class="modal-subtitle">
-      Has alcanzado el límite de 3 {{ feature() }} del plan gratuito.
+      {{ t()('paywall.subtitleStart') }} {{ feature() }} {{ t()('paywall.subtitleEnd') }}
     </p>
 
-    <ul class="features" aria-label="Ventajas del plan premium">
+    <ul class="features" [attr.aria-label]="t()('paywall.ariaFeatures')">
       <li>
         <i class="fa-solid fa-check feature-check" aria-hidden="true"></i>
-        {{ feature() | titlecase }} ilimitados
+        {{ feature() | titlecase }} {{ t()('paywall.unlimited') }}
       </li>
       <li>
         <i class="fa-solid fa-check feature-check" aria-hidden="true"></i>
-        Acceso a todas las categorías
+        {{ t()('paywall.allCategories') }}
       </li>
       <li>
         <i class="fa-solid fa-check feature-check" aria-hidden="true"></i>
-        Exportación de datos
+        {{ t()('paywall.exportData') }}
       </li>
       <li>
         <i class="fa-solid fa-check feature-check" aria-hidden="true"></i>
-        Soporte prioritario
+        {{ t()('paywall.prioritySupport') }}
       </li>
     </ul>
 
@@ -39,14 +39,14 @@
     >
       <i class="fa-solid fa-crown" aria-hidden="true"></i>
       @if (upgrading()) {
-        Redirigiendo…
+        {{ t()('paywall.redirecting') }}
       } @else {
-        Mejorar plan
+        {{ t()('paywall.upgrade') }}
       }
     </button>
 
     @if (auth.isAdmin()) {
-      <div class="divider" role="separator"><span>o</span></div>
+      <div class="divider" role="separator"><span>{{ t()('paywall.or') }}</span></div>
 
       <button
         type="button"
@@ -56,12 +56,12 @@
         aria-label="Simular activación premium para pruebas"
       >
         @if (toggling()) {
-          Aplicando…
+          {{ t()('paywall.applying') }}
         } @else {
           @if (auth.isPremium()) {
-            Desactivar Premium (test)
+            {{ t()('paywall.deactivate') }}
           } @else {
-            Simular Premium (test)
+            {{ t()('paywall.simulate') }}
           }
         }
       </button>
