@@ -122,7 +122,6 @@ export class EventosService {
 
   private mapToEvento(e: CalendarEventResponse): Evento {
     const fecha = new Date(e.date);
-    console.log(`[mapToEvento] id=${e._id} title="${e.title}" date="${e.date}" fecha=${fecha} valid=${!isNaN(fecha.getTime())}`);
     const h = fecha.getHours();
     const m = fecha.getMinutes();
     const hora = (h !== 0 || m !== 0)
