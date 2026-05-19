@@ -43,9 +43,7 @@ export class EventosService {
     this._inflight$ = this.http.get<CalendarEventResponse[]>(this.base).pipe(
       retry({ count: 3, delay: 1500 }),
       tap(data => {
-        console.log('[EventosService] raw response:', JSON.stringify(data));
         this._eventos.set(data.map(e => this.mapToEvento(e)));
-        console.log('[EventosService] mapped:', this._eventos().map(e => ({ id: e.id, titulo: e.titulo, fecha: e.fecha })));
         this._loaded = true;
       }),
       finalize(() => {
@@ -124,6 +122,7 @@ export class EventosService {
 
   private mapToEvento(e: CalendarEventResponse): Evento {
     const fecha = new Date(e.date);
+    console.log(`[mapToEvento] id=${e._id} title="${e.title}" date="${e.date}" fecha=${fecha} valid=${!isNaN(fecha.getTime())}`);
     const h = fecha.getHours();
     const m = fecha.getMinutes();
     const hora = (h !== 0 || m !== 0)
