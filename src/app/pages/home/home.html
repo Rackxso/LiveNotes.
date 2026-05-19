@@ -26,7 +26,7 @@
         <ul class="q1-habit-list" aria-label="{{ t()('tracker.habits') }}">
           @for (habit of habits(); track habit._id) {
             <li class="q1-habit-row">
-              <span class="q1-habit-icon" aria-hidden="true">{{ habit.icon }}</span>
+              <span class="q1-habit-icon" aria-hidden="true"><i class="{{ habit.icon }}"></i></span>
               <span class="q1-habit-name">{{ habit.name }}</span>
               <span class="q1-habit-streak" aria-label="{{ habit.rachaActual }} {{ t()('tracker.streak') }}">
                 🔥 {{ habit.rachaActual }}
