@@ -75,12 +75,21 @@ export class MonthView {
       this.anyo() === sel.getFullYear();
   };
 
-  readonly eventosDeDia = (dia: number): Evento[] =>
-    this.eventos().filter(e =>
-      e.fecha.getDate() === dia &&
-      e.fecha.getMonth() === this.mes() &&
-      e.fecha.getFullYear() === this.anyo()
-    );
+  readonly eventosPorDia = computed(() => {
+    const evs = this.eventos();
+    const m   = this.mes();
+    const a   = this.anyo();
+    const map = new Map<number, Evento[]>();
+    for (const e of evs) {
+      if (e.fecha.getMonth() === m && e.fecha.getFullYear() === a) {
+        const d = e.fecha.getDate();
+        const list = map.get(d) ?? [];
+        list.push(e);
+        map.set(d, list);
+      }
+    }
+    return map;
+  });
 
   seleccionarDia(dia: number): void {
     this.diaSeleccionadoChange.emit(new Date(this.anyo(), this.mes(), dia));

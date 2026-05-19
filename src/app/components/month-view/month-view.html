@@ -26,16 +26,16 @@
              [attr.aria-label]="nombreMes() + ' ' + dia"
              (click)="seleccionarDia(dia)">
             <span class="num-dia">{{ dia }}</span>
-            @if (eventosDeDia(dia).length > 0) {
+            @if ((eventosPorDia().get(dia) ?? []).length > 0) {
                 <span class="dia-punto" aria-hidden="true"></span>
             }
             <div class="pills">
-                @for (evento of eventosDeDia(dia); track evento.id) {
+                @for (evento of (eventosPorDia().get(dia) ?? []); track evento.id) {
                     @if ($index < 2) {
                         <button class="pill" (click)="$event.stopPropagation(); eventoSeleccionado.emit(evento)" [attr.aria-label]="'Ver evento: ' + evento.titulo">{{ evento.titulo }}</button>
                     }
                     @if ($index === 2) {
-                        <div class="pill pill-mas">+{{ eventosDeDia(dia).length - 2 }} {{ t()('calendar.more') }}</div>
+                        <div class="pill pill-mas">+{{ (eventosPorDia().get(dia) ?? []).length - 2 }} {{ t()('calendar.more') }}</div>
                     }
                 }
             </div>
