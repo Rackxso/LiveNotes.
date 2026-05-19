@@ -44,8 +44,6 @@ export class Settings implements OnInit {
   readonly passwordLoading  = signal(false);
   readonly passwordMsg      = signal<{ text: string; ok: boolean } | null>(null);
 
-  readonly isDev = !environment.production;
-
   ngOnInit(): void {
     const params = this.route.snapshot.queryParamMap;
     if (params.has('upgraded')) {

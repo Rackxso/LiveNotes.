@@ -45,25 +45,27 @@
       }
     </button>
 
-    <div class="divider" role="separator"><span>o</span></div>
+    @if (auth.isAdmin()) {
+      <div class="divider" role="separator"><span>o</span></div>
 
-    <button
-      type="button"
-      class="btn-simulate"
-      (click)="simulateToggle()"
-      [disabled]="toggling()"
-      aria-label="Simular activación premium para pruebas"
-    >
-      @if (toggling()) {
-        Aplicando…
-      } @else {
-        @if (auth.isPremium()) {
-          Desactivar Premium (test)
+      <button
+        type="button"
+        class="btn-simulate"
+        (click)="simulateToggle()"
+        [disabled]="toggling()"
+        aria-label="Simular activación premium para pruebas"
+      >
+        @if (toggling()) {
+          Aplicando…
         } @else {
-          Simular Premium (test)
+          @if (auth.isPremium()) {
+            Desactivar Premium (test)
+          } @else {
+            Simular Premium (test)
+          }
         }
-      }
-    </button>
+      </button>
+    }
 
   </div>
 </dialog>

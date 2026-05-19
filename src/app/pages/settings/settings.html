@@ -73,7 +73,7 @@
           </p>
         }
 
-        @if (isDev) {
+        @if (auth.isAdmin()) {
           <div class="simulate-row">
             <span class="simulate-label">{{ t()('settings.subscription.devLabel') }}</span>
             <button
