@@ -29,7 +29,7 @@
         <label for="note-category">{{ t()('noteModal.category') }}</label>
         <select id="note-category" formControlName="categoria" class="category-select">
           <option value="">{{ t()('noteModal.noCategory') }}</option>
-          @for (cat of allCategories; track cat) {
+          @for (cat of allCategories(); track cat) {
             <option [value]="cat">{{ cat }}</option>
           }
         </select>

@@ -1,9 +1,9 @@
 <div class="mc-head">
-  <button class="mc-nav" (click)="irAlMesAnterior()" aria-label="Previous month">
+  <button class="mc-nav" (click)="irAlMesAnterior()" [attr.aria-label]="t()('calendar.prevMonth')">
     <i class="fa-solid fa-chevron-left" aria-hidden="true"></i>
   </button>
   <span class="mc-month">{{ nombreMes() }} {{ anyo() }}</span>
-  <button class="mc-nav" (click)="irAlMesSiguiente()" aria-label="Next month">
+  <button class="mc-nav" (click)="irAlMesSiguiente()" [attr.aria-label]="t()('calendar.nextMonth')">
     <i class="fa-solid fa-chevron-right" aria-hidden="true"></i>
   </button>
 </div>

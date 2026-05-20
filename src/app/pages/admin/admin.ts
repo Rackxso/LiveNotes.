@@ -44,18 +44,29 @@ export class AdminComponent implements OnInit {
   });
 
   readonly estadoOptions: EstadoFilter[] = ['todos', 'abierto', 'en_revision', 'resuelto'];
-  readonly estadoLabel: Record<string, string> = {
-    todos: 'Todos', abierto: 'Abierto', en_revision: 'En revisión', resuelto: 'Resuelto',
-  };
-  readonly filterVistas = ['Todos', 'Abierto', 'En revisión', 'Resuelto'];
-  readonly labelToFilter: Record<string, EstadoFilter> = {
-    'Todos': 'todos', 'Abierto': 'abierto', 'En revisión': 'en_revision', 'Resuelto': 'resuelto',
-  };
-  readonly viewModes: { value: ViewMode; label: string }[] = [
-    { value: 'admin',   label: 'Admin' },
-    { value: 'free',    label: 'Free' },
-    { value: 'premium', label: 'Premium' },
-  ];
+  readonly estadoLabel = computed<Record<string, string>>(() => ({
+    todos:       this.t()('admin.statusAll'),
+    abierto:     this.t()('admin.statusOpen'),
+    en_revision: this.t()('admin.statusReview'),
+    resuelto:    this.t()('admin.statusResolved'),
+  }));
+  readonly filterVistas = computed(() => [
+    this.t()('admin.statusAll'),
+    this.t()('admin.statusOpen'),
+    this.t()('admin.statusReview'),
+    this.t()('admin.statusResolved'),
+  ]);
+  readonly labelToFilter = computed<Record<string, EstadoFilter>>(() => ({
+    [this.t()('admin.statusAll')]:      'todos',
+    [this.t()('admin.statusOpen')]:     'abierto',
+    [this.t()('admin.statusReview')]:   'en_revision',
+    [this.t()('admin.statusResolved')]: 'resuelto',
+  }));
+  readonly viewModes = computed(() => [
+    { value: 'admin' as ViewMode,   label: this.t()('sidebar.admin') },
+    { value: 'free' as ViewMode,    label: this.t()('settings.subscription.planFree') },
+    { value: 'premium' as ViewMode, label: this.t()('settings.subscription.planPremium') },
+  ]);
 
   ngOnInit(): void {
     this.loadTickets();
@@ -82,7 +93,7 @@ export class AdminComponent implements OnInit {
     this.ticketSvc.deleteAdmin(id).subscribe({
       error: () => {
         this.tickets.set(prev);
-        this.showError('Error al eliminar el ticket');
+        this.showError(this.t()('admin.errorDeleteTicket'));
       },
     });
   }

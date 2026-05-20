@@ -41,13 +41,13 @@
                   <button class="arrow-btn"
                           [disabled]="first"
                           (click)="moveImp(task._id, -1)"
-                          aria-label="Subir">
+                          [attr.aria-label]="t()('todo.sort.moveUp')">
                     <i class="fa-solid fa-chevron-up"></i>
                   </button>
                   <button class="arrow-btn"
                           [disabled]="last"
                           (click)="moveImp(task._id, 1)"
-                          aria-label="Bajar">
+                          [attr.aria-label]="t()('todo.sort.moveDown')">
                     <i class="fa-solid fa-chevron-down"></i>
                   </button>
                 </div>
@@ -62,7 +62,7 @@
         <div class="sort-column">
           <div class="sort-col-header">
             <span class="col-title">{{ t()('todo.sort.difficulty') }}</span>
-            <span class="col-hint">1 = {{ t()('todo.sort.masDificil') ?? 'más difícil' }}</span>
+            <span class="col-hint">1 = {{ t()('todo.sort.masDificil') }}</span>
           </div>
           <div class="sort-col-list"
                (dragover)="$event.preventDefault()"
@@ -81,13 +81,13 @@
                   <button class="arrow-btn"
                           [disabled]="first"
                           (click)="moveDif(task._id, -1)"
-                          aria-label="Subir">
+                          [attr.aria-label]="t()('todo.sort.moveUp')">
                     <i class="fa-solid fa-chevron-up"></i>
                   </button>
                   <button class="arrow-btn"
                           [disabled]="last"
                           (click)="moveDif(task._id, 1)"
-                          aria-label="Bajar">
+                          [attr.aria-label]="t()('todo.sort.moveDown')">
                     <i class="fa-solid fa-chevron-down"></i>
                   </button>
                 </div>
@@ -104,7 +104,7 @@
             <i class="fa-solid fa-cat" aria-hidden="true"></i>
             JumpingCat
           </button>
-          <button class="info-btn" (click)="toggleInfo('jumpingCat', $event)" [class.info-active]="activeInfo() === 'jumpingCat'" aria-label="Información sobre JumpingCat">
+          <button class="info-btn" (click)="toggleInfo('jumpingCat', $event)" [class.info-active]="activeInfo() === 'jumpingCat'" [attr.aria-label]="t()('todo.sort.infoAbout') + ' JumpingCat'">
             <i class="fa-solid fa-circle-info" aria-hidden="true"></i>
           </button>
         </div>
@@ -113,7 +113,7 @@
             <i class="fa-solid fa-brain" aria-hidden="true"></i>
             BalancedFlow
           </button>
-          <button class="info-btn" (click)="toggleInfo('balancedFlow', $event)" [class.info-active]="activeInfo() === 'balancedFlow'" aria-label="Información sobre BalancedFlow">
+          <button class="info-btn" (click)="toggleInfo('balancedFlow', $event)" [class.info-active]="activeInfo() === 'balancedFlow'" [attr.aria-label]="t()('todo.sort.infoAbout') + ' BalancedFlow'">
             <i class="fa-solid fa-circle-info" aria-hidden="true"></i>
           </button>
         </div>
@@ -122,7 +122,7 @@
             <i class="fa-solid fa-medal" aria-hidden="true"></i>
             PilaScore
           </button>
-          <button class="info-btn" (click)="toggleInfo('pilaScore', $event)" [class.info-active]="activeInfo() === 'pilaScore'" aria-label="Información sobre PilaScore">
+          <button class="info-btn" (click)="toggleInfo('pilaScore', $event)" [class.info-active]="activeInfo() === 'pilaScore'" [attr.aria-label]="t()('todo.sort.infoAbout') + ' PilaScore'">
             <i class="fa-solid fa-circle-info" aria-hidden="true"></i>
           </button>
         </div>
@@ -164,17 +164,17 @@
         <div class="info-card" (click)="$event.stopPropagation()">
           @if (activeInfo() === 'jumpingCat') {
             <p class="info-name"><i class="fa-solid fa-cat" aria-hidden="true"></i> JumpingCat</p>
-            <p class="info-text">Alterna entre tareas de distintos niveles de importancia. Ideal para no saturarte con todo lo crítico de golpe.</p>
+            <p class="info-text">{{ t()('todo.sort.jumpingCatDesc') }}</p>
           }
           @if (activeInfo() === 'balancedFlow') {
             <p class="info-name"><i class="fa-solid fa-brain" aria-hidden="true"></i> BalancedFlow</p>
-            <p class="info-text">Simula tu nivel de energía a lo largo del día: intercala tareas difíciles y fáciles para mantener un ritmo sostenible sin picos de agotamiento.</p>
+            <p class="info-text">{{ t()('todo.sort.balancedFlowDesc') }}</p>
           }
           @if (activeInfo() === 'pilaScore') {
             <p class="info-name"><i class="fa-solid fa-medal" aria-hidden="true"></i> PilaScore</p>
-            <p class="info-text">Calcula una puntuación combinada de importancia y dificultad. Las tareas con mayor puntuación total van primero.</p>
+            <p class="info-text">{{ t()('todo.sort.pilaScoreDesc') }}</p>
           }
-          <button class="info-close" (click)="closeInfo()" aria-label="Cerrar">
+          <button class="info-close" (click)="closeInfo()" [attr.aria-label]="t()('todo.sort.closeInfo')">
             <i class="fa-solid fa-xmark" aria-hidden="true"></i>
           </button>
         </div>

@@ -2,7 +2,7 @@
   <p class="ht-title">{{ t()('tracker.habits') }}</p>
   <div class="ht-header-actions">
     @if (selectMode() && selectedIds().size > 0) {
-      <button class="ht-icon-btn ht-delete-btn" (click)="showDeleteModal.set(true)" aria-label="Eliminar seleccionados">
+      <button class="ht-icon-btn ht-delete-btn" (click)="showDeleteModal.set(true)" [attr.aria-label]="t()('tracker.deleteSelected')">
         <i class="fa-solid fa-trash"></i>
       </button>
     }
@@ -10,7 +10,7 @@
       class="ht-icon-btn"
       [class.active]="selectMode()"
       (click)="toggleSelectMode()"
-      [attr.aria-label]="selectMode() ? 'Cancelar selección' : 'Seleccionar hábitos'">
+      [attr.aria-label]="selectMode() ? t()('tracker.cancelSelection') : t()('tracker.selectHabits')">
       <i class="fa-solid fa-check-square"></i>
     </button>
     <app-primary-button
@@ -97,16 +97,16 @@
       <div class="ht-modal-icon">
         <i class="fa-solid fa-triangle-exclamation"></i>
       </div>
-      <p class="ht-modal-title">Eliminar hábitos</p>
+      <p class="ht-modal-title">{{ t()('tracker.deleteConfirmTitle') }}</p>
       <p class="ht-modal-body">
-        ¿Seguro que quieres eliminar
-        <strong>{{ selectedIds().size }} {{ selectedIds().size === 1 ? 'hábito' : 'hábitos' }}</strong>?
-        Esta acción no se puede deshacer.
+        {{ t()('tracker.deleteConfirmStart') }}
+        <strong>{{ selectedIds().size }} {{ selectedIds().size === 1 ? t()('tracker.habit_one') : t()('tracker.habit_other') }}</strong>?
+        {{ t()('tracker.deleteCannotUndo') }}
       </p>
       <div class="ht-modal-actions">
-        <button class="ht-modal-cancel" (click)="showDeleteModal.set(false)">Cancelar</button>
+        <button class="ht-modal-cancel" (click)="showDeleteModal.set(false)">{{ t()('tracker.modal.cancel') }}</button>
         <button class="ht-modal-confirm" (click)="confirmDelete()">
-          <i class="fa-solid fa-trash"></i> Eliminar
+          <i class="fa-solid fa-trash"></i> {{ t()('tracker.deleteConfirmBtn') }}
         </button>
       </div>
     </div>

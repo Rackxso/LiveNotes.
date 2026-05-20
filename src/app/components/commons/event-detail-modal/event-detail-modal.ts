@@ -15,6 +15,7 @@ import { TodoItem } from '../../../services/todo.service';
 })
 export class EventDetailModal {
   private readonly i18n = inject(I18nService);
+  readonly t = this.i18n.t;
   private readonly eventosService = inject(EventosService);
   private readonly router = inject(Router);
 

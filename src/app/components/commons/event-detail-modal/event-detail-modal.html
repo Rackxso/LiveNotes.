@@ -7,14 +7,14 @@
       </div>
       <div class="header-actions">
         @if (mostrarBotonEditar()) {
-          <button class="action-btn" (click)="onEditar()" aria-label="Editar evento">
+          <button class="action-btn" (click)="onEditar()" [attr.aria-label]="t()('modal.editEvent')">
             <i class="fa-solid fa-pen" aria-hidden="true"></i>
           </button>
-          <button class="action-btn action-btn--danger" (click)="onEliminar()" aria-label="Eliminar evento">
+          <button class="action-btn action-btn--danger" (click)="onEliminar()" [attr.aria-label]="t()('eventos.deleteEvent')">
             <i class="fa-solid fa-trash" aria-hidden="true"></i>
           </button>
         }
-        <button class="close-btn" (click)="onCerrar()" aria-label="Cerrar">
+        <button class="close-btn" (click)="onCerrar()" [attr.aria-label]="t()('modal.close')">
           <i class="fa-solid fa-xmark" aria-hidden="true"></i>
         </button>
       </div>
@@ -47,7 +47,7 @@
           <div class="linked-group">
             <span class="linked-label">
               <i class="fa-regular fa-note-sticky" aria-hidden="true"></i>
-              Notes
+              {{ t()('eventModal.linkedNotes') }}
             </span>
             <div class="linked-chips">
               @for (nota of linkedNotas(); track nota._id) {
@@ -60,7 +60,7 @@
           <div class="linked-group">
             <span class="linked-label">
               <i class="fa-solid fa-list-check" aria-hidden="true"></i>
-              To-do lists
+              {{ t()('eventModal.linkedTodos') }}
             </span>
             <div class="linked-chips">
               @for (list of linkedTodoLists(); track list) {
@@ -76,7 +76,7 @@
       <div class="modal-footer">
         <a routerLink="/calendar/month" class="cal-link" (click)="onCerrar()">
           <i class="fa-solid fa-arrow-up-right-from-square" aria-hidden="true"></i>
-          Ver en calendario
+          {{ t()('eventos.viewCalendar') }}
         </a>
       </div>
     }

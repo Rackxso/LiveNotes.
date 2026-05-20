@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, inject, signal } from '@angular/core';
+import { ChangeDetectionStrategy, Component, computed, inject, signal } from '@angular/core';
 import { ReactiveFormsModule, FormBuilder, Validators } from '@angular/forms';
 import { DatePipe } from '@angular/common';
 import { TicketService, Ticket } from '../../services/ticket.service';
@@ -38,18 +38,18 @@ export class Help {
 
   readonly showHistory = signal(false);
 
-  readonly categorias: { value: string; label: string }[] = [
-    { value: 'bug',       label: 'Error / Bug' },
-    { value: 'sugerencia', label: 'Sugerencia' },
-    { value: 'pregunta',  label: 'Pregunta' },
-    { value: 'otro',      label: 'Otro' },
-  ];
+  readonly categorias = computed(() => [
+    { value: 'bug',        label: this.t()('help.cat.bug') },
+    { value: 'sugerencia', label: this.t()('help.cat.sugerencia') },
+    { value: 'pregunta',   label: this.t()('help.cat.pregunta') },
+    { value: 'otro',       label: this.t()('help.cat.otro') },
+  ]);
 
-  readonly estadoLabel: Record<string, string> = {
-    abierto:     'Abierto',
-    en_revision: 'En revisión',
-    resuelto:    'Resuelto',
-  };
+  readonly estadoLabel = computed<Record<string, string>>(() => ({
+    abierto:     this.t()('admin.statusOpen'),
+    en_revision: this.t()('admin.statusReview'),
+    resuelto:    this.t()('admin.statusResolved'),
+  }));
 
   submit(): void {
     if (this.form.invalid || this.submitting()) return;
@@ -65,7 +65,7 @@ export class Help {
       },
       error: (err) => {
         this.submitting.set(false);
-        this.error.set(err.error?.message ?? 'No se pudo enviar el ticket. Inténtalo de nuevo.');
+        this.error.set(err.error?.message ?? this.t()('help.errorSend'));
       },
     });
   }

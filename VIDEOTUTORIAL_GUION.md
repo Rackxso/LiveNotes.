@@ -240,3 +240,65 @@
 | Música de fondo | Suave, sin letra, volumen bajo |
 | Subtítulos | Añadir subtítulos en español e inglés para accesibilidad |
 | Cortes | Hacer un corte entre cada sección principal para facilitar el montaje |
+
+
+
+## Script completo (solo voz en off)
+
+Hola, bienvenido a LiveNotes, tu aplicación de productividad personal todo en uno. En este tutorial vas a ver cada una de las funcionalidades que tienes disponibles: organiza tus tareas, lleva el control de tus finanzas, registra hábitos, toma notas y gestiona tu calendario, todo desde un mismo lugar. Vamos a empezar.
+
+Lo primero es crear tu cuenta. Introduce tu nombre, correo electrónico y una contraseña segura. Al enviar el formulario recibirás un correo de confirmación — haz clic en el enlace y tu cuenta quedará activada.
+
+Una vez confirmada la cuenta, inicia sesión con tu correo y contraseña. Si en algún momento olvidas tu contraseña, usa el enlace '¿Olvidaste tu contraseña?' para recibir un correo de recuperación.
+
+Al entrar verás el dashboard. Está dividido en bloques para que de un vistazo tengas todo lo importante del día.
+
+Arriba tienes la semana actual. Puedes pulsar cualquier día para filtrar los eventos de esa jornada. Los días con eventos tienen un indicador visual. Usa las flechas para navegar entre semanas.
+
+Debajo del strip aparecen los eventos programados para el día seleccionado. Haz clic en cualquiera para ver sus detalles completos.
+
+Un poco más abajo tienes los próximos eventos más inmediatos, los cuatro siguientes a la fecha seleccionada.
+
+El panel de finanzas te muestra los ingresos y gastos del mes actual, el total ahorrado en tus metas activas y las últimas tres transacciones. Puedes pulsar 'Ver más' para ir directamente al módulo de finanzas.
+
+En la parte inferior están tu lista de tareas y tus notas. Desde aquí puedes añadir una nota nueva sin salir del dashboard.
+
+El módulo de notas es un espacio para guardar información rápida: ideas, recordatorios, apuntes.
+
+Las notas se sincronizan automáticamente con el servidor, así que las tendrás disponibles desde cualquier dispositivo.
+
+El gestor de tareas te permite organizar lo que tienes pendiente.
+
+Las tareas completadas se archivan automáticamente para que tu lista principal esté siempre limpia.
+
+El módulo financiero tiene tres secciones accesibles desde las pestañas superiores.
+
+El resumen te muestra el balance del mes: ingresos totales, gastos totales y una gráfica mensual para ver la tendencia. También aparecen tus metas de ahorro activas con su progreso.
+
+En transacciones puedes registrar cada movimiento económico.
+
+En la sección de ahorros creas metas con un nombre, importe objetivo y fecha límite.
+
+El tracker tiene dos bloques: seguimiento de hábitos y registro del estado de ánimo.
+
+Crea hábitos personalizados eligiendo un nombre e icono. Cada día que lo completes, marca el checkbox correspondiente. La aplicación registra tu racha actual y tu racha máxima para mantenerte motivado.
+
+El registro de mood te permite anotar cómo te sientes cada día: una puntuación del 1 al 10, una o varias emociones y tu nivel de energía. Esto te ayuda a identificar patrones a lo largo del tiempo.
+
+El calendario integra eventos, hábitos completados y registros de mood en una sola vista.
+
+La vista mensual te da una panorámica completa. Los días con contenido tienen indicadores de color según el tipo.
+
+La vista semanal muestra las franjas horarias de cada día de la semana. Ideal para planificar tu agenda.
+
+La vista diaria es el mayor nivel de detalle: ves todos los eventos hora a hora.
+
+Puedes navegar entre vistas en cualquier momento usando los botones de la cabecera del calendario.
+
+Desde ajustes personalizas tu experiencia en LiveNotes.
+
+Algunas funcionalidades avanzadas están disponibles en el plan premium. Al intentar acceder a ellas verás una pantalla con los beneficios del plan. Puedes suscribirte directamente desde la aplicación y gestionar o cancelar tu suscripción en cualquier momento desde Ajustes.
+
+Si tienes alguna duda, en el centro de ayuda encontrarás respuestas a las preguntas más frecuentes y un formulario para enviar un ticket de soporte. Nuestro equipo te responderá por correo electrónico.
+
+Eso es todo lo que necesitas saber para empezar a sacarle partido a LiveNotes. Tienes el control de tus tareas, finanzas, hábitos, notas y calendario en un solo lugar. Si tienes alguna pregunta, no dudes en contactar con nosotros desde la sección de Ayuda. ¡Hasta pronto!

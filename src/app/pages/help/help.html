@@ -1,19 +1,19 @@
 <div class="help-page">
   <header class="help-header">
-    <h1 class="help-title">Ayuda y soporte</h1>
-    <p class="help-subtitle">¿Tienes un problema o una sugerencia? Cuéntanoslo.</p>
+    <h1 class="help-title">{{ t()('help.pageTitle') }}</h1>
+    <p class="help-subtitle">{{ t()('help.pageSubtitle') }}</p>
   </header>
 
   <div class="help-content">
 
-    
+
 
     <!-- ── Tours interactivos ────────────────────────────────────────── -->
     <section aria-labelledby="tours-heading">
       <div class="history-header">
-        <h2 id="tours-heading" class="section-label">Tours interactivos</h2>
+        <h2 id="tours-heading" class="section-label">{{ t()('help.tours') }}</h2>
         <button type="button" class="btn-toggle" (click)="tourService.resetAll()">
-          Resetear todos
+          {{ t()('help.resetAll') }}
           <i class="fa-solid fa-rotate-left" aria-hidden="true"></i>
         </button>
       </div>
@@ -34,8 +34,8 @@
               type="button"
               class="btn-tour"
               (click)="tourService.startTour(id)"
-              [attr.aria-label]="'Iniciar tour ' + t()(tourMeta[id].labelKey)">
-              {{ tourService.isCompleted(id) ? 'Repetir' : 'Iniciar' }}
+              [attr.aria-label]="t()('help.startTour') + ' ' + t()(tourMeta[id].labelKey)">
+              {{ tourService.isCompleted(id) ? t()('help.repeat') : t()('help.start') }}
             </button>
           </div>
         }
@@ -44,7 +44,7 @@
 
     <!-- ── Formulario de ticket ───────────────────────────────────────── -->
     <section aria-labelledby="ticket-heading">
-      <h2 id="ticket-heading" class="section-label">Enviar ticket</h2>
+      <h2 id="ticket-heading" class="section-label">{{ t()('help.sendTicketTitle') }}</h2>
 
       <div class="help-card">
         @if (submitted()) {
@@ -52,35 +52,35 @@
             <div class="success-icon" aria-hidden="true">
               <i class="fa-solid fa-circle-check"></i>
             </div>
-            <h3 class="success-title">¡Ticket enviado!</h3>
-            <p class="success-desc">Hemos recibido tu mensaje. Te responderemos lo antes posible.</p>
+            <h3 class="success-title">{{ t()('help.ticketSentTitle') }}</h3>
+            <p class="success-desc">{{ t()('help.ticketSentDesc') }}</p>
             <button type="button" class="btn-primary" (click)="newTicket()">
-              Enviar otro ticket
+              {{ t()('help.sendAnother') }}
             </button>
           </div>
         } @else {
           <form [formGroup]="form" (ngSubmit)="submit()" novalidate>
             <div class="form-group">
-              <label class="form-label" for="asunto">Asunto</label>
+              <label class="form-label" for="asunto">{{ t()('help.subject') }}</label>
               <input
                 id="asunto"
                 type="text"
                 class="form-input"
                 formControlName="asunto"
-                placeholder="Describe brevemente el problema o sugerencia"
+                [placeholder]="t()('help.subjectPlaceholder')"
                 autocomplete="off"
                 [attr.aria-invalid]="form.controls.asunto.invalid && form.controls.asunto.touched"
               />
               @if (form.controls.asunto.hasError('required') && form.controls.asunto.touched) {
-                <span class="field-error" role="alert">El asunto es obligatorio.</span>
+                <span class="field-error" role="alert">{{ t()('help.subjectRequired') }}</span>
               }
               @if (form.controls.asunto.hasError('maxlength')) {
-                <span class="field-error" role="alert">Máximo 120 caracteres.</span>
+                <span class="field-error" role="alert">{{ t()('help.subjectMaxLength') }}</span>
               }
             </div>
 
             <div class="form-group">
-              <label class="form-label" for="categoria">Categoría</label>
+              <label class="form-label" for="categoria">{{ t()('help.category') }}</label>
               <div class="select-wrapper">
                 <select
                   id="categoria"
@@ -88,33 +88,33 @@
                   formControlName="categoria"
                   [attr.aria-invalid]="form.controls.categoria.invalid && form.controls.categoria.touched"
                 >
-                  <option value="" disabled>Selecciona una categoría</option>
-                  @for (cat of categorias; track cat.value) {
+                  <option value="" disabled>{{ t()('help.selectCategory') }}</option>
+                  @for (cat of categorias(); track cat.value) {
                     <option [value]="cat.value">{{ cat.label }}</option>
                   }
                 </select>
                 <i class="fa-solid fa-chevron-down select-arrow" aria-hidden="true"></i>
               </div>
               @if (form.controls.categoria.hasError('required') && form.controls.categoria.touched) {
-                <span class="field-error" role="alert">Selecciona una categoría.</span>
+                <span class="field-error" role="alert">{{ t()('help.categoryRequired') }}</span>
               }
             </div>
 
             <div class="form-group">
-              <label class="form-label" for="descripcion">Descripción</label>
+              <label class="form-label" for="descripcion">{{ t()('help.description') }}</label>
               <textarea
                 id="descripcion"
                 class="form-textarea"
                 formControlName="descripcion"
-                placeholder="Explica con detalle tu problema, error o sugerencia…"
+                [placeholder]="t()('help.descriptionPlaceholder')"
                 rows="5"
                 [attr.aria-invalid]="form.controls.descripcion.invalid && form.controls.descripcion.touched"
               ></textarea>
               @if (form.controls.descripcion.hasError('required') && form.controls.descripcion.touched) {
-                <span class="field-error" role="alert">La descripción es obligatoria.</span>
+                <span class="field-error" role="alert">{{ t()('help.descriptionRequired') }}</span>
               }
               @if (form.controls.descripcion.hasError('maxlength')) {
-                <span class="field-error" role="alert">Máximo 2000 caracteres.</span>
+                <span class="field-error" role="alert">{{ t()('help.descriptionMaxLength') }}</span>
               }
             </div>
 
@@ -129,7 +129,7 @@
                 [disabled]="form.invalid || submitting()"
                 [attr.aria-busy]="submitting()"
               >
-                @if (submitting()) { Enviando… } @else { Enviar ticket }
+                @if (submitting()) { {{ t()('help.submitting') }} } @else { {{ t()('help.submit') }} }
               </button>
             </div>
           </form>
@@ -140,9 +140,9 @@
     <!-- ── Historial de tickets ───────────────────────────────────────── -->
     <section aria-labelledby="history-heading">
       <div class="history-header">
-        <h2 id="history-heading" class="section-label">Mis tickets</h2>
+        <h2 id="history-heading" class="section-label">{{ t()('help.myTickets') }}</h2>
         <button type="button" class="btn-toggle" (click)="loadHistory()">
-          {{ showHistory() ? 'Ocultar' : 'Ver historial' }}
+          {{ showHistory() ? t()('help.hide') : t()('help.viewHistory') }}
           <i [class]="showHistory() ? 'fa-solid fa-chevron-up' : 'fa-solid fa-chevron-down'" aria-hidden="true"></i>
         </button>
       </div>
@@ -150,16 +150,16 @@
       @if (showHistory()) {
         <div class="help-card tickets-list">
           @if (loadingTickets()) {
-            <p class="empty-msg">Cargando…</p>
+            <p class="empty-msg">{{ t()('help.loading') }}</p>
           } @else if (myTickets().length === 0) {
-            <p class="empty-msg">Aún no has enviado ningún ticket.</p>
+            <p class="empty-msg">{{ t()('help.noTickets') }}</p>
           } @else {
             @for (ticket of myTickets(); track ticket._id) {
               <div class="ticket-item">
                 <div class="ticket-top">
                   <span class="ticket-subject">{{ ticket.asunto }}</span>
                   <span class="ticket-badge" [class]="'badge-' + ticket.estado">
-                    {{ estadoLabel[ticket.estado] }}
+                    {{ estadoLabel()[ticket.estado] }}
                   </span>
                 </div>
                 <p class="ticket-desc">{{ ticket.descripcion }}</p>

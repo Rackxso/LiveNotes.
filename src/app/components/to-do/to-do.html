@@ -1,4 +1,4 @@
-<div class="tabs-row" role="tablist" aria-label="Filter by list">
+<div class="tabs-row" role="tablist" [attr.aria-label]="t()('todo.filterByList')">
   <button
     class="tab"
     role="tab"
@@ -73,7 +73,7 @@
       <select class="list-evento-select"
         [ngModel]="currentListEventoId()"
         (ngModelChange)="onListEventoChange(selectedList(), $event)">
-        <option value="">No event</option>
+        <option value="">{{ t()('todo.noEvent') }}</option>
         @for (ev of sortedEventos(); track ev.id) {
           <option [value]="ev.id">{{ ev.titulo }}</option>
         }
@@ -98,7 +98,7 @@
             class="todo-check"
             [class.checked]="item.completado"
             (click)="toggle(item._id)"
-            [attr.aria-label]="(item.completado ? 'Mark incomplete: ' : 'Mark complete: ') + item.texto"
+            [attr.aria-label]="(item.completado ? t()('todo.markIncomplete') : t()('todo.markComplete')) + item.texto"
             [attr.aria-pressed]="item.completado">
             @if (item.completado) {
               <i class="fa-solid fa-check" aria-hidden="true"></i>
@@ -148,7 +148,7 @@
                   class="todo-check small"
                   [class.checked]="sub.completado"
                   (click)="toggleSubItem(item._id, sub._id)"
-                  [attr.aria-label]="(sub.completado ? 'Mark incomplete: ' : 'Mark complete: ') + sub.texto"
+                  [attr.aria-label]="(sub.completado ? t()('todo.markIncomplete') : t()('todo.markComplete')) + sub.texto"
                   [attr.aria-pressed]="sub.completado">
                   @if (sub.completado) {
                     <i class="fa-solid fa-check" aria-hidden="true"></i>

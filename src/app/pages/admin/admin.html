@@ -1,20 +1,20 @@
 <div class="admin-page">
 
   <header class="admin-header">
-    <h1 class="admin-title">Panel de administración</h1>
+    <h1 class="admin-title">{{ t()('admin.pageTitle') }}</h1>
   </header>
 
   <!-- ── HERRAMIENTAS DE DEPURACIÓN ─────────────────────────────── -->
   <section class="admin-section" aria-labelledby="debug-heading">
-    <h2 id="debug-heading" class="section-label">Herramientas de depuración</h2>
+    <h2 id="debug-heading" class="section-label">{{ t()('admin.debug') }}</h2>
 
     <div class="debug-card">
 
       <!-- Idioma -->
       <div class="debug-row">
         <div class="debug-row-info">
-          <span class="debug-row-title">Idioma de la app</span>
-          <span class="debug-row-desc">Cambio rápido para pruebas</span>
+          <span class="debug-row-title">{{ t()('admin.langTitle') }}</span>
+          <span class="debug-row-desc">{{ t()('admin.langDesc') }}</span>
         </div>
         <app-lang-selector [expanded]="true" />
       </div>
@@ -24,9 +24,9 @@
       <!-- Premium simulate -->
       <div class="debug-row">
         <div class="debug-row-info">
-          <span class="debug-row-title">Plan activo</span>
+          <span class="debug-row-title">{{ t()('admin.planTitle') }}</span>
           <span class="debug-row-desc">
-            <strong>{{ auth.isPremium() ? 'Premium' : 'Free' }}</strong>
+            <strong>{{ auth.isPremium() ? t()('settings.subscription.planPremium') : t()('settings.subscription.planFree') }}</strong>
           </span>
         </div>
         <button
@@ -34,8 +34,8 @@
           type="button"
           (click)="simulateToggle()"
         >
-          @if (auth.isPremium()) { Desactivar Premium (test) }
-          @else { Simular Premium (test) }
+          @if (auth.isPremium()) { {{ t()('admin.deactivatePremium') }} }
+          @else { {{ t()('admin.simulatePremium') }} }
         </button>
       </div>
 
@@ -44,11 +44,11 @@
       <!-- Vista previa como cliente -->
       <div class="debug-row">
         <div class="debug-row-info">
-          <span class="debug-row-title">Vista previa como cliente</span>
-          <span class="debug-row-desc">Simula cómo ve la app un usuario</span>
+          <span class="debug-row-title">{{ t()('admin.previewTitle') }}</span>
+          <span class="debug-row-desc">{{ t()('admin.previewDesc') }}</span>
         </div>
-        <div class="view-mode-group" role="group" aria-label="Modo de vista">
-          @for (m of viewModes; track m.value) {
+        <div class="view-mode-group" role="group" [attr.aria-label]="t()('admin.viewMode')">
+          @for (m of viewModes(); track m.value) {
             <button
               type="button"
               class="view-mode-btn"
@@ -66,13 +66,13 @@
 
   <!-- ── GESTIÓN DE TICKETS ───────────────────────────────────────── -->
   <section class="admin-section" aria-labelledby="tickets-heading">
-    <h2 id="tickets-heading" class="section-label">Gestión de tickets</h2>
+    <h2 id="tickets-heading" class="section-label">{{ t()('admin.ticketsTitle') }}</h2>
 
     <!-- Filtros -->
     <app-selector
-      [vistas]="filterVistas"
-      [vistaActiva]="estadoLabel[estadoFilter()]"
-      (vistaSeleccionada)="estadoFilter.set(labelToFilter[$event])"
+      [vistas]="filterVistas()"
+      [vistaActiva]="estadoLabel()[estadoFilter()]"
+      (vistaSeleccionada)="estadoFilter.set(labelToFilter()[$event])"
     />
 
     @if (errorMsg()) {
@@ -80,51 +80,51 @@
     }
 
     @if (loading()) {
-      <p class="status-msg">Cargando tickets…</p>
+      <p class="status-msg">{{ t()('admin.loadingTickets') }}</p>
     } @else if (filteredTickets().length === 0) {
-      <p class="status-msg">No hay tickets con este filtro.</p>
+      <p class="status-msg">{{ t()('admin.noTickets') }}</p>
     } @else {
       <div class="ticket-table-wrap">
-        <table class="ticket-table" aria-label="Tickets">
+        <table class="ticket-table" [attr.aria-label]="t()('admin.ticketsTitle')">
           <thead>
             <tr>
-              <th>Usuario</th>
-              <th>Email</th>
-              <th>Asunto</th>
-              <th>Categoría</th>
-              <th>Estado</th>
-              <th>Fecha</th>
+              <th>{{ t()('admin.colUser') }}</th>
+              <th>{{ t()('admin.colEmail') }}</th>
+              <th>{{ t()('admin.colSubject') }}</th>
+              <th>{{ t()('admin.colCategory') }}</th>
+              <th>{{ t()('admin.colStatus') }}</th>
+              <th>{{ t()('admin.colDate') }}</th>
               <th></th>
             </tr>
           </thead>
           <tbody>
-            @for (t of filteredTickets(); track t._id) {
-              <tr class="ticket-row" (click)="openTicket(t)">
-                <td>{{ t.usuario?.name ?? '—' }}</td>
-                <td class="email-cell">{{ t.usuario?.email ?? '—' }}</td>
-                <td class="asunto-cell" [title]="t.asunto">{{ t.asunto }}</td>
+            @for (ticket of filteredTickets(); track ticket._id) {
+              <tr class="ticket-row" (click)="openTicket(ticket)">
+                <td>{{ ticket.usuario?.name ?? '—' }}</td>
+                <td class="email-cell">{{ ticket.usuario?.email ?? '—' }}</td>
+                <td class="asunto-cell" [title]="ticket.asunto">{{ ticket.asunto }}</td>
                 <td>
-                  <span class="cat-badge cat-{{ t.categoria }}">{{ t.categoria }}</span>
+                  <span class="cat-badge cat-{{ ticket.categoria }}">{{ ticket.categoria }}</span>
                 </td>
                 <td (click)="$event.stopPropagation()">
                   <select
-                    class="estado-select estado-{{ t.estado }}"
-                    [value]="t.estado"
-                    (change)="changeEstado(t._id, $any($event.target).value)"
-                    aria-label="Estado del ticket"
+                    class="estado-select estado-{{ ticket.estado }}"
+                    [value]="ticket.estado"
+                    (change)="changeEstado(ticket._id, $any($event.target).value)"
+                    [attr.aria-label]="t()('admin.ticketStatus')"
                   >
-                    <option value="abierto">Abierto</option>
-                    <option value="en_revision">En revisión</option>
-                    <option value="resuelto">Resuelto</option>
+                    <option value="abierto">{{ t()('admin.statusOpen') }}</option>
+                    <option value="en_revision">{{ t()('admin.statusReview') }}</option>
+                    <option value="resuelto">{{ t()('admin.statusResolved') }}</option>
                   </select>
                 </td>
-                <td class="date-cell">{{ t.createdAt | date:'dd/MM/yy HH:mm' }}</td>
+                <td class="date-cell">{{ ticket.createdAt | date:'dd/MM/yy HH:mm' }}</td>
                 <td (click)="$event.stopPropagation()">
                   <button
                     type="button"
                     class="btn-delete"
-                    aria-label="Eliminar ticket"
-                    (click)="deleteTicket(t._id)"
+                    [attr.aria-label]="t()('admin.deleteTicket')"
+                    (click)="deleteTicket(ticket._id)"
                   >
                     <i class="fa-solid fa-trash" aria-hidden="true"></i>
                   </button>
@@ -140,17 +140,17 @@
 </div>
 
 <!-- ── MODAL TICKET ────────────────────────────────────────── -->
-@if (selectedTicket(); as t) {
-  <div class="modal-backdrop" (click)="closeTicket()" role="dialog" aria-modal="true" [attr.aria-label]="t.asunto">
+@if (selectedTicket(); as ticket) {
+  <div class="modal-backdrop" (click)="closeTicket()" role="dialog" aria-modal="true" [attr.aria-label]="ticket.asunto">
     <div class="modal-panel" (click)="$event.stopPropagation()">
 
       <!-- Cabecera -->
       <div class="modal-header">
         <div class="modal-header-left">
-          <span class="cat-badge cat-{{ t.categoria }}">{{ t.categoria }}</span>
-          <h2 class="modal-title">{{ t.asunto }}</h2>
+          <span class="cat-badge cat-{{ ticket.categoria }}">{{ ticket.categoria }}</span>
+          <h2 class="modal-title">{{ ticket.asunto }}</h2>
         </div>
-        <button type="button" class="modal-close" aria-label="Cerrar" (click)="closeTicket()">
+        <button type="button" class="modal-close" [attr.aria-label]="t()('admin.closeModal')" (click)="closeTicket()">
           <i class="fa-solid fa-xmark" aria-hidden="true"></i>
         </button>
       </div>
@@ -159,44 +159,44 @@
       <div class="modal-meta">
         <span class="modal-meta-item">
           <i class="fa-solid fa-user" aria-hidden="true"></i>
-          {{ t.usuario?.name ?? '—' }}
+          {{ ticket.usuario?.name ?? '—' }}
         </span>
         <span class="modal-meta-item">
           <i class="fa-solid fa-envelope" aria-hidden="true"></i>
-          {{ t.usuario?.email ?? '—' }}
+          {{ ticket.usuario?.email ?? '—' }}
         </span>
         <span class="modal-meta-item">
           <i class="fa-regular fa-clock" aria-hidden="true"></i>
-          {{ t.createdAt | date:'dd/MM/yyyy HH:mm' }}
+          {{ ticket.createdAt | date:'dd/MM/yyyy HH:mm' }}
         </span>
       </div>
 
       <!-- Descripción -->
       <div class="modal-body">
-        <p class="modal-desc">{{ t.descripcion }}</p>
+        <p class="modal-desc">{{ ticket.descripcion }}</p>
       </div>
 
       <!-- Footer: estado + eliminar -->
       <div class="modal-footer">
         <select
-          class="estado-select estado-{{ t.estado }}"
-          [value]="t.estado"
-          (change)="changeEstado(t._id, $any($event.target).value)"
-          aria-label="Estado del ticket"
+          class="estado-select estado-{{ ticket.estado }}"
+          [value]="ticket.estado"
+          (change)="changeEstado(ticket._id, $any($event.target).value)"
+          [attr.aria-label]="t()('admin.ticketStatus')"
         >
-          <option value="abierto">Abierto</option>
-          <option value="en_revision">En revisión</option>
-          <option value="resuelto">Resuelto</option>
+          <option value="abierto">{{ t()('admin.statusOpen') }}</option>
+          <option value="en_revision">{{ t()('admin.statusReview') }}</option>
+          <option value="resuelto">{{ t()('admin.statusResolved') }}</option>
         </select>
 
         <button
           type="button"
           class="btn-delete-modal"
-          aria-label="Eliminar ticket"
-          (click)="deleteTicket(t._id)"
+          [attr.aria-label]="t()('admin.deleteTicket')"
+          (click)="deleteTicket(ticket._id)"
         >
           <i class="fa-solid fa-trash" aria-hidden="true"></i>
-          Eliminar
+          {{ t()('admin.eliminar') }}
         </button>
       </div>
 

@@ -13,7 +13,7 @@
   <div class="divider"></div>
 
   <!-- Main nav — crece y centra verticalmente su contenido -->
-  <nav class="nav-main" aria-label="Main">
+  <nav class="nav-main" [attr.aria-label]="t()('sidebar.navMain')">
     @for (item of mainNav(); track item.route) {
       <a class="nav-item"
          [routerLink]="item.route"
@@ -37,15 +37,15 @@
     @if (auth.isAdmin() && !adminService.showAdminUI()) {
       <div class="preview-banner">
         <span class="preview-banner__label">
-          Vista {{ adminService.viewMode() === 'free' ? 'Free' : 'Premium' }}
+          {{ t()('sidebar.previewMode') }} {{ adminService.viewMode() === 'free' ? t()('settings.subscription.planFree') : t()('settings.subscription.planPremium') }}
         </span>
         <button class="preview-banner__btn" (click)="adminService.setViewMode('admin')">
-          Salir
+          {{ t()('sidebar.exit') }}
         </button>
       </div>
     }
 
-    <nav aria-label="Secondary">
+    <nav [attr.aria-label]="t()('sidebar.navSecondary')">
       @if (auth.isAdmin() && adminService.showAdminUI()) {
         <a class="nav-item nav-item--admin"
            routerLink="/admin"
@@ -77,7 +77,7 @@
           <a class="user-menu-item user-menu-item--warning" role="menuitem"
              routerLink="/settings" (click)="userMenuOpen.set(false)">
             <i class="fa-solid fa-triangle-exclamation" aria-hidden="true"></i>
-            <span>Cambiar contraseña</span>
+            <span>{{ t()('sidebar.changePassword') }}</span>
           </a>
           <div class="user-menu-divider"></div>
         }
@@ -94,7 +94,7 @@
         <div class="user-menu-divider user-menu-item--mobile"></div>
         <button class="user-menu-item" role="menuitem" (click)="logout()">
           <i class="fa-solid fa-right-from-bracket" aria-hidden="true"></i>
-          <span>Cerrar sesión</span>
+          <span>{{ t()('settings.account.logout') }}</span>
         </button>
       </div>
     }
@@ -108,7 +108,7 @@
       <div class="avatar" aria-hidden="true">{{ userInitial() }}</div>
       <div class="user-info">
         <div class="user-name">{{ userName() }}</div>
-        <div class="user-role">Personal</div>
+        <div class="user-role">{{ t()('sidebar.role') }}</div>
       </div>
     </button>
   </div>

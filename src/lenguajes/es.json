@@ -26,6 +26,7 @@
   "modal": {
     "newEvent": "Nuevo evento",
     "editEvent": "Editar evento",
+    "close": "Cerrar",
     "title": "Título",
     "titlePlaceholder": "Añadir título",
     "date": "Fecha",
@@ -53,7 +54,9 @@
     "addEvent": "Añadir evento",
     "event_one": "Evento",
     "event_other": "Eventos",
-    "noEvents": "Sin eventos próximos"
+    "noEvents": "Sin eventos próximos",
+    "deleteEvent": "Eliminar evento",
+    "viewCalendar": "Ver en calendario"
   },
   "week": {
     "prevWeek": "Semana anterior",
@@ -113,6 +116,7 @@
       "save": "Guardar",
       "cancel": "Cancelar",
       "close": "Cerrar",
+      "delete": "Eliminar movimiento",
       "category": "Categoría",
       "regularIncome": "Ingreso regular",
       "savingsHint": "Este importe se añadirá al objetivo seleccionado"
@@ -189,6 +193,7 @@
     "greeting": "Hola,",
     "youHave": "Tienes",
     "today": "hoy",
+    "weakPassword": "Tu contraseña es débil. Cámbiala para proteger tu cuenta.",
     "statsSaved": "Ahorrado",
     "statsNoData": "Sin datos",
     "weekNav": "Navegación semanal",
@@ -229,7 +234,9 @@
     "language": {
       "title": "Idioma",
       "rowTitle": "Idioma de la aplicación",
-      "rowDesc": "Selecciona el idioma en el que se muestra la app."
+      "rowDesc": "Selecciona el idioma en el que se muestra la app.",
+      "optEs": "Español",
+      "optEn": "English"
     },
     "appearance": {
       "title": "Apariencia",
@@ -405,7 +412,8 @@
     "noEvent": "Sin evento",
     "markIncomplete": "Marcar como incompleta: ",
     "markComplete": "Marcar como completa: ",
-    "filterByList": "Filtrar por lista"
+    "filterByList": "Filtrar por lista",
+    "tomorrow": "Mañana"
   },
   "auth": {
     "tagline": "Todo en un solo lugar.",
@@ -484,7 +492,27 @@
       "submitting": "Guardando…"
     },
     "confirmado": {
-      "goHome": "Ir al inicio"
+      "goHome": "Ir al inicio",
+      "verificacion": {
+        "title": "¡Email",
+        "titleEm": "verificado!",
+        "message": "Tu cuenta ya está activa. Puedes iniciar sesión."
+      },
+      "password": {
+        "title": "¡Contraseña",
+        "titleEm": "actualizada!",
+        "message": "Tu contraseña ha sido cambiada correctamente. Inicia sesión con la nueva."
+      },
+      "eliminacion": {
+        "title": "Cuenta",
+        "titleEm": "eliminada",
+        "message": "Tu cuenta ha sido eliminada permanentemente. Gracias por haber usado LiveNotes."
+      },
+      "error": {
+        "title": "Enlace",
+        "titleEm": "no válido",
+        "message": "El enlace no es válido o ha expirado. Vuelve a intentarlo desde la app."
+      }
     }
   },
   "noteModal": {
@@ -497,6 +525,9 @@
     "titleMaxLength": "Máximo 100 caracteres.",
     "category": "Categoría",
     "noCategory": "Sin categoría",
+    "presetWork": "Trabajo",
+    "presetPersonal": "Personal",
+    "presetHealth": "Salud",
     "linkedEvent": "Evento vinculado",
     "noEvent": "Sin evento",
     "content": "Contenido",
@@ -536,7 +567,10 @@
     "changePassword": "Cambiar contraseña",
     "role": "Personal",
     "admin": "Admin",
-    "exit": "Salir"
+    "exit": "Salir",
+    "previewMode": "Vista",
+    "navMain": "Principal",
+    "navSecondary": "Secundario"
   },
   "budgetModal": {
     "titleCreate": "Nuevo presupuesto",
@@ -590,7 +624,15 @@
     "hide": "Ocultar",
     "viewHistory": "Ver historial",
     "loading": "Cargando…",
-    "noTickets": "Aún no has enviado ningún ticket."
+    "noTickets": "Aún no has enviado ningún ticket.",
+    "startTour": "Iniciar tour",
+    "cat": {
+      "bug": "Error / Bug",
+      "sugerencia": "Sugerencia",
+      "pregunta": "Pregunta",
+      "otro": "Otro"
+    },
+    "errorSend": "No se pudo enviar el ticket. Inténtalo de nuevo."
   },
   "admin": {
     "pageTitle": "Panel de administración",
@@ -619,7 +661,8 @@
     "deleteTicket": "Eliminar ticket",
     "closeModal": "Cerrar",
     "ticketStatus": "Estado del ticket",
-    "eliminar": "Eliminar"
+    "eliminar": "Eliminar",
+    "errorDeleteTicket": "Error al eliminar el ticket"
   },
   "landing": {
     "login": "Iniciar sesión",

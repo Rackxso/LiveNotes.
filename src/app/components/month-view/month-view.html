@@ -1,9 +1,9 @@
 <div class="mes">
-    <button class="nav-btn" (click)="irAlMesAnterior()" aria-label="Mes anterior">
+    <button class="nav-btn" (click)="irAlMesAnterior()" [attr.aria-label]="t()('calendar.prevMonth')">
         <i class="fa-solid fa-chevron-left"></i>
     </button>
     <h3>{{ nombreMes() }} {{ anyo() }}</h3>
-    <button class="nav-btn" (click)="irAlMesSiguiente()" aria-label="Mes siguiente">
+    <button class="nav-btn" (click)="irAlMesSiguiente()" [attr.aria-label]="t()('calendar.nextMonth')">
         <i class="fa-solid fa-chevron-right"></i>
     </button>
 </div>

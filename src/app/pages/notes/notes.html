@@ -3,7 +3,7 @@
 <div class="body">
 
   <!-- NOTES PANEL -->
-  <section class="panel" aria-label="Notes">
+  <section class="panel" [attr.aria-label]="t()('notes.pageTitle')">
     <div class="panel-header">
       @if (notesSearchOpen()) {
         <label class="search-inline" for="notes-search">
@@ -12,36 +12,35 @@
             id="notes-search"
             type="search"
             class="search-input"
-            placeholder="Search in your notes"
+            [placeholder]="t()('notes.searchPlaceholder')"
             [value]="notesSearch()"
             (input)="notesSearch.set($any($event.target).value)"
-            aria-label="Search notes"
+            [attr.aria-label]="t()('notes.searchPlaceholder')"
             autofocus />
-          <button class="search-close" type="button" (click)="closeNotesSearch()" aria-label="Close search">
+          <button class="search-close" type="button" (click)="closeNotesSearch()" [attr.aria-label]="t()('modal.cancel')">
             <i class="fa-solid fa-xmark" aria-hidden="true"></i>
           </button>
         </label>
       } @else {
-        <h2 class="panel-title">Notes</h2>
+        <h2 class="panel-title">{{ t()('notes.pageTitle') }}</h2>
         <div class="header-actions">
-          <button class="search-toggle" type="button" (click)="notesSearchOpen.set(true)" aria-label="Search notes">
+          <button class="search-toggle" type="button" (click)="notesSearchOpen.set(true)" [attr.aria-label]="t()('notes.searchPlaceholder')">
             <i class="fa-solid fa-magnifying-glass" aria-hidden="true"></i>
           </button>
           <app-primary-button
-            [config]="{texto: 'New note', icon: 'fa-solid fa-circle-plus'}"
-            (clicked)="openAddNoteModal()"
-            aria-label="Create new note" />
+            [config]="{texto: t()('notes.newNote'), icon: 'fa-solid fa-circle-plus'}"
+            (clicked)="openAddNoteModal()" />
         </div>
       }
     </div>
 
-    <div class="category-chips" role="group" aria-label="Filter by category">
+    <div class="category-chips" role="group" [attr.aria-label]="t()('finance.filterBy')">
       <button
         class="chip"
         [class.active]="selectedCategory() === 'all'"
         (click)="selectCategory('all')"
         [attr.aria-pressed]="selectedCategory() === 'all'">
-        All
+        {{ t()('notes.filterAll') }}
       </button>
       @for (cat of categories(); track cat) {
         <button
@@ -56,19 +55,19 @@
         <input
           class="chip-input"
           type="text"
-          placeholder="Category name"
+          [placeholder]="t()('notes.categoryPlaceholder')"
           [value]="newCategoryInput()"
           (input)="newCategoryInput.set($any($event.target).value)"
           (keydown.enter)="confirmNewCategory()"
           (keydown.escape)="cancelNewCategory()"
           (blur)="confirmNewCategory()"
-          aria-label="New category name"
+          [attr.aria-label]="t()('notes.categoryPlaceholder')"
           autofocus />
       } @else {
         <button
           class="chip chip-add"
           (click)="startAddingCategory()"
-          aria-label="Add category filter">
+          [attr.aria-label]="t()('notes.filterAll')">
           +
         </button>
       }
@@ -83,7 +82,7 @@
   </section>
 
   <!-- TO-DO PANEL -->
-  <section class="panel" aria-label="To-do">
+  <section class="panel" [attr.aria-label]="t()('notes.todoTitle')">
     <div class="panel-header">
       @if (todosSearchOpen()) {
         <label class="search-inline" for="todos-search">
@@ -92,18 +91,18 @@
             id="todos-search"
             type="search"
             class="search-input"
-            placeholder="Search in your to-do's"
+            [placeholder]="t()('notes.searchTodosPlaceholder')"
             [value]="todosSearch()"
             (input)="todosSearch.set($any($event.target).value)"
-            aria-label="Search to-dos"
+            [attr.aria-label]="t()('notes.searchTodosPlaceholder')"
             autofocus />
-          <button class="search-close" type="button" (click)="closeTodosSearch()" aria-label="Close search">
+          <button class="search-close" type="button" (click)="closeTodosSearch()" [attr.aria-label]="t()('modal.cancel')">
             <i class="fa-solid fa-xmark" aria-hidden="true"></i>
           </button>
         </label>
       } @else {
-        <h2 class="panel-title">To-do</h2>
-        <button class="search-toggle" type="button" (click)="todosSearchOpen.set(true)" aria-label="Search to-dos">
+        <h2 class="panel-title">{{ t()('notes.todoTitle') }}</h2>
+        <button class="search-toggle" type="button" (click)="todosSearchOpen.set(true)" [attr.aria-label]="t()('notes.searchTodosPlaceholder')">
           <i class="fa-solid fa-magnifying-glass" aria-hidden="true"></i>
         </button>
       }

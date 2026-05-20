@@ -11,7 +11,7 @@
     @if (requiresPasswordUpdate()) {
       <a class="pwd-warning" routerLink="/settings">
         <i class="fa-solid fa-triangle-exclamation" aria-hidden="true"></i>
-        Tu contraseña es débil. Cámbiala para proteger tu cuenta.
+        {{ t()('home.weakPassword') }}
       </a>
     }
 

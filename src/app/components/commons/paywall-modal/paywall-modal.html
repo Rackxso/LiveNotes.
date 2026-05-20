@@ -53,7 +53,7 @@
         class="btn-simulate"
         (click)="simulateToggle()"
         [disabled]="toggling()"
-        aria-label="Simular activación premium para pruebas"
+        [attr.aria-label]="t()('paywall.simulate')"
       >
         @if (toggling()) {
           {{ t()('paywall.applying') }}

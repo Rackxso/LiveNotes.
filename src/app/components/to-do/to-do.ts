@@ -15,7 +15,8 @@ import { TaskSortView } from './task-sort-view/task-sort-view';
 export class ToDo implements OnInit {
   private readonly todoService = inject(TodoService);
   private readonly eventosService = inject(EventosService);
-  readonly t = inject(I18nService).t;
+  private readonly i18n = inject(I18nService);
+  readonly t = this.i18n.t;
 
   readonly searchQuery = input<string>('');
   readonly initialList = input<string>('');
@@ -469,8 +470,8 @@ export class ToDo implements OnInit {
     const today = new Date();
     const tomorrow = new Date(today);
     tomorrow.setDate(today.getDate() + 1);
-    if (date.toDateString() === today.toDateString()) return 'Today';
-    if (date.toDateString() === tomorrow.toDateString()) return 'Tomorrow';
-    return date.toLocaleDateString('en-US', { day: 'numeric', month: 'short' });
+    if (date.toDateString() === today.toDateString()) return this.t()('calendar.today');
+    if (date.toDateString() === tomorrow.toDateString()) return this.t()('todo.tomorrow');
+    return date.toLocaleDateString(this.i18n.locale(), { day: 'numeric', month: 'short' });
   }
 }

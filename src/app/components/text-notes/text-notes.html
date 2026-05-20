@@ -6,11 +6,11 @@
         (click)="editNote.emit(note)"
         (keydown.enter)="editNote.emit(note)"
         (keydown.space)="editNote.emit(note)"
-        [attr.aria-label]="'Edit note: ' + note.titulo">
+        [attr.aria-label]="t()('notes.editNote') + note.titulo">
       <button class="note-delete"
               (click)="onDeleteNote($event, note)"
-              [attr.aria-label]="'Delete note: ' + note.titulo"
-              title="Delete note">
+              [attr.aria-label]="t()('notes.deleteNote') + note.titulo"
+              [title]="t()('notes.deleteNoteTitle')">
         <i class="fa-solid fa-trash" aria-hidden="true"></i>
       </button>
       @if (note.categoria) {
@@ -28,8 +28,8 @@
       (click)="addNote.emit()"
       (keydown.enter)="addNote.emit()"
       (keydown.space)="addNote.emit()"
-      aria-label="Add new note">
-    <p>Add new note</p>
+      [attr.aria-label]="t()('notes.addNewNote')">
+    <p>{{ t()('notes.addNewNote') }}</p>
     <i class="fa-solid fa-circle-plus" aria-hidden="true"></i>
   </li>
 </ul>

@@ -104,8 +104,8 @@
             (change)="i18n.setLang($any($event.target).value)"
             [attr.aria-label]="t()('settings.language.title')"
           >
-            <option value="es">Español</option>
-            <option value="en">English</option>
+            <option value="es">{{ t()('settings.language.optEs') }}</option>
+            <option value="en">{{ t()('settings.language.optEn') }}</option>
           </select>
         </div>
       </div>

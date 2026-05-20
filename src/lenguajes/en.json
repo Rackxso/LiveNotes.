@@ -26,6 +26,7 @@
   "modal": {
     "newEvent": "New event",
     "editEvent": "Edit event",
+    "close": "Close",
     "title": "Title",
     "titlePlaceholder": "Add title",
     "date": "Date",
@@ -53,7 +54,9 @@
     "addEvent": "Add Event",
     "event_one": "Event",
     "event_other": "Events",
-    "noEvents": "No upcoming events"
+    "noEvents": "No upcoming events",
+    "deleteEvent": "Delete event",
+    "viewCalendar": "View in calendar"
   },
   "week": {
     "prevWeek": "Previous week",
@@ -113,6 +116,7 @@
       "save": "Save",
       "cancel": "Cancel",
       "close": "Close",
+      "delete": "Delete movement",
       "category": "Category",
       "regularIncome": "Regular income",
       "savingsHint": "This amount will be added to the selected goal"
@@ -189,6 +193,7 @@
     "greeting": "Hello,",
     "youHave": "You have",
     "today": "today",
+    "weakPassword": "Your password is weak. Change it to protect your account.",
     "statsSaved": "Saved",
     "statsNoData": "No data",
     "weekNav": "Weekly navigation",
@@ -229,7 +234,9 @@
     "language": {
       "title": "Language",
       "rowTitle": "App language",
-      "rowDesc": "Select the language in which the app is displayed."
+      "rowDesc": "Select the language in which the app is displayed.",
+      "optEs": "Español",
+      "optEn": "English"
     },
     "appearance": {
       "title": "Appearance",
@@ -405,7 +412,8 @@
     "noEvent": "No event",
     "markIncomplete": "Mark incomplete: ",
     "markComplete": "Mark complete: ",
-    "filterByList": "Filter by list"
+    "filterByList": "Filter by list",
+    "tomorrow": "Tomorrow"
   },
   "auth": {
     "tagline": "Everything in one place.",
@@ -484,7 +492,27 @@
       "submitting": "Saving…"
     },
     "confirmado": {
-      "goHome": "Go home"
+      "goHome": "Go home",
+      "verificacion": {
+        "title": "Email",
+        "titleEm": "verified!",
+        "message": "Your account is now active. You can sign in."
+      },
+      "password": {
+        "title": "Password",
+        "titleEm": "updated!",
+        "message": "Your password has been changed successfully. Sign in with your new one."
+      },
+      "eliminacion": {
+        "title": "Account",
+        "titleEm": "deleted",
+        "message": "Your account has been permanently deleted. Thank you for using LiveNotes."
+      },
+      "error": {
+        "title": "Link",
+        "titleEm": "not valid",
+        "message": "The link is not valid or has expired. Please try again from the app."
+      }
     }
   },
   "noteModal": {
@@ -497,6 +525,9 @@
     "titleMaxLength": "Max 100 characters.",
     "category": "Category",
     "noCategory": "No category",
+    "presetWork": "Work",
+    "presetPersonal": "Personal",
+    "presetHealth": "Health",
     "linkedEvent": "Linked event",
     "noEvent": "No event",
     "content": "Content",
@@ -536,7 +567,10 @@
     "changePassword": "Change password",
     "role": "Personal",
     "admin": "Admin",
-    "exit": "Exit"
+    "exit": "Exit",
+    "previewMode": "View",
+    "navMain": "Main",
+    "navSecondary": "Secondary"
   },
   "budgetModal": {
     "titleCreate": "New budget",
@@ -590,7 +624,15 @@
     "hide": "Hide",
     "viewHistory": "View history",
     "loading": "Loading…",
-    "noTickets": "You haven't submitted any tickets yet."
+    "noTickets": "You haven't submitted any tickets yet.",
+    "startTour": "Start tour",
+    "cat": {
+      "bug": "Error / Bug",
+      "sugerencia": "Suggestion",
+      "pregunta": "Question",
+      "otro": "Other"
+    },
+    "errorSend": "Could not send the ticket. Please try again."
   },
   "admin": {
     "pageTitle": "Admin panel",
@@ -619,7 +661,8 @@
     "deleteTicket": "Delete ticket",
     "closeModal": "Close",
     "ticketStatus": "Ticket status",
-    "eliminar": "Delete"
+    "eliminar": "Delete",
+    "errorDeleteTicket": "Error deleting the ticket"
   },
   "landing": {
     "login": "Sign in",

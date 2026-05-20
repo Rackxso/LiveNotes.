@@ -9,31 +9,11 @@ interface Config {
   message: string;
 }
 
-const CONFIGS: Record<string, Config> = {
-  verificacion: {
-    icon: '✅',
-    title: '¡Email',
-    titleEm: 'verificado!',
-    message: 'Tu cuenta ya está activa. Puedes iniciar sesión.',
-  },
-  password: {
-    icon: '🔐',
-    title: '¡Contraseña',
-    titleEm: 'actualizada!',
-    message: 'Tu contraseña ha sido cambiada correctamente. Inicia sesión con la nueva.',
-  },
-  eliminacion: {
-    icon: '👋',
-    title: 'Cuenta',
-    titleEm: 'eliminada',
-    message: 'Tu cuenta ha sido eliminada permanentemente. Gracias por haber usado LiveNotes.',
-  },
-  error: {
-    icon: '❌',
-    title: 'Enlace',
-    titleEm: 'no válido',
-    message: 'El enlace no es válido o ha expirado. Vuelve a intentarlo desde la app.',
-  },
+const CONFIG_ICONS: Record<string, string> = {
+  verificacion: '✅',
+  password: '🔐',
+  eliminacion: '👋',
+  error: '❌',
 };
 
 @Component({
@@ -49,6 +29,12 @@ export class EmailConfirmado {
 
   protected readonly config = computed<Config>(() => {
     const tipo = this.route.snapshot.queryParamMap.get('tipo') ?? 'error';
-    return CONFIGS[tipo] ?? CONFIGS['error'];
+    const key = tipo in CONFIG_ICONS ? tipo : 'error';
+    return {
+      icon: CONFIG_ICONS[key],
+      title:   this.t()(`auth.confirmado.${key}.title`),
+      titleEm: this.t()(`auth.confirmado.${key}.titleEm`),
+      message: this.t()(`auth.confirmado.${key}.message`),
+    };
   });
 }

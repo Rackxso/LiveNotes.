@@ -27,7 +27,7 @@
 </div>
 
 @if (hayEventosSinHora()) {
-  <div class="todo-el-dia-fila" role="row" aria-label="All-day events">
+  <div class="todo-el-dia-fila" role="row" [attr.aria-label]="t()('calendar.allDay')">
     <div class="all-day-label" aria-hidden="true">{{ t()('calendar.allDay') }}</div>
     @for (dia of diasDeSemana(); track $index) {
       <div class="all-day-cell" role="gridcell">

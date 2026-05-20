@@ -5,78 +5,76 @@
       <img class="brand-logo-img" src="/Logo.png" alt="LiveNotes" />
     </div>
     <div class="nav-actions">
-      <a routerLink="/login" class="nav-login">Iniciar sesión</a>
-      <a routerLink="/register" class="nav-register">Empieza gratis</a>
+      <a routerLink="/login" class="nav-login">{{ t()('landing.login') }}</a>
+      <a routerLink="/register" class="nav-register">{{ t()('landing.startFree') }}</a>
     </div>
   </nav>
 
   <section class="hero">
     <div class="hero-content">
-      <p class="hero-eyebrow">Tu espacio personal</p>
-      <h1 class="hero-title">Todo en un <em>solo lugar.</em></h1>
-      <p class="hero-subtitle">
-        Agenda, finanzas, notas y hábitos en una sola app diseñada para tu día a día.
-      </p>
+      <p class="hero-eyebrow">{{ t()('landing.heroEyebrow') }}</p>
+      <h1 class="hero-title">{{ t()('landing.heroTitleStart') }} <em>{{ t()('landing.heroTitleEm') }}</em></h1>
+      <p class="hero-subtitle">{{ t()('landing.heroSubtitle') }}</p>
       <div class="hero-ctas">
-        <a routerLink="/register" class="cta-primary">Empieza gratis</a>
-        <a routerLink="/login" class="cta-secondary">Ya tengo cuenta</a>
+        <a routerLink="/register" class="cta-primary">{{ t()('landing.ctaFree') }}</a>
+        <a routerLink="/login" class="cta-secondary">{{ t()('landing.ctaLogin') }}</a>
       </div>
     </div>
 
     <div class="hero-visual" aria-hidden="true">
       <div class="visual-card visual-card--1">
         <span class="visual-card-icon"><i class="fa-solid fa-calendar-days"></i></span>
-        <span class="visual-card-label">Hoy, 3 eventos</span>
+        <span class="visual-card-label">{{ t()('landing.visual1') }}</span>
       </div>
       <div class="visual-card visual-card--2">
         <span class="visual-card-icon"><i class="fa-solid fa-coins"></i></span>
-        <span class="visual-card-label">Ahorro del mes: 84%</span>
+        <span class="visual-card-label">{{ t()('landing.visual2') }}</span>
       </div>
       <div class="visual-card visual-card--3">
         <span class="visual-card-icon"><i class="fa-solid fa-note-sticky"></i></span>
-        <span class="visual-card-label">12 notas guardadas</span>
+        <span class="visual-card-label">{{ t()('landing.visual3') }}</span>
       </div>
       <div class="visual-card visual-card--4">
         <span class="visual-card-icon"><i class="fa-solid fa-leaf"></i></span>
-        <span class="visual-card-label">Racha de 7 días</span>
+        <span class="visual-card-label">{{ t()('landing.visual4') }}</span>
       </div>
     </div>
   </section>
 
   <section class="features">
-    <h2 class="features-title">Todo lo que necesitas</h2>
+    <h2 class="features-title">{{ t()('landing.featuresTitle') }}</h2>
     <div class="features-grid">
       <div class="feat-card">
         <span class="feat-icon"><i class="fa-solid fa-calendar-days"></i></span>
-        <h3 class="feat-name">Calendario</h3>
-        <p class="feat-desc">Organiza tus eventos con vistas diaria, semanal y mensual. Nunca pierdas una cita.</p>
+        <h3 class="feat-name">{{ t()('landing.feat1Name') }}</h3>
+        <p class="feat-desc">{{ t()('landing.feat1Desc') }}</p>
       </div>
       <div class="feat-card">
         <span class="feat-icon"><i class="fa-solid fa-coins"></i></span>
-        <h3 class="feat-name">Finanzas</h3>
-        <p class="feat-desc">Controla gastos, ingresos y objetivos de ahorro. Tus finanzas, bajo control.</p>
+        <h3 class="feat-name">{{ t()('landing.feat2Name') }}</h3>
+        <p class="feat-desc">{{ t()('landing.feat2Desc') }}</p>
       </div>
       <div class="feat-card">
         <span class="feat-icon"><i class="fa-solid fa-note-sticky"></i></span>
-        <h3 class="feat-name">Notas</h3>
-        <p class="feat-desc">Escribe y organiza tus ideas. Encuentra cualquier nota al instante.</p>
+        <h3 class="feat-name">{{ t()('landing.feat3Name') }}</h3>
+        <p class="feat-desc">{{ t()('landing.feat3Desc') }}</p>
       </div>
       <div class="feat-card">
         <span class="feat-icon"><i class="fa-solid fa-leaf"></i></span>
-        <h3 class="feat-name">Hábitos</h3>
-        <p class="feat-desc">Registra hábitos y estado de ánimo. Pequeños pasos, grandes cambios.</p>
+        <h3 class="feat-name">{{ t()('landing.feat4Name') }}</h3>
+        <p class="feat-desc">{{ t()('landing.feat4Desc') }}</p>
       </div>
     </div>
   </section>
 
   <section class="bottom-cta">
-    <h2 class="bottom-cta-title">¿Listo para empezar?</h2>
-    <p class="bottom-cta-sub">Crea tu cuenta gratis y organiza tu vida desde hoy.</p>
-    <a routerLink="/register" class="cta-primary">Crear cuenta gratis</a>
+    <h2 class="bottom-cta-title">{{ t()('landing.ctaTitle') }}</h2>
+    <p class="bottom-cta-sub">{{ t()('landing.ctaSubtitle') }}</p>
+    <a routerLink="/register" class="cta-primary">{{ t()('landing.ctaBtn') }}</a>
   </section>
 
   <footer class="landing-footer">
-    <span>© 2025 LiveNotes</span>
+    <span>{{ t()('landing.footer') }}</span>
   </footer>
 
 </div>

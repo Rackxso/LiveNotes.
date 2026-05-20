@@ -16,14 +16,19 @@ import { I18nService } from '../../../services/i18n.service';
 export class AddNoteModal {
   private readonly notesService = inject(NotesService);
   private readonly eventosService = inject(EventosService);
-  readonly t = inject(I18nService).t;
+  private readonly i18n = inject(I18nService);
+  readonly t = this.i18n.t;
 
   readonly note = input<Note | null>(null);
   readonly existingCategories = input<string[]>([]);
   readonly cerrar = output<void>();
   readonly guardado = output<void>();
 
-  readonly PRESET_CATEGORIES = ['Work', 'Personal', 'Health'];
+  readonly PRESET_CATEGORIES = computed(() => [
+    this.t()('noteModal.presetWork'),
+    this.t()('noteModal.presetPersonal'),
+    this.t()('noteModal.presetHealth'),
+  ]);
 
   readonly form = new FormGroup({
     titulo:    new FormControl('', { nonNullable: true, validators: [Validators.required, Validators.maxLength(100)] }),
@@ -54,17 +59,18 @@ export class AddNoteModal {
   }
 
   formatEventDate(fecha: Date): string {
-    return fecha.toLocaleDateString('es-ES', { day: '2-digit', month: 'short', year: 'numeric' });
+    return fecha.toLocaleDateString(this.i18n.locale(), { day: '2-digit', month: 'short', year: 'numeric' });
   }
 
   get isEditing(): boolean { return !!this.note(); }
 
-  get allCategories(): string[] {
+  readonly allCategories = computed(() => {
+    const presets = this.PRESET_CATEGORIES();
     const extras = this.existingCategories().filter(
-      c => !this.PRESET_CATEGORIES.map(p => p.toLowerCase()).includes(c.toLowerCase())
+      c => !presets.map(p => p.toLowerCase()).includes(c.toLowerCase())
     );
-    return [...this.PRESET_CATEGORIES, ...extras];
-  }
+    return [...presets, ...extras];
+  });
 
   onGuardar(): void {
     if (this.form.invalid) {
