@@ -5,8 +5,9 @@ import { loggedInGuard } from './guards/logged-in.guard';
 import { adminGuard } from './guards/admin.guard';
 import { EventosService } from './services/eventos.service';
 import { FinanceService } from './services/finance.service';
+import { environment } from '../environments/environment';
 
-export const routes: Routes = [
+const appRoutes: Routes = [
     {
         path: 'login',
         canActivate: [loggedInGuard],
@@ -104,3 +105,13 @@ export const routes: Routes = [
         loadComponent: () => import('./pages/admin/admin').then(m => m.AdminComponent)
     }
 ];
+
+const wipRoutes: Routes = [
+    {
+        path: 'wip',
+        loadComponent: () => import('./components/work-in-progress/work-in-progress').then(m => m.WorkInProgress)
+    },
+    { path: '**', redirectTo: 'wip' }
+];
+
+export const routes: Routes = environment.workInProgress ? wipRoutes : appRoutes;
